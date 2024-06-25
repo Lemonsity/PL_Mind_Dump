@@ -1,0 +1,14 @@
+*.DS_Store
+*.bak
+
+.obsidian/workspace.json
+.obsidian/plugins
+
+# Coq Output Files
+*.vo
+*.vok
+*.vos
+*.glob
+*.aux
+*/Logical-Foundations/*.html
+*/Logical-Foundations/common

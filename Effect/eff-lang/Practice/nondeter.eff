@@ -1,0 +1,117 @@
+effect Fail : empty
+effect Decide : bool
+;;
+
+let fail () = absurd (perform Fail)
+let decide () = perform Decide
+;;
+
+let choose_true = handler
+    | effect Decide k -> continue k true
+;;
+
+(* This only works if the block of code returns a number type at the end *)
+let choose_max = handler
+    | effect Decide k -> max (continue k true) (continue k false)
+;;
+
+let choose_all = handler
+    | x -> [x]
+    | effect Fail _ -> []
+    | effect Decide k -> (continue k true) @ (continue k false)
+;;
+
+let choose_all_func = handler
+    | x -> 
+        (fun acc -> x :: acc)
+    | effect Fail k ->
+        (fun acc -> acc)
+    | effect Decide k ->
+        (fun acc -> ((k true) acc) @ ((k false) acc))
+;;
+
+let backtrackTrue = handler
+    | effect Decide k ->
+        handle (continue k true) with 
+        | effect Fail _ -> continue k false
+;;
+
+let backtrackFalse = handler
+    | effect Decide k ->
+        handle (continue k false) with 
+        | effect Fail _ -> continue k true
+;;
+
+with choose_true handle
+  let x = (if decide () then 10 else 20) in
+  let y = (if decide () then 0 else 5) in
+  x - y
+;;
+
+with choose_max handle
+  let x = (if decide () then 10 else 20) in
+  let y = (if decide () then 0 else 5) in
+  x - y
+;;
+
+with choose_all handle
+  let x = (if decide () then 10 else 20) in
+  let y = (if decide () then 0 else 5) in
+  x - y
+;;
+
+(
+    with choose_all_func handle
+        let x = (if decide () then 10 else 20) in
+        let y = (if decide () then 0 else 5) in
+        x - y
+) []
+;;
+
+let rec choose_int m n = 
+    if m > n then
+        fail ()
+    else if decide () then
+        m 
+    else 
+        choose_int (m + 1) n
+;;
+
+let int_sqrt m =
+    let rec try n =
+        let n2 = n ** 2 in
+        if n2 > m then 
+            None
+        else if n2 = m then
+            Some n
+        else
+            try (n + 1)
+    in
+    try 0
+;;
+
+let pythagorean m n =
+    let a = choose_int m n in
+    let b = choose_int a n in
+    match int_sqrt (a ** 2 + b ** 2) with
+    | None -> fail ()
+    | Some c -> (a, b, c)
+;;
+
+
+(*
+    We can see that 
+    backtrackTrue  returns the first element of the list
+    backtrackFalse returns the last element of the list
+*)
+with choose_all handle 
+    pythagorean 5 15
+;;
+
+with backtrackTrue handle
+    pythagorean 5 15
+;;
+
+with backtrackFalse handle
+    pythagorean 5 15
+;;

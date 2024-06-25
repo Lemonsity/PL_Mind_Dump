@@ -1,0 +1,60 @@
+effect Fail : empty
+effect Decide : bool
+;;
+
+let fail () = absurd (perform Fail)
+let decide () = perform Decide
+;;
+
+let backtrackTrue = handler
+    | effect Decide k ->
+        handle (continue k true) with 
+        | effect Fail _ -> continue k false
+;;
+
+let backtrackFalse = handler
+    | effect Decide k ->
+        handle (continue k false) with 
+        | effect Fail _ -> continue k true
+;;
+
+let rec range lo hi = 
+    if lo > hi then
+        []
+    else
+        lo :: range (lo + 1) hi
+;;
+
+let rec choose = function
+    | [] -> fail ()
+    | x :: xs -> if decide () then x else (choose xs)
+;;
+
+let no_attack (x, y) (x', y') = 
+    x <> x' && y <> y' && abs (x - x') <> abs (y - y')
+;;
+
+let available_at_row n x qs =
+    filter (fun y -> forall (no_attack (x, y)) qs) (range 1 n)
+;;
+
+let rec place n x qs =
+    if (x > n) then 
+        qs
+    else 
+        let y = choose (available_at_row n x qs)
+        in
+            place n (x + 1) ((x, y) :: qs)
+;;
+
+with backtrackTrue handle
+  place 8 1 []
+;;
+
+with backtrackFalse handle
+  place 8 1 []
+;;
+
+with backtrackTrue handle
+  place 10 1 []
+;;

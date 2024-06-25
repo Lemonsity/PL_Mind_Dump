@@ -1,0 +1,3 @@
+[submodule "Effect/eff-lang/eff"]
+	path = Effect/eff-lang/eff
+	url = git@github.com:matijapretnar/eff.git

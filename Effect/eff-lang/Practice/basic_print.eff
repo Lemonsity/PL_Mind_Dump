@@ -1,0 +1,73 @@
+let captureAll = handler
+    (* ignore any print *)
+    | effect (Print msg) k -> 
+        perform (Print "I am inevitable\n")
+;;
+
+let doublePrint = handler
+    | effect (Print msg) k ->
+        perform (Print msg);
+        perform (Print msg);
+        continue k ()
+;;
+
+let collect = handler
+    (* We return the value of the computation and a string. *)
+    | x -> (x, "")
+    | effect (Print msg) k ->
+      (* First see what the rest of the computation returns and prints... *)
+      let (result, msgs) = continue k () in
+      (* Add the string that we want to print at the begining. *)
+        (result, msg ^ msgs)
+;;
+
+(* Parameter Passing Handler *)
+(*
+    Suppose we are printing "A, B, C" in that order,
+    The handler would create a function intuitively like the following:
+    fun acc1 ->
+        (fun acc2 -> 
+            (fun acc3 ->
+                (fun acc -> ((), acc))
+                (acc3 ^ "C")
+            )
+            (acc2 ^ "B")
+        )
+        (acc1 ^ "A")
+
+    The inner most function is for printing always returning a () value
+    At every step, we creating a function that is waiting on one value
+    Once the value is given, some expression `p` is evaluated, 
+    and passed as argument into the inner function
+
+    Handler is all about processing continuations
+    This handler goes even harder by producing a "continuation" as output
+*)
+let funcHandler = handler
+    | x -> 
+        (fun acc -> (x, acc))
+    | effect (Print msg) k ->
+        (fun acc -> (k ()) (acc ^ msg))
+;;
+
+with captureAll handle
+    with doublePrint handle 
+        perform (Print "A\n");
+        perform (Print "B\n");
+        perform (Print "C\n")
+;;
+
+with doublePrint handle
+    with captureAll handle 
+        perform (Print "A\n");
+        perform (Print "B\n");
+        perform (Print "C\n")
+;;
+
+(
+    with funcHandler handle
+        perform (Print "A");
+        perform (Print "B");
+        perform (Print "C")
+) 
+;;

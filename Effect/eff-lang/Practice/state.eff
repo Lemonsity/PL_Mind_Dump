@@ -1,0 +1,40 @@
+(** State *)
+
+(* It is often beneficial to have some form of a mutable state, which can be
+   implemented using handlers. Below is an example of a simple integer state. *)
+
+effect Get: int
+effect Set: int -> unit
+
+(* The monad_state handler wraps the computation in a function and the state
+   is passed around as the function input. The initial value of the state
+   is given to the transformed computation as input. *)
+
+
+(* Tracing is very difficult, instead, let's opt to understand the code in an intuitive sense *)
+(* With some comments for the code *)
+
+let monad_state = handler
+  (* Final return. The computation is no longer related to state.
+     States can still be passed in, but it will be ignored*)
+  | y -> (fun _ -> y)
+  (* From the outer function construction, a state will be passed in
+     The continuation needs the state to compute the next redex, hence (continue k s) 
+     There might be another GET immediately following this.
+     On the next GET, (continue k s) will generate a unary function, expecting to be passed the state
+     Hence the "s" folloing the "(continue k s)" *)
+  | effect Get k -> (fun s -> (continue k s) s)
+  (* 
+     "s'" needs to be passed to (continuation k ()) for the same reason as above
+     However, On calling (SET value), all further reference of the state will be refering to the new "value"
+     This means SET do not care what was the value in the state before, hence the ignored input*)
+  | effect (Set s') k -> (fun _ -> (continue k ()) s')
+;;
+
+let f = with monad_state handle
+  perform Get + 10
+in
+f 30
+;;
+
+(fun s -> (fun _ -> (s + 10)) s)
