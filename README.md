@@ -15,9 +15,9 @@ This is my mind dump, where I keep my practices and notes.
 		- Logic
 		- Topology
 		- Category Theory
-  - Some other topics I wish to explore:
-    	- Formal Methods
-    	- Relational / Logic Programming
+- Some other topics I wish to get into:
+	- Formal Methods
+	- Relational / Logic Programming
 
 ---
 ## Contact
