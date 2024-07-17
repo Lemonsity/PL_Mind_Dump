@@ -80,17 +80,17 @@ We are forcing pattern matching with [cons]
 ;;   into [ cdro ... ] then [ caro ... ]
 ;;   is called Unnesting
 (run* (r)
-      (fresh (v)
-             (cdro '(a c o r n) v)
-             ;; Here we directly associate [r]
-             ;; With the second argument of [caro]
-             (caro v r)))
+      (fresh (r1 r2)
+             (cdro '(a c o r n) r1)
+             (caro r1 r2)
+             (== r2 r)))
 ;; Unnesting is similar to CPS
+;; Notice where [r1] appears in both cases
 (define car& (λ (p k) (k (car p))))
 (define cdr& (λ (p k) (k (cdr p))))
 (cdr& '(a c o r n)
-     (λ (result-from-cdr) (car& result-from-cdr
-                                identity)))
+     (λ (r1) (car& r1
+                   identity)))
 
 ;; Panel 17
 
