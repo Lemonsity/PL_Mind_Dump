@@ -75,17 +75,17 @@ We are forcing pattern matching with [cons]
            (== (cons a d) p))))
 
 (car (cdr '(a c o r n)))
-;;Unnesting
-;;  Durning [ (car (cdr ...)) ]
-;;  into [ cdro ... ] then [ caro ... ]
-;;  is called Unnesting
+;; Unnesting
+;;   Durning [ (car (cdr ...)) ]
+;;   into [ cdro ... ] then [ caro ... ]
+;;   is called Unnesting
 (run* (r)
       (fresh (v)
              (cdro '(a c o r n) v)
              ;; Here we directly associate [r]
              ;; With the second argument of [caro]
              (caro v r)))
-;; Which is similar to CPS
+;; Unnesting is similar to CPS
 (define car& (λ (p k) (k (car p))))
 (define cdr& (λ (p k) (k (cdr p))))
 (cdr& '(a c o r n)
