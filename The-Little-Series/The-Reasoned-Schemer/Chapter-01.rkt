@@ -189,3 +189,118 @@
       [(== 'olive x) succeed]
       [(== 'oil x) succeed]
       [fail]))
+
+;; Panel 50, 51
+(run* (x)
+      (conde
+       [(== 'virgin x) fail]
+       [(== 'olive x) succeed]
+       [succeed succeed] ;; This creates a reified variable _.0
+       [(== 'oil x) succeed]
+       [fail]))
+
+;; Panel 52
+(run 2 (x) ;; result in list of 2 substitutions
+     (conde
+      [(== 'extra x) succeed]
+      [(== 'virgin x) fail]
+      [(== 'olive x) succeed]
+      [(== 'oil x) succeed]
+      [fail]))
+
+;; Panel 53 skipped
+
+;; Panel 54, 55
+;; Each line in conde produce a substitution
+;; Each substitution associate [r] with a list of 2 elements
+(run* (r)
+      (fresh (x y)
+             (conde
+              [(== 'split x) (== 'pea y)]
+              [(== 'navy x) (== 'bean y)]
+              [fail])
+             (== (cons x (cons y '())) r)))
+
+;; Panel 56
+;; Wrapping conde
+(define teacupo
+  (lambda (x)
+    (conde
+     [(== 'tea x) succeed]
+     [(== 'cup x) succeed]
+     [fail])))
+
+(run* (x)
+      (teacupo x))
+
+;; Panel 57
+#|
+
+On Goal:
+A goal produces a stream of substitutions
+[==, conde] are "forms" that produce goals
+
+On [conde]
+Each line of [conde] is a list of goals
+Each line gets mapped to a stream of substitutions
+[conde] returns the concatination of the streams
+  produced by each line
+
+Definition: Question & Answer
+Question is the first goal of a line of [conde]
+Answer   is the rest of the goals
+Both Question and Answer need to succeed for the whole
+  line to succeed
+|#
+(run* (r)
+      (fresh (x y)
+             (conde
+              [(teacupo x) (== #t y) succeed]
+              [(== #f x) (== #t y)]
+              [fail])
+             (== (cons x (cons y '())) r)))
+
+;; Panel 58, 59
+;; The following results in ['((_.0 _.1) (_.0 _.1))]
+;; However, this does not mean the [car] of both
+;; 2-elements lists are associated with the same value
+(run* (r)
+      (fresh (x y z)
+             (conde
+              [(== y x) (fresh (x) (== z x))]
+              [(fresh (x) (== y x)) (== z x)]
+              [fail])
+             (== (cons y (cons z '())) r)))
+;; The difference is demonstrated here
+(run* (r)
+      (fresh (x y z)
+             (conde
+              [(== y x) (fresh (x) (== z x))]
+              [(fresh (x) (== y x)) (== z x)]
+              [fail])
+             (== #t x)
+             (== (cons y (cons z '())) r)))
+
+;; Panel 60
+;; Goals are also values
+(run* (q)
+      (let ([a (== #t q)]
+            [b (== #f q)])
+        b))
+;; The above is equivalent to:
+(run* (q)
+      (== #f q))
+;; By considering the substitution
+
+;; Panel 61
+;; [==, fresh, conde] are all expressions
+;; All of them produce Goal as value
+(run* (q)
+      (let ([a (== #t q)]
+            [b (fresh (x)
+                      (== x q)
+                      (== #f x))]
+            [c (conde
+                [(== #t q) succeed]
+                [(== #f q)])])
+        b))
