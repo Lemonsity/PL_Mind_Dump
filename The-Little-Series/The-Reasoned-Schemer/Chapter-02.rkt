@@ -92,6 +92,92 @@ We are forcing pattern matching with [cons]
      (λ (r1) (car& r1
                    identity)))
 
-;; Panel 17
+;; Panel 17, 18
+(run* (r)
+      (fresh (x y)
+             (cdro '(grape raisin pear) x)
+             (caro '((a) (b) (c)) y)
+             (== (cons x y) r)))
+
+;; Panel 19
+(run* (q)
+      ;; cdro line is always succeed
+      (cdro '(a c o r n) '(c o r n))
+      (== #t q))
+
+;; Panel 20
+;; [x] is substituted with 'o
+(run* (x)
+      (cdro '(c o r n) `(,x r n)))
+;; ^^ becomes vv when substitute the value of [(cdro ...)]
+(run* (x)
+      (fresh (a)
+             (== (cons a `(,x r n)) '(c o r n))))
+
+;; Panel 21
+;; Specifiying all arguments will force a value out
+(run* (l)
+      (fresh (x)
+             (cdro l '(c o r n))
+             (caro l x)
+             (== 'a x)))
+
+;; Panel 22 - 28
+(define conso
+  (λ (a d p)
+    (== (cons a d) p)))
+;; Using [conso] like function
+(run* (l)
+      (conso '(a b c) '(d e) l))
+;; Using [conso] to query for [car]
+(run* (var-a)
+      (conso var-a '(b c) '(a b c)))
+;; Using [conso] to search for value
+(run* (l)
+      (fresh (x y z)
+             (== `(e a d ,x) l) ;; 1. [l] is now a 4-element list
+             (conso y `(a ,z c) l))) ;; 2. The last element of [l] is forced to be ['c]
+(run* (x)
+      (conso x `(a ,x c) `(d a ,x c)))
+(run* (l)
+      (fresh (x)
+             (conso x `(a ,x c) l)
+             (== `(d a ,x c) l)))
+
+;; Panel 29
+;; b e a n s
+(run* (l)
+      (fresh (d x y w s)
+             (conso w '(a n s) s)
+             (cdro l s)
+             (caro l x)
+             (== 'b x)
+             (cdro l d)
+             (caro d y)
+             (== 'e y)))
+
+;; Panel 30 - 35
+;; [nullo]
+;; [nullo] no longer takes an additional argument for the "result"
+;; Whether the goal [(nullo ...)] succeed or fail will indicate the "result"
+(define nullo
+  (λ (l)
+    (== '() l)))
+(run* (q)
+      (nullo '()) ;; This simply succeed and skipped
+      (== #t q)) ;; associate [q] to [#t]
+(run* (l)
+      (nullo l)) ;; associate [l] with ['()]
+
+;; Panel 36 - 40
+(define eqo
+  (λ (x y)
+    (== x y)))
+;; [eqo] check for equality
+(run* (q)
+      (eqo 'pear 'plum))
+(run* (q)
+      (eqo 'pear 'pear)
+      (== #t q))
 
 
