@@ -180,4 +180,60 @@ We are forcing pattern matching with [cons]
       (eqo 'pear 'pear)
       (== #t q))
 
+;; Panel 41 - 51 skipped
+;; Mostly review of pair
+
+;; Panel 52
+;; fresh variable will be reify
+(run* (r)
+      (fresh (x y)
+             (== (cons x (cons y 'salad)) r)))
+
+;; Panel 53
+;; [pairo]
+;; Determines whether an expression is a pair
+(define pairo
+  (λ (p)
+    (fresh (x y)
+           (conso x y p))))
+
+;; Panel 54, 55
+;; Succeed because top-level constructor is [cons]
+(run* (q)
+      (pairo (cons q q))
+      (== #t q))
+;; Fails because ['()] is not a pair
+(run* (q)
+      (pairo '())
+      (== #t q))
+;; Fail because an atom is not a pair
+(run* (q)
+      (pairo 'pair)
+      (== #t q))
+
+;; Panel 57
+;; Most General Unifier of [pairo]
+(run* (p)
+      (pairo p))
+;; Associates [p] with [(_.0 . _.1)]
+
+;; Panel 58
+(run* (a)
+      (pairo (cons a 'pear)))
+;; Associate [a] with [_.0]
+
+;; Panel 59
+;; Try rewrite [caro, cdro, pairo] using [conso]
+(define caro-
+  (λ (p a)
+    (fresh (d)
+           (conso a d p))))
+(define cdro-
+  (λ (p d)
+    (fresh (a)
+           (conso a d p))))
+(define pairo-
+  (λ (p)
+    (fresh (a d)
+           (conso a d p))))
 
