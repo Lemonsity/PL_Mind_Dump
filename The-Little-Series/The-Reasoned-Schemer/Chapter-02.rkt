@@ -1,6 +1,6 @@
 #lang racket
 
-(require "Racket-miniKanren/miniKanren/mk.rkt")
+(require "Chapter-01-Def.rkt")
 
 ;; Panel 1
 ;; Function application
