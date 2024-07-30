@@ -22,4 +22,4 @@ This is my mind dump, where I keep my practices and notes.
 ---
 ## Contact
 I am interested in meeting new people, and I hope to learn with other people together.
-I will post my university work email soon.
+- yzms [at] cs [dot] toronto [dot] edu
