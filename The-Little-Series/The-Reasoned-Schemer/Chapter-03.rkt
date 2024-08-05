@@ -133,7 +133,7 @@ Unnest the answer #t (or #f) by replacing it with #s
      (lolo `((a b) (c d) . ,x)))
 
 
-;; ========= Panel 26 - =========
+;; ========= Panel 26 - 36 =========
 (define twino
   (λ (p)
     (fresh (a d)
@@ -148,3 +148,16 @@ Unnest the answer #t (or #f) by replacing it with #s
 
 ;; I don't have too much to say about [twino]
 ;; It's similar to [listo] and [lolo]?
+
+;; ========= Panel 37 - =========
+(define loto
+  (λ (l)
+    (conde
+     [(nullo l) succeed]
+     [(fresh (a)
+             (caro l a)
+             (twino a))
+      (fresh (d)
+             (cdro l d)
+             (loto d))]
+     [fail])))

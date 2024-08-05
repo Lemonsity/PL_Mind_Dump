@@ -44,3 +44,16 @@
   (λ (p)
     (fresh (x)
            (== `(,x ,x) p))))
+
+(define loto
+  (λ (l)
+    (conde
+     [(nullo l) succeed]
+     [(fresh (a)
+             (caro l a)
+             (twino a))
+      (fresh (d)
+             (cdro l d)
+             (loto d))]
+     [fail])))
+
