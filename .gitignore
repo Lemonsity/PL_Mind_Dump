@@ -1,8 +1,8 @@
+# Mac Specific
 *.DS_Store
 *.bak
-*.rkt~
-*#*#
 
+# Obsidian
 .obsidian/workspace.json
 .obsidian/plugins
 
@@ -14,3 +14,8 @@
 *.aux
 */Logical-Foundations/*.html
 */Logical-Foundations/common
+
+# Temporary Files
+*.hs~
+*.rkt~
+*#*#
