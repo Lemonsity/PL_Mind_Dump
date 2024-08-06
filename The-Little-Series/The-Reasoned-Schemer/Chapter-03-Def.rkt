@@ -57,3 +57,31 @@
              (loto d))]
      [fail])))
 
+(define listofo
+  (λ (predo l)
+    (conde
+     [(nullo l) succeed]
+     [(fresh (a)
+             (caro l a)
+             (predo a))
+      (fresh (d)
+             (cdro l d)
+             (listofo predo d))]
+     [fail])))
+
+(define loto-
+  (λ (l)
+    (listofo twino l)))
+
+(define eq-caro
+  (λ (l x)
+    (caro l x)))
+
+(define membero
+  (λ (x l)
+    (conde
+     [(nullo l) fail]
+     [(eq-caro l x) succeed]
+     [(fresh (d)
+             (cdro l d)
+             (membero x d))])))

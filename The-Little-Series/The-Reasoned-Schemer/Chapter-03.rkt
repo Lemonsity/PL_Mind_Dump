@@ -149,7 +149,7 @@ Unnest the answer #t (or #f) by replacing it with #s
 ;; I don't have too much to say about [twino]
 ;; It's similar to [listo] and [lolo]?
 
-;; ========= Panel 37 - =========
+;; ========= Panel 37 - 44 =========
 (define loto
   (λ (l)
     (conde
@@ -161,3 +161,197 @@ Unnest the answer #t (or #f) by replacing it with #s
              (cdro l d)
              (loto d))]
      [fail])))
+
+(run 1 (q)
+     (loto `((g g) . ,q)))
+;; Query for 5 answers gives us 5 lists of diff length
+(run 5 (q)
+     (loto `((g g) . ,q)))
+
+;; ========= Panel 45 - 47 =========
+(run 5 (r)
+     (fresh (w x y z)
+            ;; [loto] creates following association
+            ;; + [w = 'e]
+            ;; + [x = y]
+            ;; + [z] is a list of twin
+            (loto `((g g) (e ,w) (,x ,y) . ,z))
+            ;; [r] will have following association
+            ;; [r = `(e (_.0 _.0) <some-loto>)]
+            (== `(,w (,x ,y) ,z) r)))
+
+;; ========= Panel 48 - 50 =========
+;; Higher Order Relation?
+;; Similar to higher order function
+(define listofo
+  (λ (predo l)
+    (conde
+     [(nullo l) succeed]
+     [(fresh (a)
+             (caro l a)
+             (predo a))
+      (fresh (d)
+             (cdro l d)
+             (listofo predo d))]
+     [fail])))
+
+;; Rewrite [loto] with [listofo]
+(define loto-
+  (λ (l)
+    (listofo twino l)))
+
+;; ========= Panel 51 - 65 =========
+(define eq-car?
+  (λ (l x)
+    (eq? (car l) x)))
+(define member?
+  (λ (x l)
+    (cond
+      [(null? l) #f]
+      [(eq-car? l x) #t]
+      [else (member? x (cdr l))])))
+
+(define eq-caro
+  (λ (l x)
+    (caro l x)))
+
+;; WARNING: [membero] actually works on pair too, not just lists
+(define membero
+  (λ (x l)
+    (conde
+     ;; This line is not necessary
+     ;; If a line is guaranteed to fail,
+     ;; Then it is not necessary
+     [(nullo l) fail]
+     [(eq-caro l x) succeed]
+     [(fresh (d)
+             (cdro l d)
+             (membero x d))])))
+
+;; With the way we defined [membero]
+;; We will always query the first element first
+(run 1 (item)
+     (membero item '(hummus with pita)))
+(run 1 (item)
+     (membero item '(with pita)))
+(run 1 (item)
+     (membero item '(pita)))
+;; No item can be a member of null list
+(run* (item)
+      (membero item '()))
+;; We can query more from a longer list
+(run 3 (item)
+     (membero item '(hummus with pita)))
+;; But can only get as many answer as the length of list
+(run* (item)
+      (membero item '(hummus with pita with hummus)))
+
+;; Panel 64, 65
+;; In fact, [(run* (item) (membero item l)) = l]
+(define identity-
+  (λ (l)
+    (run* (item)
+          (membero item l))))
+       
+;; ========= Panel 66 - 72 =========
+;; Filling in gaps
+
+;; Forcing [x] to be a value
+;; Because other member of the list cannot be associated
+;; with ['e]
+(run* (x)
+      (membero 'e `(pasta ,x fagioli)))
+
+;; Order matters
+;; vv binds [x] to [_.0]
+(run 1 (x)
+     (membero 'e `(pasta e ,x fagioli)))
+;; vv binds [x] to ['e]
+(run 1 (x)
+     (membero 'e `(pasta ,x e fagioli)))
+
+#|
+In the first one, we ran into this condition:
+(membero 'e `(e ,x fagioli))
+-> (eq-caro `(e ,x fagioli) 'e)   b/c attempt this case
+-> (caro `(e ,x fagioli) 'e)      
+-> (fresh (d) (== (cons 'e d) `(e ,x fagioli))))
+At this point, we will bind [d = `(,x fagioli)],
+[x] remains fresh at this point, and will be reified
+
+In the second one, we ran ito this condition:
+(membero 'e `(,x e fagioli))
+-> (eq-caro `(,x e fagioli) 'e)   b/c attempt this case
+-> (caro `(,x e fagioli) 'e)      
+-> (fresh (d) (== (cons 'e d) `(,x e fagioli))))
+At this point, we will bind:
++ ['e = x]
++ [d = `(e fagioli)]
+[x] is no longer fresh. [x] is now binded to ['e]
+|#
+
+;; The following example illustrates the containment of
+;; ['e] can appear at different point of the list,
+;; Which let other fresh variables have more general binding
+(run* (r)
+      (fresh (x y)
+             (membero 'e `(pasta ,x fagioli ,y))
+             (== `(,x ,y) r)))
+
+
+;; ========= Panel 73 - 77 =========
+(run 1 (l)
+     (membero 'tofu l))
+
+;; WARNING: The following will never terminate,
+;; b/c there are infinite candidate for [l] that will
+;; satisfy the relation
+;; (run* (l)
+;;       (membero 'tofu l))
+
+;; We can get a hint of the infinite list generate
+;; by the above commented code
+(run 5 (l)
+     (membero 'tofu l))
+
+;; ========= Panel 78 -  =========
+;; Membership of Proper List
+
+;; Following is my attempt
+;; It is bad, b/c it only finds lists with [x] as head
+;; [(listo d)] have infinite solutions
+;; Thus block the path where [x] appear in the tail
+(define pmembero-bad
+  (λ (x l)
+    (conde
+     [(nullo l) fail] ;; Once again, this is redundant
+     [(eq-caro l x) (fresh (d)
+                           (cdro l d)
+                           (listo d))]
+     [(fresh (d)
+             (cdro l d)
+             (pmembero-bad x d))])))
+
+;; TODO: Understand this part
+;; Actually it works,
+;; I think it is because in source code,
+;; [conde] uses [mplus*], which may secretly do interleaving
+(run 30 (l)
+     (pmembero-bad 'tofu l))
+
+;; Following is the "Official Solution"
+(define pmembero
+  (λ (x l)
+    (conde
+     [(eq-caro l x) (fresh (a d)
+                           (cdro l `(,a . ,d)))]
+     [(eq-caro l x) (cdro l '())]
+     [(fresh (d)
+             (cdro l d)
+             (pmembero x d))])))
+;; However I think it still breaks,
+;; As demonstrated by the following example
+(run 1 (q)
+     (membero 'e '(e . (a . (b . c))))
+     (== q #t))
+                         
