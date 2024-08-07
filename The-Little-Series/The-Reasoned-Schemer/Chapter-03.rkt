@@ -219,7 +219,7 @@ Unnest the answer #t (or #f) by replacing it with #s
 (define membero
   (λ (x l)
     (conde
-     ;; This line is not necessary
+     ;; The first condition is not necessary
      ;; If a line is guaranteed to fail,
      ;; Then it is not necessary
      [(nullo l) fail]
@@ -314,7 +314,7 @@ At this point, we will bind:
 (run 5 (l)
      (membero 'tofu l))
 
-;; ========= Panel 78 -  =========
+;; ========= Panel 78 - 94 =========
 ;; Membership of Proper List
 
 ;; Following is my attempt
@@ -335,7 +335,8 @@ At this point, we will bind:
 ;; TODO: Understand this part
 ;; Actually it works,
 ;; I think it is because in source code,
-;; [conde] uses [mplus*], which may secretly do interleaving
+;; [conde] uses [mplus*], and
+;; [mplus*] uses [mplus], which secretly does interleaving
 (run 30 (l)
      (pmembero-bad 'tofu l))
 
@@ -349,9 +350,91 @@ At this point, we will bind:
      [(fresh (d)
              (cdro l d)
              (pmembero x d))])))
-;; However I think it still breaks,
+;; However I think it still have flaws,
 ;; As demonstrated by the following example
 (run 1 (q)
      (membero 'e '(e . (a . (b . c))))
      (== q #t))
-                         
+
+;; ========= My Attempt at a Prolog-style [pmembero] =========
+;; I am encoding length with another list
+;; 0 := '()
+;; 1 := '( () )
+;; 2 := '( () () ) ...
+
+(define length-0 '())
+(define length-1 '(()))
+(define length-2 '(() ()))
+(define length-3 '(() () ()))
+
+(define my-lengtho
+  (λ (l len) 
+    (conde
+     [(nullo l) (== len '())]
+     [(fresh (d sublen)
+             (cdro l d)
+             (conso '() sublen len)
+             (my-lengtho d sublen))])))
+
+
+(define my-pmembero-helper
+  (λ (x l l-len-sub1)
+    (conde
+     [(nullo l) fail]
+     [(eq-caro l x) (fresh (d)                           
+                           (cdro l d)
+                           (my-lengtho d l-len-sub1))]
+     [(fresh (d d-len-sub1)
+             (cdro l d)
+             (conso '() d-len-sub1 l-len-sub1)
+             (my-pmembero-helper x d d-len-sub1))])))
+
+(define my-pmembero-start-with
+  (λ (x l start-len)
+    (conde
+     [(my-pmembero-helper x l start-len) succeed]
+     [(my-pmembero-start-with x l (cons '() start-len))])))
+
+(define my-pmembero
+  (λ (x l)
+    (my-pmembero-start-with x l length-0)))
+
+;; I think my version of [my-pmembero] have a better chance
+;; of being translated to Prolog,
+;; B/c Prolog always tries to expand the first rule that
+;; matches the requirement
+
+;; My version also seems to group list of the same length
+;; together despite [conde] interleaves streams
+;; I haven't considered why...
+
+;; ========= Panel 95 - 101 (End) =========
+;; Misc
+
+;; Get first element in a list
+(define first-value
+  (λ (l)
+    (run 1 (y)
+         (membero y l))))
+
+(first-value '(pasta e fagioli))
+
+;; Changing order of [conde] changes output
+(define memberrevo
+  (λ (x l)
+    (conde
+     [(nullo l) fail]
+     ;; We now explore the path where [x] is in the tail first
+     ;; Which will change order of output stream
+     [succeed (fresh (d)
+                     (cdro l d)
+                     (memberrevo x d))]
+     [(eq-caro l x)])))
+
+;; EHHHHH, what? TODO
+(run* (x) (membero x '(pasta e fagioli)))
+(run* (x) (memberrevo x '(pasta e fagioli)))
+(define reverse-list
+  (λ (l)
+    (run* (y)
+          (memberrevo y l))))
