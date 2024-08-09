@@ -33,3 +33,90 @@ month = {oct},
 pages = {149–163},
 numpages = {15}
 }
+
+
+@article{10.1145/3428194,
+author = {Brachth\"{a}user, Jonathan Immanuel and Schuster, Philipp and Ostermann, Klaus},
+title = {Effects as capabilities: effect handlers and lightweight effect polymorphism},
+year = {2020},
+issue_date = {November 2020},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {4},
+number = {OOPSLA},
+url = {https://doi.org/10.1145/3428194},
+doi = {10.1145/3428194},
+abstract = {Effect handlers have recently gained popularity amongst programming language researchers. Existing type- and effect systems for effect handlers are often complicated and potentially hinder a wide-spread adoption.  We present the language Effekt with the goal to close the gap between research languages with effect handlers and languages for working programmers. The design of Effekt revolves around a different view of effects and effect types. Traditionally, effect types express which side effects a computation might have. In Effekt, effect types express which capabilities a computation requires from its context. While this new point in the design space of effect systems impedes reasoning about purity, we demonstrate that it simplifies the treatment of effect polymorphism and the related issues of effect parametricity and effect encapsulation. To guarantee effect safety, we separate functions from values and treat all functions as second-class. We define the semantics of Effekt as a translation to System Xi, a calculus in explicit capability-passing style.},
+journal = {Proc. ACM Program. Lang.},
+month = {nov},
+articleno = {126},
+numpages = {30},
+keywords = {algebraic effects, effect handlers, effect polymorphism}
+}
+
+@misc{yoshioka2024abstractingeffectsystemsalgebraic,
+      title={Abstracting Effect Systems for Algebraic Effect Handlers}, 
+      author={Takuma Yoshioka and Taro Sekiyama and Atsushi Igarashi},
+      year={2024},
+      eprint={2404.16381},
+      archivePrefix={arXiv},
+      primaryClass={cs.PL},
+      url={https://arxiv.org/abs/2404.16381}, 
+}
+
+@article{PRETNAR201519,
+title = {An Introduction to Algebraic Effects and Handlers. Invited tutorial paper},
+journal = {Electronic Notes in Theoretical Computer Science},
+volume = {319},
+pages = {19-35},
+year = {2015},
+note = {The 31st Conference on the Mathematical Foundations of Programming Semantics (MFPS XXXI).},
+issn = {1571-0661},
+doi = {https://doi.org/10.1016/j.entcs.2015.12.003},
+url = {https://www.sciencedirect.com/science/article/pii/S1571066115000705},
+author = {Matija Pretnar},
+keywords = {algebraic effects, handlers, effect system, semantics, logic, tutorial},
+abstract = {This paper is a tutorial on algebraic effects and handlers. In it, we explain what algebraic effects are, give ample examples to explain how handlers work, define an operational semantics and a type & effect system, show how one can reason about effects, and give pointers for further reading.}
+}
+
+@article{Modal-Effect-Types-Tang-White
+title = {Modal Effect Types},
+url = {https://homepages.inf.ed.ac.uk/slindley/papers/modal-effects-draft-july2024.pdf}
+}
+
+@article{10.1145/3408981,
+author = {Xie, Ningning and Brachth\"{a}user, Jonathan Immanuel and Hillerstr\"{o}m, Daniel and Schuster, Philipp and Leijen, Daan},
+title = {Effect handlers, evidently},
+year = {2020},
+issue_date = {August 2020},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {4},
+number = {ICFP},
+url = {https://doi.org/10.1145/3408981},
+doi = {10.1145/3408981},
+abstract = {Algebraic effect handlers are a powerful way to incorporate effects in a programming language. Sometimes perhaps even _too_ powerful. In this article we define a restriction of general effect handlers with _scoped resumptions_. We argue one can still express all important effects, while improving reasoning about effect handlers. Using the newly gained guarantees, we define a sound and coherent evidence translation for effect handlers, which directly passes the handlers as evidence to each operation. We prove full soundness and coherence of the translation into plain lambda calculus. The evidence in turn enables efficient implementations of effect operations; in particular, we show we can execute tail-resumptive operations _in place_ (without needing to capture the evaluation context), and how we can replace the runtime search for a handler by indexing with a constant offset.},
+journal = {Proc. ACM Program. Lang.},
+month = {aug},
+articleno = {99},
+numpages = {29},
+keywords = {Handlers, Evidence Passing Translation, Algebraic Effects}
+}
+
+@inproceedings{10.1145/3406088.3409022,
+author = {Xie, Ningning and Leijen, Daan},
+title = {Effect handlers in Haskell, evidently},
+year = {2020},
+isbn = {9781450380508},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3406088.3409022},
+doi = {10.1145/3406088.3409022},
+abstract = {Algebraic effect handlers offer an alternative to monads to incorporate effects in Haskell. In recent work Xie _et al._ show how to give semantics to effect handlers in terms of plain polymorphic lambda calculus through _evidence translation_. Besides giving precise semantics, this translation also allows for potentially more efficient implementations. Here we present the first implementation of this technique as a library for effect handlers in Haskell. We show how the design naturally leads to a concise effect interface and how evidence translation enables evaluating _tail resumptive_ operations _in-place_. We give detailed benchmark results where our library performs well with respect to other approaches.},
+booktitle = {Proceedings of the 13th ACM SIGPLAN International Symposium on Haskell},
+pages = {95–108},
+numpages = {14},
+keywords = {Algebraic Effects, Evidence Passing Translation, Handlers},
+location = {Virtual Event, USA},
+series = {Haskell 2020}
+}
