@@ -73,6 +73,18 @@
   (λ (l)
     (listofo twino l)))
 
+(define eq-car?
+  (λ (l x)
+    (eq? (car l) x)))
+
+(define member?
+  (λ (x l)
+    (cond
+      [(null? l) #f]
+      [(eq-car? l x) #t]
+      [else (member? x (cdr l))])))
+
+
 (define eq-caro
   (λ (l x)
     (caro l x)))
