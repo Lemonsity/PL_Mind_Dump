@@ -39,7 +39,7 @@
 (use-package counsel
   :diminish
   :bind (
-	 ("M-x" . 'counsel-M-x)) ;; Default to counsel's interactive command
+	 ("M-x" . counsel-M-x)) ;; Default to counsel's interactive command
   :config
   (counsel-mode 1))
 	 
