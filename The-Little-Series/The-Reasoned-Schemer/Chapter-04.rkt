@@ -2,8 +2,6 @@
 
 (require "Chapter-03-Def.rkt")
 
-;;*(pagewidth 120. 89. 1. 30.)
-
 ;; ========= Panel 1 - 6 =========
 ;; Review
 (define mem
