@@ -1,5 +1,5 @@
-[submodule "Effect/eff-lang/eff"]
-	path = Effect/eff-lang/eff
+[submodule "Effects/eff-lang/eff"]
+	path = Effects/eff-lang/eff
 	url = git@github.com:matijapretnar/eff.git
 [submodule "The-Little-Series/The-Reasoned-Schemer/Racket-miniKanren"]
 	path = The-Little-Series/The-Reasoned-Schemer/Racket-miniKanren
