@@ -192,3 +192,54 @@ But we will never find an answer
 ;; I am ashamed that I don't know enough about Scheme macro...
 ;; I need to learn it
 
+;; ========= Panel 41 - 51 =========
+
+;; Treat an s-exp as a tree
+;; [unwrap] takes the left-most, deepest element
+(define unwrap
+  (λ (x)
+    (cond
+      [(pair? x) (unwrap (car x))]
+      [else x])))
+
+(define unwrapo-bad
+  (λ (x out)
+    (conde
+     [(pairo x) (fresh (a)
+                       (caro x a)
+                       (unwrapo-bad a out))]
+     [(== x out)])))
+
+#| The problem with [unwrapo-bad] 
+- Recall [conde] trys every branch, thus forall value [v], 
+  [(unwrapo-bad v v)] will be satisfied
+  + This is incorrect if [v = '(,,,)]
+|#
+(run* (out)
+      (unwrapo-bad '(((pizza))) out))
+
+
+#| More problems with [unwrapo-bad] 
+The following two expression will not give a result in 
+standard miniKanren with no interleaving
+
+This is because we will continuely descend down the first
+branch of [conde]
+
+(The vanilla definition of miniKanren does interleaving, 
+so it will still find a result)
+|#
+;; (run 1 (x)
+;;       (unwrapo-bad x 'pizza))
+;; (run 1 (x)
+;;       (unwrapo-bad `((,x)) 'pizza))
+
+;; ========= Panel 52 - =========
+;; Good [unwrapo]
+(define unwrapo
+  (λ (x out)
+    (conde
+     [succeed (== x out)]
+     [(fresh (a)
+             (caro x a)
+             (unwrapo a out))])))
