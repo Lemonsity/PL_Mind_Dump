@@ -51,3 +51,56 @@
              (conso a d-out out)
              (swappendo d s d-out))]
      [(nullo l) (== s out)])))
+
+(define unwrap
+  (λ (x)
+    (cond
+      [(pair? x) (unwrap (car x))]
+      [else x])))
+
+(define unwrapo-bad
+  (λ (x out)
+    (conde
+     [(pairo x) (fresh (a)
+                       (caro x a)
+                       (unwrapo-bad a out))]
+     [(== x out)])))
+
+(define unwrapo
+  (λ (x out)
+    (conde
+     [succeed (== x out)]
+     [(fresh (a)
+             (caro x a)
+             (unwrapo a out))])))
+
+(define flatten
+  (λ (s)
+    (cond
+      [(null? s) '()]
+      [(pair? s) (append
+                  (flatten (car s))
+                  (flatten (cdr s)))]
+      [else (cons s '())])))
+
+(define flatteno
+  (λ (s out)
+    (conde
+     [(nullo s) (== '() out)]
+     [(pairo s) (fresh (a d a-out d-out)
+                       (conso a d s)
+                       (flatteno a a-out)
+                       (flatteno d d-out)
+                       (appendo a-out d-out out))]
+     [(conso s '() out)])))
+
+(define flattenrevo
+  (λ (s out)
+    (conde
+     [succeed (conso s '() out)]
+     [(nullo s) (== '() out)]
+     [(fresh (a d a-out d-out)
+             (conso a d s)
+             (flatteno a a-out)
+             (flatteno d d-out)
+             (appendo a d out))])))

@@ -213,7 +213,7 @@ But we will never find an answer
 #| The problem with [unwrapo-bad] 
 - Recall [conde] trys every branch, thus forall value [v], 
   [(unwrapo-bad v v)] will be satisfied
-  + This is incorrect if [v = '(,,,)]
+  + This is incorrect if [v = '(...)]
 |#
 (run* (out)
       (unwrapo-bad '(((pizza))) out))
@@ -234,8 +234,10 @@ so it will still find a result)
 ;; (run 1 (x)
 ;;       (unwrapo-bad `((,x)) 'pizza))
 
-;; ========= Panel 52 - =========
+;; ========= Panel 52 - 57 =========
 ;; Good [unwrapo]
+;; We can put the base case as the first condition to
+;; avoid infinite recursion
 (define unwrapo
   (λ (x out)
     (conde
@@ -243,3 +245,101 @@ so it will still find a result)
      [(fresh (a)
              (caro x a)
              (unwrapo a out))])))
+
+;; We can now query without running into infinite recursion
+(run 5 (x)
+     (unwrapo x 'pizza))
+
+;; Again, I don't think the result we got here is good
+;; Because [ [succeed (== x out)] ] still makes every
+;; [(unwrapo v v)] satisfiable
+(run 5 (x)
+     (unwrapo x '((pizza)) ))
+;; Still, better than before
+
+;; ========= Panel 58 - 70 =========
+(define flatten
+  (λ (s)
+    (cond
+      [(null? s) '()]
+      [(pair? s) (append
+                  (flatten (car s))
+                  (flatten (cdr s)))]
+      [else (cons s '())])))
+
+;; This is a straight translation of [flatten]
+(define flatteno
+  (λ (s out)
+    (conde
+     [(nullo s) (== '() out)]
+     [(pairo s) (fresh (a d a-out d-out)
+                       (conso a d s)
+                       (flatteno a a-out)
+                       (flatteno d d-out)
+                       (appendo a-out d-out out))]
+     [(conso s '() out)])))
+
+;; These two gives different result than the book
+;; I think it is because [conde] interleaves
+(run 1 (out)
+     (flatteno '((a b) c) out))
+(run 1 (out)
+     (flatteno '(a (b c)) out))
+
+;; [flatteno] gives wrong result
+(run* (out)
+      (flatteno '((a b) c) out))
+;; Though luckily, all can be flattened to the correct result
+
+;; Simple [flatteno] can still give too many result
+;; Many are bad
+(run* (out)
+      (flatteno '(a) out))
+(let ([result-list (run* (out)
+                         (flatteno '((a)) out))])
+  `(,result-list . ,(length result-list)))
+
+;; ========= Panel 71 - 80 (End) =========
+
+;; The following will not give result
+;; Too many candidate inputs can be flattened
+;; (run* (s)
+;;       (flatteno s '(a b c)))
+
+(define flattenrevo
+  (λ (s out)
+    (conde
+     [succeed (conso s '() out)]
+     [(nullo s) (== '() out)]
+     [(fresh (a d a-out d-out)
+             (conso a d s)
+             (flatteno a a-out)
+             (flatteno d d-out)
+             (appendo a d out))])))
+
+;; I skipped [reverse], because our [conde] is not sequential
+;; anyway, so we won't see the result
+
+;; Eh, I don't think changing order will turn
+;; infinite list into finite list
+;; Which it doesn't. Following will not give value back
+;; (run* (s)
+;;       (flattenrevo s '(a b c)))
+
+;; We can still query for the first couple
+(run 1 (s)
+     (flattenrevo s '(a b c)))
+(run 2 (s)
+     (flattenrevo s '(a b c)))
+
+;; In book, this one will not find a 3rd value
+;; Because when the 3rd branch recursively calls [flattenrevo]
+;; All arguments are uninitialized
+(run 3 (s)
+     (flattenrevo s '(a b c)))
+;; We might stand a better chance if we bring
+;; the [(appendo a d out)] goal a bit earlier
+
+(length
+ (run* (out)
+       (flattenrevo '((((a (((b))) c))) d) out)))
