@@ -18,4 +18,5 @@
 # Temporary Files
 *.hs~
 *.rkt~
+*.scm~
 *#*#
