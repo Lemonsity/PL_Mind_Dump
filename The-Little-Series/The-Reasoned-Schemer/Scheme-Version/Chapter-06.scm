@@ -1,13 +1,12 @@
-#lang racket
-
-(require "Chapter-05-Def.rkt")
+(load "Chapter-05-Def.scm")
 
 ;; ========= Panel 01 - 11 =========
 
 ;; [anyo]
 ;; Succeed when [g] succeed
+;; Repeat the success of [g] any # of times
 (define anyo
-  (λ (g)
+  (lambda (g)
     (conde
      [g succeed]
      [(anyo g)])))
@@ -37,7 +36,7 @@
 ;; [succeed] only succeed once
 ;; [alwayso] succeed arbitrary number of times
 
-;; The 10 ['t]s came from 10 ways to satisfy [(anyo succed)]
+;; The 10 [#t]s came from 10 ways to satisfy [(anyo succed)]
 ;; by going deeper and deeper into the second condition in [conde]
 (run 10 (q)
      alwayso
@@ -53,7 +52,7 @@
 
 ;; [salo] (Succeed At Least Once)
 (define salo
-  (λ (g)
+  (lambda (g)
     (conde
      [succeed succeed]
      [g])))
@@ -112,13 +111,5 @@ by the [fail]. Will keep try second branch
 |#
 
 ;; ========= Panel 19 - =========
-#| [condi]
-This is troublesome, because [condi] is already implemenated
-into [conde] by the current canonical implementaion
-And the canonical implementation does not provide [condi]
-|#
-
-
-
-
+;; [condi]
 

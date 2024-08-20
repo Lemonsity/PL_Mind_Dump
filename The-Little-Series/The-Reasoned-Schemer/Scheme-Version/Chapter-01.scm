@@ -1,4 +1,5 @@
-(load "CodeFromTheReasonedSchemer2ndEd/trs2-impl.scm")
+(load "TheReasonedSchemer/mkextraforms.scm")
+(load "TheReasonedSchemer/mk.scm")
 
 ;; Panel 10
 ;; No unification can satisfy [fail]

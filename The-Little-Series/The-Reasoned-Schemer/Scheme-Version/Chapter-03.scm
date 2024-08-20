@@ -330,12 +330,7 @@ At this point, we will bind:
              (cdro l d)
              (pmembero-bad x d))])))
 
-;; TODO: Understand this part
-;; Actually it works,
-;; I think it is because in source code,
-;; [conde] uses [mplus*], and
-;; [mplus*] uses [mplus], which secretly does interleaving
-(run 30 (l)
+(run 10 (l)
      (pmembero-bad 'tofu l))
 
 ;; Following is the "Official Solution"
@@ -351,8 +346,10 @@ At this point, we will bind:
 ;; However I think it still have flaws,
 ;; As demonstrated by the following example
 (run 1 (q)
-     (membero 'e '(e . (a . (b . c))))
+     (pmembero 'e '(e . (a . (b . c))))
      (== q #t))
+;; The official solution also cannot generate
+;; arbitrary tail length
 
 (run 12 (l)
      (pmembero 'tofu l))
@@ -405,10 +402,6 @@ At this point, we will bind:
 ;; B/c Prolog always tries to expand the first rule that
 ;; matches the requirement
 
-;; My version also seems to group list of the same length
-;; together despite [conde] interleaves streams
-;; I haven't considered why...
-
 ;; ========= Panel 95 - 101 (End) =========
 ;; Misc
 
@@ -432,9 +425,9 @@ At this point, we will bind:
                      (memberrevo x d))]
      [(eq-caro l x)])))
 
-;; EHHHHH, what? TODO
 (run* (x) (membero x '(pasta e fagioli)))
 (run* (x) (memberrevo x '(pasta e fagioli)))
+
 (define reverse-list
   (lambda (l)
     (run* (y)

@@ -1,13 +1,11 @@
-#lang racket
-
-(require "Chapter-04-Def.rkt")
+(load "Chapter-04-Def.scm")
 
 ;; ========= Panel 01 - 19 =========
 ;; [append] and [appendo]
 
 ;; This is not necessarily correct, because [s] may not be list
 (define append-
-  (λ (l s)
+  (lambda (l s)
     (cond
       [(null? l) s]
       [else (cons (car l)
@@ -15,7 +13,7 @@
 
 ;; [appendo]
 (define appendo1
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [(nullo l) (== s out)]
      [(fresh (a d d-out)
@@ -47,7 +45,7 @@
 ;; Panel 15
 ;; As suspected, we can replaced the [caro, cdro] with a single [conso]
 (define appendo2
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [(nullo l) (== s out)]
      [(fresh (a d d-out)
@@ -132,7 +130,7 @@ But we will never find an answer
 ;; ========= Panel 31, 32 =========
 ;; Order Matters
 (define appendo
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [(nullo l) (== s out)]
      [(fresh (a d d-out)
@@ -173,7 +171,7 @@ But we will never find an answer
 
 ;; ========= Panel 38 - 40 =========
 (define swappendo
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [succeed
       (fresh (a d d-out)
@@ -197,13 +195,13 @@ But we will never find an answer
 ;; Treat an s-exp as a tree
 ;; [unwrap] takes the left-most, deepest element
 (define unwrap
-  (λ (x)
+  (lambda (x)
     (cond
       [(pair? x) (unwrap (car x))]
       [else x])))
 
 (define unwrapo-bad
-  (λ (x out)
+  (lambda (x out)
     (conde
      [(pairo x) (fresh (a)
                        (caro x a)
@@ -225,9 +223,6 @@ standard miniKanren with no interleaving
 
 This is because we will continuely descend down the first
 branch of [conde]
-
-(The vanilla definition of miniKanren does interleaving, 
-so it will still find a result)
 |#
 ;; (run 1 (x)
 ;;       (unwrapo-bad x 'pizza))
@@ -239,7 +234,7 @@ so it will still find a result)
 ;; We can put the base case as the first condition to
 ;; avoid infinite recursion
 (define unwrapo
-  (λ (x out)
+  (lambda (x out)
     (conde
      [succeed (== x out)]
      [(fresh (a)
@@ -259,7 +254,7 @@ so it will still find a result)
 
 ;; ========= Panel 58 - 70 =========
 (define flatten
-  (λ (s)
+  (lambda (s)
     (cond
       [(null? s) '()]
       [(pair? s) (append
@@ -269,7 +264,7 @@ so it will still find a result)
 
 ;; This is a straight translation of [flatten]
 (define flatteno
-  (λ (s out)
+  (lambda (s out)
     (conde
      [(nullo s) (== '() out)]
      [(pairo s) (fresh (a d a-out d-out)
@@ -279,8 +274,6 @@ so it will still find a result)
                        (appendo a-out d-out out))]
      [(conso s '() out)])))
 
-;; These two gives different result than the book
-;; I think it is because [conde] interleaves
 (run 1 (out)
      (flatteno '((a b) c) out))
 (run 1 (out)
@@ -307,15 +300,15 @@ so it will still find a result)
 ;;       (flatteno s '(a b c)))
 
 (define flattenrevo
-  (λ (s out)
+  (lambda (s out)
     (conde
      [succeed (conso s '() out)]
      [(nullo s) (== '() out)]
      [(fresh (a d a-out d-out)
              (conso a d s)
-             (flatteno a a-out)
-             (flatteno d d-out)
-             (appendo a d out))])))
+             (flattenrevo a a-out)
+             (flattenrevo d d-out)
+             (appendo a-out d-out out))])))
 
 ;; I skipped [reverse], because our [conde] is not sequential
 ;; anyway, so we won't see the result

@@ -1,19 +1,14 @@
-#lang racket
-
-(require "Chapter-04-Def.rkt")
-
-(provide (all-defined-out))
-(provide (all-from-out "Chapter-04-Def.rkt"))
+(load "Chapter-04-Def.scm")
 
 (define append-
-  (λ (l s)
+  (lambda (l s)
     (cond
       [(null? l) s]
       [else (cons (car l)
                   (append (cdr l) s))])))
 
 (define appendo1
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [(nullo l) (== s out)]
      [(fresh (a d d-out)
@@ -25,7 +20,7 @@
              (conso a d-out out))])))
 
 (define appendo2
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [(nullo l) (== s out)]
      [(fresh (a d d-out)
@@ -34,7 +29,7 @@
              (conso a d-out out))])))
 
 (define appendo
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [(nullo l) (== s out)]
      [(fresh (a d d-out)
@@ -43,7 +38,7 @@
              (appendo d s d-out))])))
 
 (define swappendo
-  (λ (l s out)
+  (lambda (l s out)
     (conde
      [succeed
       (fresh (a d d-out)
@@ -53,13 +48,13 @@
      [(nullo l) (== s out)])))
 
 (define unwrap
-  (λ (x)
+  (lambda (x)
     (cond
       [(pair? x) (unwrap (car x))]
       [else x])))
 
 (define unwrapo-bad
-  (λ (x out)
+  (lambda (x out)
     (conde
      [(pairo x) (fresh (a)
                        (caro x a)
@@ -67,7 +62,7 @@
      [(== x out)])))
 
 (define unwrapo
-  (λ (x out)
+  (lambda (x out)
     (conde
      [succeed (== x out)]
      [(fresh (a)
@@ -75,7 +70,7 @@
              (unwrapo a out))])))
 
 (define flatten
-  (λ (s)
+  (lambda (s)
     (cond
       [(null? s) '()]
       [(pair? s) (append
@@ -84,7 +79,7 @@
       [else (cons s '())])))
 
 (define flatteno
-  (λ (s out)
+  (lambda (s out)
     (conde
      [(nullo s) (== '() out)]
      [(pairo s) (fresh (a d a-out d-out)
@@ -95,12 +90,12 @@
      [(conso s '() out)])))
 
 (define flattenrevo
-  (λ (s out)
+  (lambda (s out)
     (conde
      [succeed (conso s '() out)]
      [(nullo s) (== '() out)]
      [(fresh (a d a-out d-out)
              (conso a d s)
-             (flatteno a a-out)
-             (flatteno d d-out)
-             (appendo a d out))])))
+             (flattenrevo a a-out)
+             (flattenrevo d d-out)
+             (appendo a-out d-out out))])))

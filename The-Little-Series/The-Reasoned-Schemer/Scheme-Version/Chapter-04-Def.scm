@@ -1,19 +1,14 @@
-#lang racket
-
-(require "Chapter-03-Def.rkt")
-
-(provide (all-defined-out))
-(provide (all-from-out "Chapter-03-Def.rkt"))
+(load "Chapter-03-Def.scm")
 
 (define mem
-  (λ (x l)
+  (lambda (x l)
     (cond
       [(null? l) #f]
       [(eq-car? l x) l]
       [else (mem x (cdr l))])))
 
 (define memo
-  (λ (x l out)
+  (lambda (x l out)
     (conde
      [(nullo l) fail]
      [(eq-caro l x) (== l out)]
@@ -22,7 +17,7 @@
              (memo x d out))])))
 
 (define rember
-  (λ (x l)
+  (lambda (x l)
     (cond
       [(null? l) l] ;; or [(null? l) null]
       [(eq-car? l x) (cdr l)]
@@ -30,7 +25,7 @@
                   (rember x (cdr l)))])))
 
 (define rembero
-  (λ (x l out)
+  (lambda (x l out)
     (conde
      [(nullo l) (nullo out)]
      [(eq-caro l x) (cdro l out)]
@@ -40,5 +35,5 @@
              (conso a d-out out))]))) ; constructing a pair
 
 (define surpriseo
-  (λ (s)
+  (lambda (s)
     (rembero s '(a b c) '(a b c))))

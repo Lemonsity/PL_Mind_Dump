@@ -1,11 +1,9 @@
-#lang racket
-
-(require "Chapter-03-Def.rkt")
+(load "Chapter-03-Def.scm")
 
 ;; ========= Panel 1 - 6 =========
 ;; Review
 (define mem
-  (λ (x l)
+  (lambda (x l)
     (cond
       [(null? l) #f]
       [(eq-car? l x) l]
@@ -14,7 +12,7 @@
 ;; ========= Panel 7, 8 =========
 ;; [memo]
 (define memo
-  (λ (x l out)
+  (lambda (x l out)
     (conde
      [(nullo l) fail]
      [(eq-caro l x) (== l out)]
@@ -101,7 +99,7 @@ We have already seen similar cases like
 ;; ========= Panel 22 - 29 =========
 ;; Remove the first instance of [x]
 (define rember
-  (λ (x l)
+  (lambda (x l)
     (cond
       [(null? l) l] ;; or [(null? l) null]
       [(eq-car? l x) (cdr l)]
@@ -109,7 +107,7 @@ We have already seen similar cases like
                   (rember x (cdr l)))])))
 
 (define rembero
-  (λ (x l out)
+  (lambda (x l out)
     (conde
      [(nullo l) (nullo out)]
      [(eq-caro l x) (cdro l out)]
@@ -190,7 +188,7 @@ The official solution does a better job at illustrating CPS translation
 ;; Broken definition
 ;; Here we see how having fresh variable may give surprising result
 (define surpriseo
-  (λ (s)
+  (lambda (s)
     (rembero s '(a b c) '(a b c))))
 
 ;; This makes sense

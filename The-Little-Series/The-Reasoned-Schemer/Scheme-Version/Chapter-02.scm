@@ -88,7 +88,7 @@ We are forcing pattern matching with [cons]
 (define cdr& (lambda (p k) (k (cdr p))))
 (cdr& '(a c o r n)
      (lambda (r1) (car& r1
-                   identity)))
+                   (lambda (x) x))))
 
 ;; Panel 17, 18
 (run* (r)

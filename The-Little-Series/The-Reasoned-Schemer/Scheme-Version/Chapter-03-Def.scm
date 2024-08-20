@@ -132,7 +132,6 @@
              (conso '() sublen len)
              (my-lengtho d sublen))])))
 
-
 (define my-pmembero-helper
   (lambda (x l l-len-sub1)
     (conde
@@ -160,7 +159,6 @@
     (run 1 (y)
          (membero y l))))
 
-;; TODO I have strong suspicion about this one
 (define memberrevo
   (lambda (x l)
     (conde
