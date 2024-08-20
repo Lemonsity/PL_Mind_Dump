@@ -5,5 +5,8 @@
 	path = The-Little-Series/The-Reasoned-Schemer/Racket-Version/Racket-miniKanren
 	url = git@github.com:miniKanren/Racket-miniKanren.git
 [submodule "The-Little-Series/The-Reasoned-Schemer/Scheme-Version/CodeFromTheReasonedSchemer2ndEd"]
-	path = The-Little-Series/The-Reasoned-Schemer/Scheme-Version/CodeFromTheReasonedSchemer2ndEd	
+	path = The-Little-Series/The-Reasoned-Schemer/Scheme-Version/CodeFromTheReasonedSchemer2ndEd
 	url = git@github.com:TheReasonedSchemer2ndEd/CodeFromTheReasonedSchemer2ndEd.git
+[submodule "The-Little-Series/The-Reasoned-Schemer/Scheme-Version/TheReasonedSchemer"]
+	path = The-Little-Series/The-Reasoned-Schemer/Scheme-Version/TheReasonedSchemer
+	url = git@github.com:miniKanren/TheReasonedSchemer.git
