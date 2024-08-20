@@ -356,6 +356,9 @@ At this point, we will bind:
      (membero 'e '(e . (a . (b . c))))
      (== q #t))
 
+(run 12 (l)
+     (pmembero 'tofu l))
+
 ;; ========= My Attempt at a Prolog-style [pmembero] =========
 ;; I am encoding length with another list
 ;; 0 := '()
