@@ -1,5 +1,5 @@
 % -*- Mode: Prolog -*-
-:- module(myPmemberoInProlog, [myPmembero/2]).
+:- module(myPmemberoProlog, [myPmembero/2]).
 
 % Implementation using build in [length]
 myPmemberoHelper(X, [X | T], TailLength) :- length(T, TailLength).
