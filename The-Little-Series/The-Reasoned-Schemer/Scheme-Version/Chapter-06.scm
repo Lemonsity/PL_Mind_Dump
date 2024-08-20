@@ -77,7 +77,7 @@ never produce a satisfying unification
      (== #t q))
 
 2. Although the first branch of [salo] succeed,
-that path is blocked by the [fail] in the next goal
+that path is blocked by the [fail] in the next goal.
 [salo] now tries [nevero], which never terminate
 
 (run 1 (q)
