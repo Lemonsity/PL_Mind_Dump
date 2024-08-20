@@ -16,6 +16,7 @@
 */Logical-Foundations/common
 
 # Temporary Files
+*.*~
 *.hs~
 *.rkt~
 *.scm~
