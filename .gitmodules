@@ -5,3 +5,6 @@
 	path = The-Little-Series/The-Reasoned-Schemer/Racket-miniKanren
 	url = git@github.com:miniKanren/Racket-miniKanren.git
 	ignore = dirty
+[submodule "The-Little-Series/The-Reasoned-Schemer/CodeFromTheReasonedSchemer2ndEd"]
+	path = The-Little-Series/The-Reasoned-Schemer/CodeFromTheReasonedSchemer2ndEd
+	url = git@github.com:TheReasonedSchemer2ndEd/CodeFromTheReasonedSchemer2ndEd.git
