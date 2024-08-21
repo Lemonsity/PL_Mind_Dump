@@ -17,73 +17,6 @@ numpages = {29},
 keywords = {CPS transformation, Haskell, fusion, modular handlers}
 }
 
-@article{10.1016/j.entcs.2004.08.008,
-author = {Plotkin, Gordon and Power, John},
-title = {Computational Effects and Operations: An Overview},
-year = {2004},
-issue_date = {October, 2004},
-publisher = {Elsevier Science Publishers B. V.},
-address = {NLD},
-volume = {73},
-issn = {1571-0661},
-url = {https://doi.org/10.1016/j.entcs.2004.08.008},
-doi = {10.1016/j.entcs.2004.08.008},
-journal = {Electron. Notes Theor. Comput. Sci.},
-month = {oct},
-pages = {149–163},
-numpages = {15}
-}
-
-
-@article{10.1145/3428194,
-author = {Brachth\"{a}user, Jonathan Immanuel and Schuster, Philipp and Ostermann, Klaus},
-title = {Effects as capabilities: effect handlers and lightweight effect polymorphism},
-year = {2020},
-issue_date = {November 2020},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {4},
-number = {OOPSLA},
-url = {https://doi.org/10.1145/3428194},
-doi = {10.1145/3428194},
-abstract = {Effect handlers have recently gained popularity amongst programming language researchers. Existing type- and effect systems for effect handlers are often complicated and potentially hinder a wide-spread adoption.  We present the language Effekt with the goal to close the gap between research languages with effect handlers and languages for working programmers. The design of Effekt revolves around a different view of effects and effect types. Traditionally, effect types express which side effects a computation might have. In Effekt, effect types express which capabilities a computation requires from its context. While this new point in the design space of effect systems impedes reasoning about purity, we demonstrate that it simplifies the treatment of effect polymorphism and the related issues of effect parametricity and effect encapsulation. To guarantee effect safety, we separate functions from values and treat all functions as second-class. We define the semantics of Effekt as a translation to System Xi, a calculus in explicit capability-passing style.},
-journal = {Proc. ACM Program. Lang.},
-month = {nov},
-articleno = {126},
-numpages = {30},
-keywords = {algebraic effects, effect handlers, effect polymorphism}
-}
-
-@misc{yoshioka2024abstractingeffectsystemsalgebraic,
-      title={Abstracting Effect Systems for Algebraic Effect Handlers}, 
-      author={Takuma Yoshioka and Taro Sekiyama and Atsushi Igarashi},
-      year={2024},
-      eprint={2404.16381},
-      archivePrefix={arXiv},
-      primaryClass={cs.PL},
-      url={https://arxiv.org/abs/2404.16381}, 
-}
-
-@article{PRETNAR201519,
-title = {An Introduction to Algebraic Effects and Handlers. Invited tutorial paper},
-journal = {Electronic Notes in Theoretical Computer Science},
-volume = {319},
-pages = {19-35},
-year = {2015},
-note = {The 31st Conference on the Mathematical Foundations of Programming Semantics (MFPS XXXI).},
-issn = {1571-0661},
-doi = {https://doi.org/10.1016/j.entcs.2015.12.003},
-url = {https://www.sciencedirect.com/science/article/pii/S1571066115000705},
-author = {Matija Pretnar},
-keywords = {algebraic effects, handlers, effect system, semantics, logic, tutorial},
-abstract = {This paper is a tutorial on algebraic effects and handlers. In it, we explain what algebraic effects are, give ample examples to explain how handlers work, define an operational semantics and a type & effect system, show how one can reason about effects, and give pointers for further reading.}
-}
-
-@article{Modal-Effect-Types-Tang-White
-title = {Modal Effect Types},
-url = {https://homepages.inf.ed.ac.uk/slindley/papers/modal-effects-draft-july2024.pdf}
-}
-
 @article{10.1145/3408981,
 author = {Xie, Ningning and Brachth\"{a}user, Jonathan Immanuel and Hillerstr\"{o}m, Daniel and Schuster, Philipp and Leijen, Daan},
 title = {Effect handlers, evidently},
@@ -131,19 +64,6 @@ abstract = {Note: this is an unpublished manuscript.
 Effects are a powerful and convenient component of programming. They enable programmers to interact with the user, take advantage of efficient stateful memory, throw exceptions, and nondeterministically execute programs in parallel. However, they also complicate every aspect of reasoning about a program or language, and as a result it is crucially important to have a good understanding of what effects are and how they work. In this paper we present a new framework for formalizing the semantics of effects that is more general and thorough than previous techniques while clarifying many of the important concepts. By returning to the category theoretic roots of monads, our framework is rich enough to describe the semantics of effects for a large class of languages including common imperative and functional languages. It is also capable of capturing more expressive, precise, and practical effect systems than previous approaches. Finally, our framework enables one to reason about effects in a language-independent manner, and so can be applied to many stages of language design and implementation in order to create more broadly applicable tools for programming languages.},
 url = {https://www.microsoft.com/en-us/research/publication/a-flexible-semantic-framework-for-effects/},
 note = {Unpublished.},
-}
-
-@techreport{leijen2013koka,
-author = {Leijen, Daan},
-title = {Koka: Programming with Row-Polymorphic Effect Types},
-institution = {Microsoft},
-year = {2013},
-month = {August},
-abstract = {Note: This is an updated article: a previous version of this article contained a wrong lemma and corresponding mistakes in various proofs of Section 5.
-
-We propose a programming model where effects are treated in a disciplined way, and where the potential side-effects of a function are apparent in its type signature. The type and effect of expressions can also be inferred automatically, and we describe a polymorphic type inference system based on Hindley-Milner style inference. A novel feature is that we support polymorphic effects through row-polymorphism using duplicate labels. Moreover, we show that our effects are not just syntactic labels but have a deep semantic connection to the program. For example, if an expression can be typed without an exn effect, then it will never throw an unhandled exception. Similar to Haskell's `runST` we show how we can safely encapsulate stateful operations. Through the state effect, we can also safely combine state with let- polymorphism without needing either imperative type variables or a syntactic value restriction. Finally,our system is implemented fully in a new language called Koka and has been used successfully on various small to medium- sized sample programs ranging from a Markdown processor to a tier-splitted chat application.},
-url = {https://www.microsoft.com/en-us/research/publication/koka-programming-with-row-polymorphic-effect-types/},
-number = {MSR-TR-2013-79},
 }
 
 @article{10.1145/3093333.3009872,
