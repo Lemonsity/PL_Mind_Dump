@@ -329,6 +329,8 @@ At this point, we will bind:
      [(fresh (d)
              (cdro l d)
              (pmembero-bad x d))])))
+;; However, the previous version will work with the
+;; Latest miniKanren, because the built in interleave
 
 (run 10 (l)
      (pmembero-bad 'tofu l))
