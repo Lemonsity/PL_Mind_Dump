@@ -1,0 +1,52 @@
+@article{10.1145/3547641,
+author = {Kov\'{a}cs, Andr\'{a}s},
+title = {Staged compilation with two-level type theory},
+year = {2022},
+issue_date = {August 2022},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {6},
+number = {ICFP},
+url = {https://doi.org/10.1145/3547641},
+doi = {10.1145/3547641},
+abstract = {The aim of staged compilation is to enable metaprogramming in a way such that we  
+have guarantees about the well-formedness of code output, and we can also mix  
+together object-level and meta-level code in a concise and convenient manner. In  
+this work, we observe that two-level type theory (2LTT), a system originally  
+devised for the purpose of developing synthetic homotopy theory, also serves as  
+a system for staged compilation with dependent types. 2LTT has numerous good  
+properties for this use case: it has a concise specification, well-behaved model  
+theory, and it supports a wide range of language features both at the object and  
+the meta level. First, we give an overview of 2LTT's features and applications  
+in staging. Then, we present a staging algorithm and prove its correctness. Our  
+algorithm is "staging-by-evaluation", analogously to the technique of  
+normalization-by-evaluation, in that staging is given by the evaluation of 2LTT  
+syntax in a semantic domain. The staging algorithm together with its correctness  
+constitutes a proof of strong conservativity of 2LLT over the object theory. To our  
+knowledge, this is the first description of staged compilation which supports  
+full dependent types and unrestricted staging for types.},
+journal = {Proc. ACM Program. Lang.},
+month = {aug},
+articleno = {110},
+numpages = {30},
+keywords = {staged compilation, two-level type theory, type theory}
+}
+
+@article{10.1145/3674648,
+author = {Kov\'{a}cs, Andr\'{a}s},
+title = {Closure-Free Functional Programming in a Two-Level Type Theory},
+year = {2024},
+issue_date = {August 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {8},
+number = {ICFP},
+url = {https://doi.org/10.1145/3674648},
+doi = {10.1145/3674648},
+abstract = {Many abstraction tools in functional programming rely heavily on general-purpose        compiler optimization to achieve adequate performance. For example, monadic        binding is a higher-order function which yields runtime closures in the absence        of sufficient compile-time inlining and beta-reductions, thereby significantly        degrading performance. In current systems such as the Glasgow Haskell Compiler,        there is no strong guarantee that general-purpose optimization can eliminate        abstraction overheads, and users only have indirect and fragile control over        code generation through inlining directives and compiler options. We propose a        two-stage language to simultaneously get strong guarantees about code generation        and strong abstraction features. The object language is a simply-typed        first-order language which can be compiled without runtime closures. The        compile-time language is a dependent type theory. The two are integrated in a        two-level type theory.                We demonstrate two applications of the system. First, we develop monads and        monad transformers. Here, abstraction overheads are eliminated by staging and we        can reuse almost all definitions from the existing Haskell ecosystem. Second,        we develop pull-based stream fusion. Here we make essential use of dependent        types to give a concise definition of a concatMap operation with        guaranteed fusion. We provide an Agda implementation and a typed Template        Haskell implementation of these developments.},
+journal = {Proc. ACM Program. Lang.},
+month = {aug},
+articleno = {259},
+numpages = {34},
+keywords = {staged compilation, two-level type theory}
+}

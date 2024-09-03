@@ -1,0 +1,16 @@
+@inproceedings{10.1145/91556.91622,
+author = {Danvy, Olivier and Filinski, Andrzej},
+title = {Abstracting control},
+year = {1990},
+isbn = {089791368X},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/91556.91622},
+doi = {10.1145/91556.91622},
+abstract = {The last few years have seen a renewed interest in continuations for expressing advanced control structures in programming languages, and new models such as Abstract Continuations have been proposed to capture these dimensions. This article investigates an alternative formulation, exploiting the latent expressive power of the standard continuation-passing style (CPS) instead of introducing yet other new concepts. We build on a single foundation: abstracting control as a hierarchy of continuations, each one modeling a specific language feature as acting on nested evaluation contexts.We show how iterating the continuation-passing conversion allows us to specify a wide range of control behavior. For example, two conversions yield an abstraction of Prolog-style backtracking. A number of other constructs can likewise be expressed in this framework; each is defined independently of the others, but all are arranged in a hierarchy making any interactions between them explicit.This approach preserves all the traditional results about CPS, e.g., its evaluation order independence. Accordingly, our semantics is directly implementable in a call-by-value language such as Scheme or ML. Furthermore, because the control operators denote simple, typable lambda-terms in CPS, they themselves can be statically typed. Contrary to intuition, the iterated CPS transformation does not yield huge results: except where explicitly needed, all continuations beyond the first one disappear due to the extensionality principle (η-reduction).Besides presenting a new motivation for control operators, this paper also describes an improved conversion into applicative-order CPS. The conversion operates in one pass by performing all administrative reductions at translation time; interestingly, it can be expressed very concisely using the new control operators. The paper also presents some examples of nondeterministic programming in direct style.},
+booktitle = {Proceedings of the 1990 ACM Conference on LISP and Functional Programming},
+pages = {151–160},
+numpages = {10},
+location = {Nice, France},
+series = {LFP '90}
+}

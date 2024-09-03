@@ -50,14 +50,23 @@ numpages = {30},
 keywords = {algebraic effects, effect handlers, effect polymorphism}
 }
 
-@misc{yoshioka2024abstractingeffectsystemsalgebraic,
-      title={Abstracting Effect Systems for Algebraic Effect Handlers}, 
-      author={Takuma Yoshioka and Taro Sekiyama and Atsushi Igarashi},
-      year={2024},
-      eprint={2404.16381},
-      archivePrefix={arXiv},
-      primaryClass={cs.PL},
-      url={https://arxiv.org/abs/2404.16381}, 
+@article{10.1145/3674641,
+author = {Yoshioka, Takuma and Sekiyama, Taro and Igarashi, Atsushi},
+title = {Abstracting Effect Systems for Algebraic Effect Handlers},
+year = {2024},
+issue_date = {August 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {8},
+number = {ICFP},
+url = {https://doi.org/10.1145/3674641},
+doi = {10.1145/3674641},
+abstract = {Many effect systems for algebraic effect handlers are designed to guarantee that all invoked effects are handled adequately. However, respective researchers have developed their own effect systems that differ in how to represent the collections of effects that may happen. This situation results in blurring what is required for the representation and manipulation of effect collections in a safe effect system.    In this work, we present a language λEA equipped with an effect system that abstracts the existing effect systems for algebraic effect handlers. The effect system of λEA is parameterized over effect algebras, which abstract the representation and manipulation of effect collections in safe effect systems. We prove the type-and-effect safety of λEA by assuming that a given effect algebra meets certain properties called safety conditions. As a result, we can obtain the safety properties of a concrete effect system by proving that an effect algebra corresponding to the concrete system meets the safety conditions. We also show that effect algebras meeting the safety conditions are expressive enough to accommodate some existing effect systems, each of which represents effect collections in a different style. Our framework can also differentiate the safety aspects of the effect collections of the existing effect systems. To this end, we extend λEA and the safety conditions to lift coercions and type-erasure semantics, propose other effect algebras including ones for which no effect system has been studied in the literature, and compare which effect algebra is safe and which is not for the extensions.},
+journal = {Proc. ACM Program. Lang.},
+month = {aug},
+articleno = {252},
+numpages = {30},
+keywords = {algebraic effects and handlers, effect algebras, type-and-effect systems}
 }
 
 @article{PRETNAR201519,
@@ -91,4 +100,27 @@ abstract = {Note: This is an updated article: a previous version of this article
 We propose a programming model where effects are treated in a disciplined way, and where the potential side-effects of a function are apparent in its type signature. The type and effect of expressions can also be inferred automatically, and we describe a polymorphic type inference system based on Hindley-Milner style inference. A novel feature is that we support polymorphic effects through row-polymorphism using duplicate labels. Moreover, we show that our effects are not just syntactic labels but have a deep semantic connection to the program. For example, if an expression can be typed without an exn effect, then it will never throw an unhandled exception. Similar to Haskell's `runST` we show how we can safely encapsulate stateful operations. Through the state effect, we can also safely combine state with let- polymorphism without needing either imperative type variables or a syntactic value restriction. Finally,our system is implemented fully in a new language called Koka and has been used successfully on various small to medium- sized sample programs ranging from a Markdown processor to a tier-splitted chat application.},
 url = {https://www.microsoft.com/en-us/research/publication/koka-programming-with-row-polymorphic-effect-types/},
 number = {MSR-TR-2013-79},
+}
+
+@article{10.1145/3674656,
+author = {Song, Yahui and Foo, Darius and Chin, Wei-Ngan},
+title = {Specification and Verification for Unrestricted Algebraic Effects and Handling},
+year = {2024},
+issue_date = {August 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {8},
+number = {ICFP},
+url = {https://doi.org/10.1145/3674656},
+doi = {10.1145/3674656},
+abstract = {Programming with user-defined effects and effect handlers has many practical use cases involving imperative effects. Additionally, it is natural and powerful to use multi-shot effect handlers for non-deterministic or probabilistic programs that allow backtracking to compute a comprehensive outcome. Existing works for verifying effect handlers are restricted in one of three ways: i) permitting multi-shot continuations under pure setting; ii) allowing heap manipulation for only one-shot continuations; or iii) allowing multi-shot continuations with heap-manipulation but under a restricted frame rule.
+ 
+
+ 
+This work proposes a novel calculus called Effectful Specification Logic (ESL) to support unrestricted effect handlers, where zero-/one-/multi-shot continuations can co-exist with imperative effects and higher-order constructs. ESL captures behaviors in stages, and provides precise models to support invoked effects, handlers and continuations. To show its feasibility, we prototype an automated verification system for this novel specification logic, prove its soundness, report on useful case studies, and present experimental results. With this proposal, we have provided an extended specification logic that is capable of modeling arbitrary imperative higher-order programs with algebraic effects and continuation-enabled handlers.},
+journal = {Proc. ACM Program. Lang.},
+month = {aug},
+articleno = {267},
+numpages = {29},
+keywords = {Automated Verification, Effectful Specification Logic, Multi-shot Continuations, Separation Logic}
 }
