@@ -1,0 +1,6 @@
+* Comments by Sam Lindley:
+- People's solutions are based on different background
+  - Scala has some dependent values functions and implicit values, that makes the capability approach quite suitable
+  - Modal Effect System were born more from the OCaml background, and it certainly works for for the problem with that background
+  - There is not yet a "right approach" to the problem
+    
