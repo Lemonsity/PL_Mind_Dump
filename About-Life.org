@@ -1,0 +1,10 @@
+* How One /May/ Start doing research? (Thank you SPJ and Michael D. Adams)
+- Try some practical programming
+  - Research problem may come out of it
+    - From SPJ: Of tne when implementing, research problems arise. A programmer can choose to hask it away, or attempt to find a proper solution
+  - Even if it is not research, it can help gain experiences in a particular field
+  - You can discover ergonomic problems just from programming a lot
+- One can still do theoretical research
+  - But one may not find use for it
+- It may be valuable to open up / explore the middle ground between purely theoretical and practical
+  - Of course this won't be easy either, but it is an area to consider
