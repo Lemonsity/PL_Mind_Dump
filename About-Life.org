@@ -3,8 +3,9 @@
   - Research problem may come out of it
     - From SPJ: Of time when implementing, research problems arise. A programmer can choose to hask it away, or attempt to find a proper solution
   - Even if it is not research, it can help gain experiences in a particular field
-  - You can discover ergonomic problems just from programming a lot
-    - For example, runtime information to help with performance debugging
+  - You can discover ergonomic problems just from programming a lot, for example
+    - Runtime information to help with performance debugging
+    - Better navigation of massive library with large numbers of API
 - One can still do theoretical research
   - But one may not find use for it
 - It may be valuable to open up / explore the middle ground between purely theoretical and practical
