@@ -1,0 +1,74 @@
+* General Applicable Things
+
+** Travel
+   Traveling to another contient will likely be quite challenging, here are somethings to look out for:
+   - Travel logistic
+     - Transfer flight can greatly extends travel time (On our way to Milan, it took me 24hrs until settled down)
+     - Research local transport extensively ahead of time. Took wrong train, and was confused how to pay for metro
+   - Luggage
+     - Be aware of luggage weight
+       - Pack less clothes, but pack washable ones
+       - Leave room for gifts
+     - Travel with one bag if possible
+     - If not, try put 1-2 days of outfit into personal item bag (In case check-in miss the flight)
+     - Try live in a hotel, so lost luggage can be send directly to the hotel, allowing you to go straight to hotel for rest first
+     - Make sure have tag on the luggage
+     - Pack some medicine. I got a sore throat on the final day. I wish I didn't so I can enjoy the last day leaving some fresh memory in other attendee's mind
+     - Bug repellant & AC are a must in summer
+   - Jetlag
+     - Most of the time was spent sitting and standing, not a lot of physical stimulation
+     - Conference room can be dim, making me quite sleepy
+     - Going outside during break helps, but it wasn't enough to help me stay awake during the entirety of the next session. And if go back to hotel for sleep, one may find it hard to fall asleep after under the sun for a few minutes
+     - Coffee? But crash may be bad, so I didn't try
+    
+** Scheduling
+   I can improve  scheduling both the event, and the actvitities after the conference everyday
+   - Main Conference
+     - It takes a stronger body than mine to attend all the sessions (I was easily falling asleep by 2nd day of the main ICFP)
+   - Go through the program timeline before the conference
+     - Be selective
+     - Consider fill up 80% of the anticipated workload. I made friends during the event, and wanted to attend their talks, which added more works
+     - (In fairness, I did some work, but it wasn't enough. Allocate more time, ask author drafts in advance?)
+   - After Conference
+     - Cite-seeing, dinner, nightlife
+       - There will be dinner, there will be people who want to be out checking out the city
+       - I went back late many times, this leads to less energy (I can't quantify it, because I was jetlagged the entire time)
+       - I think it is important to be decisive
+	 - Once decide, either commit to a time to go back, or play to heart's content
+	 - If former, set a hard time on when to go back, accept the opportunity cost of not building deeper relationshiop
+	 - If latter, try to enjoy to the fullest, plan around the less rest
+     - Maintaining connection
+       - I tried to send email to people I have met at the conference
+       - I did not get a lot of reply back (yet...)
+       - Perhaps try instant messsaging apps instead? (But that also mix personal life and professional life...)
+
+** Attending the Conference
+   - Presentations
+     - I wonder if notetaking is necessary. It doesn't appear to be mainstream.
+     - I did pull out the paper I am interested in for reference (I think it helps, but it could also be b/c I skimmed it before)
+   - I had hard time thinking of questions to ask. I shows I need to improve critical thinking skill (Ask 1-3 question about each paper I read?)
+   - Socializing
+     - I made a few friends at the beginning
+     - I found myself falling back on a couple friends by midway
+       - I think there are improvements to be made here
+       - I think I could  handle meeting a few more people, while still maintaining a solid quality of connection
+     - Need to boarden interest
+       - So it is possible to contribute to talks that I am not focusing on
+       - Also to build cross-field collaborative opportunity
+     - I am still learning how to initiate conversations
+       
+
+* Reseach Takeaway
+
+** Effect
+   - Some progress were made in the effect handler side, with one framework for generalizing effect handler
+     - Need to read paper
+     - One question in mind: Does this framework fixes a particular operational semantic? If so, are there ways to extend it?
+   - The framework for polymorphic effect is still under consideration
+     - Scala has a prototype version using effect as capability (Capture Checking)
+     - Leverage Scala's dependent type
+       
+** Type Theory
+   - Modal dependent type theory from McGill
+   - More 2LTT from Andras
+     
