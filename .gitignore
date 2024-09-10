@@ -21,3 +21,5 @@
 *.rkt~
 *.scm~
 *#*#
+auto/
+*/auto/
