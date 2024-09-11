@@ -182,3 +182,98 @@ keywords = {pattern matching, effect polymorphism, effect handlers, continuation
 }
 
 @article{CONVENT_LINDLEY_MCBRIDE_MCLAUGHLIN_2020, title={Doo bee doo bee doo}, volume={30}, DOI={10.1017/S0956796820000039}, journal={Journal of Functional Programming}, author={CONVENT, LUKAS and LINDLEY, SAM and MCBRIDE, CONOR and MCLAUGHLIN, CRAIG}, year={2020}, pages={e9}}
+
+@inproceedings{10.1145/3331545.3342595,
+author = {Schrijvers, Tom and Pir\'{o}g, Maciej and Wu, Nicolas and Jaskelioff, Mauro},
+title = {Monad transformers and modular algebraic effects: what binds them together},
+year = {2019},
+isbn = {9781450368131},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3331545.3342595},
+doi = {10.1145/3331545.3342595},
+abstract = {For over two decades, monad transformers have been the main modular approach for expressing purely functional side-effects in Haskell. Yet, in recent years algebraic effects have emerged as an alternative whose popularity is growing. While the two approaches have been well-studied, there is still confusion about their relative merits and expressiveness, especially when it comes to their comparative modularity. This paper clarifies the connection between the two approaches—some of which is folklore—and spells out consequences that we believe should be better known. We characterise a class of algebraic effects that is modular, and show how these correspond to a specific class of monad transformers. In particular, we show that our modular algebraic effects gives rise to monad transformers. Moreover, every monad transformer for algebraic operations gives rise to a modular effect handler.},
+booktitle = {Proceedings of the 12th ACM SIGPLAN International Symposium on Haskell},
+pages = {98–113},
+numpages = {16},
+keywords = {Transformers, Monads, Handlers, Effects},
+location = {Berlin, Germany},
+series = {Haskell 2019}
+}
+
+@inproceedings{10.1145/3009837.3009897,
+author = {Lindley, Sam and McBride, Conor and McLaughlin, Craig},
+title = {Do be do be do},
+year = {2017},
+isbn = {9781450346603},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3009837.3009897},
+doi = {10.1145/3009837.3009897},
+abstract = {We explore the design and implementation of Frank, a strict functional programming language with a bidirectional effect type system designed from the ground up around a novel variant of Plotkin and Pretnar's effect handler abstraction.  Effect handlers provide an abstraction for modular effectful programming: a handler acts as an interpreter for a collection of commands whose interfaces are statically tracked by the type system. However, Frank eliminates the need for an additional effect handling construct by generalising the basic mechanism of functional abstraction itself. A function is simply the special case of a Frank operator that interprets no commands. Moreover, Frank's operators can be multihandlers which simultaneously interpret commands from several sources at once, without disturbing the direct style of functional programming with values.  Effect typing in Frank employs a novel form of effect polymorphism which avoid mentioning effect variables in source code. This is achieved by propagating an ambient ability inwards, rather than accumulating unions of potential effects outwards.  We introduce Frank by example, and then give a formal account of the Frank type system and its semantics. We introduce Core Frank by elaborating Frank operators into functions, case expressions, and unary handlers, and then give a sound small-step operational semantics for Core Frank.  Programming with effects and handlers is in its infancy. We contribute an exploration of future possibilities, particularly in combination with other forms of rich type system.},
+booktitle = {Proceedings of the 44th ACM SIGPLAN Symposium on Principles of Programming Languages},
+pages = {500–514},
+numpages = {15},
+keywords = {pattern matching, effect polymorphism, effect handlers, continuations, call-by-push-value, bidirectional typing, algebraic effects},
+location = {Paris, France},
+series = {POPL '17}
+}
+
+@article{10.1145/3093333.3009897,
+author = {Lindley, Sam and McBride, Conor and McLaughlin, Craig},
+title = {Do be do be do},
+year = {2017},
+issue_date = {January 2017},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {52},
+number = {1},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/3093333.3009897},
+doi = {10.1145/3093333.3009897},
+abstract = {We explore the design and implementation of Frank, a strict functional programming language with a bidirectional effect type system designed from the ground up around a novel variant of Plotkin and Pretnar's effect handler abstraction.  Effect handlers provide an abstraction for modular effectful programming: a handler acts as an interpreter for a collection of commands whose interfaces are statically tracked by the type system. However, Frank eliminates the need for an additional effect handling construct by generalising the basic mechanism of functional abstraction itself. A function is simply the special case of a Frank operator that interprets no commands. Moreover, Frank's operators can be multihandlers which simultaneously interpret commands from several sources at once, without disturbing the direct style of functional programming with values.  Effect typing in Frank employs a novel form of effect polymorphism which avoid mentioning effect variables in source code. This is achieved by propagating an ambient ability inwards, rather than accumulating unions of potential effects outwards.  We introduce Frank by example, and then give a formal account of the Frank type system and its semantics. We introduce Core Frank by elaborating Frank operators into functions, case expressions, and unary handlers, and then give a sound small-step operational semantics for Core Frank.  Programming with effects and handlers is in its infancy. We contribute an exploration of future possibilities, particularly in combination with other forms of rich type system.},
+journal = {SIGPLAN Not.},
+month = {jan},
+pages = {500–514},
+numpages = {15},
+keywords = {pattern matching, effect polymorphism, effect handlers, continuations, call-by-push-value, bidirectional typing, algebraic effects}
+}
+
+@article{10.1145/2544174.2500590,
+author = {Kammar, Ohad and Lindley, Sam and Oury, Nicolas},
+title = {Handlers in action},
+year = {2013},
+issue_date = {September 2013},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {48},
+number = {9},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/2544174.2500590},
+doi = {10.1145/2544174.2500590},
+abstract = {Plotkin and Pretnar's handlers for algebraic effects occupy a sweet spot in the design space of abstractions for effectful computation. By separating effect signatures from their implementation, algebraic effects provide a high degree of modularity, allowing programmers to express effectful programs independently of the concrete interpretation of their effects. A handler is an interpretation of the effects of an algebraic computation. The handler abstraction adapts well to multiple settings: pure or impure, strict or lazy, static types or dynamic types. This is a position paper whose main aim is to popularise the handler abstraction. We give a gentle introduction to its use, a collection of illustrative examples, and a straightforward operational semantics. We describe our Haskell implementation of handlers in detail, outline the ideas behind our OCaml, SML, and Racket implementations, and present experimental results comparing handlers with existing code.},
+journal = {SIGPLAN Not.},
+month = {sep},
+pages = {145–158},
+numpages = {14},
+keywords = {monads, modularity, haskell, effect typing, effect handlers, continuations, algebraic effects}
+}
+
+@inproceedings{10.1145/2500365.2500590,
+author = {Kammar, Ohad and Lindley, Sam and Oury, Nicolas},
+title = {Handlers in action},
+year = {2013},
+isbn = {9781450323260},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2500365.2500590},
+doi = {10.1145/2500365.2500590},
+abstract = {Plotkin and Pretnar's handlers for algebraic effects occupy a sweet spot in the design space of abstractions for effectful computation. By separating effect signatures from their implementation, algebraic effects provide a high degree of modularity, allowing programmers to express effectful programs independently of the concrete interpretation of their effects. A handler is an interpretation of the effects of an algebraic computation. The handler abstraction adapts well to multiple settings: pure or impure, strict or lazy, static types or dynamic types. This is a position paper whose main aim is to popularise the handler abstraction. We give a gentle introduction to its use, a collection of illustrative examples, and a straightforward operational semantics. We describe our Haskell implementation of handlers in detail, outline the ideas behind our OCaml, SML, and Racket implementations, and present experimental results comparing handlers with existing code.},
+booktitle = {Proceedings of the 18th ACM SIGPLAN International Conference on Functional Programming},
+pages = {145–158},
+numpages = {14},
+keywords = {monads, modularity, haskell, effect typing, effect handlers, continuations, algebraic effects},
+location = {Boston, Massachusetts, USA},
+series = {ICFP '13}
+}
+
