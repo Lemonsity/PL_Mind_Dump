@@ -1,0 +1,60 @@
+* Generally Applicable
+  
+** Travel
+   - Travel Logistic
+   - Luggage
+     - Luggage weight
+     - Less bags
+     - Lost Luggage
+   - Things to Bring
+     - Clothing
+     - Medicine
+   - Jetlag
+     
+** Planning
+   - Main conference
+     - Energy
+     - Schedule
+   - After conference
+     - Cite-seeing and nightlife
+     - Maintain connection
+
+** Attending Conference
+   - Presentation
+     - Background knowledge
+     - Critical thinking
+   - Socializing
+     - Balance between new people and stronger connection
+     - Board interest
+     - Initiating talks
+
+* Research Takeaway
+
+** Effect
+   - Framework for abstracting what effect handlers /should/ do
+   - Polymorphic effect is still a work in progress
+   - Attempt at program correctness for PL with effect handlers
+
+** Type Theory
+   - Modal dependent type theory
+
+** Proof Assistant
+   - Efficient automated proof generation
+
+** Type Inference & Refinement Types
+   - Refinement types in robotic
+   - Contextual typing 
+
+** Memory
+   - Oxidizing OCaml with modes 
+     
+* Other Takeaways
+  - About research
+    - Practical implementation is important
+      - Can generate idea
+      - Can reveil what problems actually need solving
+    - Theoretical
+      - It might be intersting
+      - But it is not always useful
+    - Depends on the kind of result the researcher wants to produce
+
