@@ -1,0 +1,100 @@
+* General Applicable Things
+
+** Travel
+   - Travel logistic
+     - Transfer flight can greatly extends travel time (On our way to Milan, it took me 24hrs until settled down)
+     - Research local transport extensively ahead of time. Took wrong train, and was confused how to pay for metro
+   - Luggage
+     - Be aware of luggage weight
+       - Pack less clothes, but pack washable ones
+       - Leave room for gifts
+     - Travel with one bag if possible
+     - Lost Luggage
+       - Put 1-2 days of essential into on-board luggage
+       - Try live in a hotel, so lost luggage can be send directly to the hotel, allowing you to go straight to hotel for rest first
+       - Make sure have tag on the luggage
+     - Pack some medicine
+       - I got a sore throat on the final day. I wish I didn't so I can enjoy the last day leaving some fresh memory in other attendee's mind
+       - Bug repellant & AC are a must in summer
+   - Jetlag
+     - Most of the time was spent sitting and standing, not a lot of physical stimulation
+     - Conference room can be dim, making me quite sleepy
+     - Going outside during break helps, but it wasn't enough to help me stay awake during the entirety of the next session. And if go back to hotel for sleep, one may find it hard to fall asleep after under the sun for a few minutes
+     - Coffee? But crash may be bad, so I didn't try
+    
+** Planning
+   - Main Conference
+     - Body condition
+       - It takes a stronger body than mine to attend all the sessions (I was easily falling asleep by 2nd day of the main ICFP)
+     - Go through the program timeline before the conference
+       - Consider fill up 80% of the anticipated workload. I made friends during the event, and wanted to attend their talks, which added more works
+   - After Conference
+     - Cite-seeing, dinner, nightlife
+       - There will be dinner, there will be people who want to be out checking out the city
+       - I think it is important to be decisive
+	 - Once decide, either commit to a time to go back, or play to your heart's content
+	 - If former, set a hard time on when to go back
+	 - If latter, try to enjoy to the fullest
+     - Maintaining connection
+       - I tried to send email to people I have met at the conference
+       - Instant message apps are more efficient	   
+	 
+** Attending the Conference
+   - Presentations
+     - I feel there is a need to skim the paper interested ahead of time
+     - There is a need to improve critical thinking skill
+   - Socializing
+     - Need to balance meeting new people and building connections
+       - This time I fell back to the same group of people too much
+       - Should increase breadth next time
+     - Need to boarden interest
+       - So it is possible to contribute to talks that I am not focusing on
+       - Also to build cross-field collaborative opportunity
+     - Initiating conversations is a skill
+
+* Reseach Takeaway
+
+** Effect
+   - Framework for generalizing what effect handlers /should/ do
+     - Need to read paper
+     - One question in mind: Does this framework fixes a particular operational semantic? If so, are there ways to extend it?
+   - The framework for polymorphic effect is still under consideration
+     - Scala has a prototype version using effect as capability (Capture Checking)
+     - Leverage Scala's dependent type
+   - There is also an attempt at program correctness for PL's with effect handlers
+     - Work on zero-/one-/multi-shot continuation
+       
+** Type Theory
+   - Modal dependent type theory from McGill
+     - There seems to be a genuine attempt at formalizing the theorem behind metaprogramming
+     - Using modal theory as the foundation, in combination with dependent types
+     
+** Proof Assistance
+   - Efficient automated verification
+     - An interesting paper on how to generate proofs efficiently
+       - Leveraging data structures
+       - Improve lemma discovery
+
+** Type Inference & Refinement Types
+   - Refinement Types in robotic
+     - Works at UMich demonstrated using refinement types in robotics
+     - Modal logics that guarantees behaviour across time
+   - Contextual Typing at University of HK
+     - Advancement from bidirectional typing
+     - By tracking more information, it is possible to have overlapping typing rule
+     - But without backtracking during type checking
+
+** Memory
+   - Oxidizing OCaml
+     - Adding modes such as affinity, uniqueness, and locality
+     - It feels like an implementation of substructual typing in OCaml
+
+* Other takeaway
+  - About research
+    - Practical implementation is important
+      - Can generate idea
+      - Can reveil what problems actually need solving
+    - Theoretical
+      - It might be intersting
+      - But it is not always useful
+    - I think it depends on the kind of result the researcher wants to produce
