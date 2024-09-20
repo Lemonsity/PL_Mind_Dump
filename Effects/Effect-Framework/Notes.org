@@ -1,0 +1,8 @@
+* What does pure mean?
+  Current situation
+  - Is it function uses no operation (traditional)
+  - Is it function uses no extra operation (capability)
+    - (requires no Extra handlers)
+  - Is it function doesn't add/remove effects (modal)
+  Is it possible to unify these views of effect?
+  
