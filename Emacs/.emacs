@@ -53,12 +53,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(backup-directory-alist nil)
  '(column-number-mode t)
  '(dired-create-destination-dirs 'ask)
- '(display-line-numbers 'relative)
+ '(display-line-numbers t)
  '(flymake-mode-line-lighter "FM")
+ '(org-agenda-files nil)
  '(package-selected-packages
-   '(company-coq-mode diminish counsel ivy command-log-mode company-coq racket-mode company rust-mode lsp-mode proof-general)))
+   '(latex-preview-pane org-tree-slide auctex company-coq-mode diminish counsel ivy command-log-mode company-coq racket-mode company rust-mode lsp-mode proof-general)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -79,6 +81,10 @@
 					 :weight normal))
    (buffer-face-mode))
 (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
+
+(set-face-attribute 'default nil
+		    :family "Iosevka"
+		    :width 'expanded)
 
 ;; default to mononoki
 ;; (set-face-attribute 'default nil
@@ -107,7 +113,8 @@
 
 ;; ---------- Haskell Setup ----------
 (use-package lsp-haskell)
-(use-package haskell-mode)
+(use-package haskell-mode
+  :hook ((haskell-mode . interactive-haskell-mode)))
 ;; (require 'lsp-haskell)
 ;; (require 'haskell-mode)
 ;; (add-hook 'haskell-mode-hook #'lsp)
@@ -155,5 +162,28 @@
        ("\\.lagda.md\\'" . agda2-mode))
      auto-mode-alist))
 
+;; ---------- TeX Setup ----------
+(use-package tex
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t))
+
+(use-package latex-preview-pane
+  :hook ((LaTeX-mode . latex-preview-pane-mode)))
+
 ;; ========== Productivity Setup ==========
-(add-hook 'org-mode-hook 'visual-line-mode)
+
+(use-package org
+  :hook ((org-mode . visual-line-mode)
+	 (org-mode . org-indent-mode))
+  :config
+  (setq org-adapt-indentation t)
+  (setq	org-hide-leading-stars t)
+  ;; Note, 'nil is the same as false in elisp
+  (setq	org-blank-before-new-entry '((heading . nil) (plain-list-item . auto))))
+  
+;; Use Org mode as slide show
+(use-package org-tree-slide
+  :custom
+  (org-image-actual-width nil))
