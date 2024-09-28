@@ -1,0 +1,7 @@
+* Universes and Hierarchy
+** Why does an inductive relation indexed over $Type_i$ raise the index level to $Type_{i + 1}$
+** [[https://dl.acm.org/doi/abs/10.1145/3591241][Defunctionalization]]
+- [ ] Read page 6, Under Fig 1.
+  - What is the mismatch?
+  - Why don't we need to extract the constructor argument?
+  - What is closure-like fashion?
