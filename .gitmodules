@@ -1,12 +1,9 @@
 [submodule "Effects/eff-lang/eff"]
 	path = Effects/eff-lang/eff
 	url = git@github.com:matijapretnar/eff.git
-[submodule "The-Little-Series/The-Reasoned-Schemer/Racket-Version/Racket-miniKanren"]
-	path = The-Little-Series/The-Reasoned-Schemer/Racket-Version/Raw-Source-Code-Version/Racket-miniKanren
-	url = git@github.com:miniKanren/Racket-miniKanren.git
-[submodule "The-Little-Series/The-Reasoned-Schemer/Scheme-Version/CodeFromTheReasonedSchemer2ndEd"]
-	path = The-Little-Series/The-Reasoned-Schemer/Scheme-Version/CodeFromTheReasonedSchemer2ndEd
-	url = git@github.com:TheReasonedSchemer2ndEd/CodeFromTheReasonedSchemer2ndEd.git
-[submodule "The-Little-Series/The-Reasoned-Schemer/Scheme-Version/TheReasonedSchemer"]
-	path = The-Little-Series/The-Reasoned-Schemer/Scheme-Version/TheReasonedSchemer
+[submodule "Books/The_Little_Series/The-Reasoned-Schemer/Scheme-Version/TheReasonedSchemer"]
+	path = Books/The_Little_Series/The-Reasoned-Schemer/Scheme-Version/TheReasonedSchemer
 	url = git@github.com:miniKanren/TheReasonedSchemer.git
+[submodule "Books/The_Little_Series/The-Reasoned-Schemer/Racket-Version/Raw-Source-Code-Version/Racket-miniKanren"]
+	path = Books/The_Little_Series/The-Reasoned-Schemer/Racket-Version/Raw-Source-Code-Version/Racket-miniKanren
+	url = git@github.com:miniKanren/Racket-miniKanren.git
