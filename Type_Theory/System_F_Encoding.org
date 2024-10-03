@@ -1,0 +1,35 @@
+* Some System F Encoding
+Let as consider some special types, that are not native to System F, but can be encoded in System F using just universal quantifier
+| Logic / Normal Types | Type in System F                |
+|----------------------+---------------------------------|
+| A \wedge B                | \forall a . (A \to B \to a) \to a        |
+| A \vee B                | \forall a . (A \to a) \to (B \to a) \to a |
+| \exists a . A(a)           | \forall b . (\forall a . A(a) \to b) \to b    |
+To provide an inkling of why these encoding work, I can think of two ways of interpretating these encoding:
+- The encoding is similar to the type of the destructor
+- These are all a form of Continuation Passing Style (CPS)
+  
+** A \wedge B
+We refer [[https://existentialtype.wordpress.com/2012/08/25/polarity-in-type-theory/][Bob Harper's blog]], in particular the typing rule related to ~split~
+We notice the ~N~ that appears in the typing rule essentially act as a function of type (\forall C. A \to B \to C)
+This is how I interpreted the type (A \wedge B) as (\forall a . (A \to B \to a) \to a)
+** A \vee B
+Similarly, if we consider a (A \vee B) as ~Either~ from Haskell, and consider the following example code
+#+begin_src haskell
+  case either of
+    Left l  -> M
+    Right r -> N
+#+end_src
+Then we notice ~M~ and ~N~ essentially behaves like (A \to C) and (A \to B)
+** \exists a . A(a)
+I have not come up with a good way of using destructor to explain this code
+
+** The CPS Approach
+We discuss which part of the type is the continutation that is passed in
+| Familiar Type | Type                            | The Continuation      |
+|---------------+---------------------------------+-----------------------|
+| A \wedge B         | \forall a . (A \to B \to a) \to a        | (A \to B \to a)         |
+| A \vee B         | \forall a . (A \to a) \to (B \to a) \to a | (A \to a) and (B \to a) |
+| \exists a . A(a)    | \forall b . (\forall a . A(a) \to b) \to b    | (\forall a . A(a) \to b)     |
+We see the argument required by the continuations are precisely the data the more familiar type encodes
+
