@@ -1,0 +1,99 @@
+#+STARTUP: content
+#+bibliography: "../References/PL/Effects/Effect_Handlers/Ref.bib"
+#+LATEX_HEADER: \usepackage{xypic}
+
+* Algebraic Effects and Continuations
+This note is taking while reading Andrej Bauer's writing [cite:@whats_algebraic_about_algebraic_effects]
+Currently, this note only limits to the first 3 section, and only limit to the algebraic computation part
+
+** What is a "Free Tree"
+Given a set of operations {op_i} with general arity {A_i} and parameter {P_i}, The definition states that the set Tree_\Sigma(X) is generated inductively by the following two ways:
+1. For every v \in X, (return v) \in Tree_\Sigma(X)
+2. For every \kappa : A_i \to Tree_\Sigma(X) and p \in P_i, op_i(p; \kappa) \in Tree_\Sigma(X)
+
+Unlike algebra of operations with finite arity, I could not imagine the "well-foundedness" of this definition
+Thus, I consult to proof assistance. What follows is my attempt at defining the Free Tree in Coq:
+#+begin_src coq
+  Inductive FreeTree {X : Type} {param_map : nat -> Type} {arity_map : nat -> Type} : Type :=
+  | ret (v : X)
+  | op (index : nat) (p : param_map index) (k : arity_map index -> FreeTree).
+#+end_src
+
+It may be clearer now how we can construct an element of Tree_\Sigma(X):
+- Initially we only have (ret v)
+- We can now build functions of type A_i \to Tree_\Sigma(X), except the function will always return (ret v) for some v \in X
+- But how with the function, we can use (op_i) to construct trees of different form
+- Build up from there
+  
+** Lifting Functions to Homomorphisms
+The free model, have the universal lifting property:
+
+\begin{equation}
+  \xymatrix{
+    {X}
+    \ar[r]^{\eta}
+    \ar[rd]_{f}
+    &
+    {\carrier{\mathsf{Tree}_\Sigma(X)}}
+    \ar[d]^{\overline{f}}
+    \\
+    &
+     \carrier{M}
+  }
+\end{equation}
+
+In particular, $\overline f$ is defined "inductively and naturally":
+- $\overline{f}$ (return v) = f(v)
+- $\overline{f}$ (op_i(p, \kappa) = op_i(p; \lambda a. $\overline{f}$(\kappa(a)) ) = op_i(p; $\overline{f}$ \circ \kappa)
+Given elements of Tree_\Sigma(X) are "well-founded", the recursive definition of $\overline{f}$ will eventually terminate.
+Coq also accepts the definition:
+#+begin_src coq
+  Fixpoint lifting (X Y : Type) (param_map : nat -> Type) (arity_map : nat -> Type)
+    (f : X -> @FreeTree Y param_map arity_map)
+    (tree : @FreeTree X param_map arity_map) :
+    @FreeTree Y param_map arity_map :=
+    match tree with
+    | ret v => f v
+    | op i p k => op i p (fun a => lifting X Y param_map arity_map f (k a))
+    end.
+#+end_src
+In particular, we can specialize M to Tree_\Sigma(X) also, and consider some f : X \to Tree_\Sigma(X),
+Such f get can get lifted to $\overline{f}$ : Tree_\Sigma(X) \to Tree_\Sigma(X) with the same mappign.
+
+Before moving further, let us notice the following:
+- Let us understand an element in Tree_\Sigma(X) as some computation with effects, then
+- The function f : X \to M has the same type as the function given to the operator
+  (>>=) : ...  \to *(a \to M _)* \to ...
+  
+** Pushing Continuation In
+Let us now look at some more familiar notations that will thread the ideas together
+
+*** let ... in ... Notation
+We first make a few assumptions:
+- x \in X
+- *x is bounded in e*
+- e \in Tree_\Sigma(X)
+Now, let us consider the following block of code:
+#+begin_src haskell
+  do x <- op(p ; \y -> c) in e
+  -- or
+  let x = op(p ; \y -> c) in e
+#+end_src
+
+*\lambda x. e* now behaves like a function of type X \to Tree_\Sigma(X), so we 
+and we *define* the following:
+- $\lambda r . \texttt{ do } x \gets r \texttt{ in } e$ \equiv $\overline{\lambda x . e}$
+- $\lambda r . \texttt{ let } x = r \texttt{ in } e$ \equiv $\overline{\lambda x . e}$
+
+With the previously defined definition of lifting, we now get the following property through 
+
+\begin{align}
+\lambda r . \texttt{ do } x \gets \operatorname{op}(p ; \lambda y . c) \texttt{ in } e &= (\overline{\lambda x . e}) \, (\operatorname{op}(p ; \lambda y . c)) \tag{Definition}\\
+&= \operatorname{op}(p ; (\overline{\lambda x . e}) \circ (\lambda y . c)) \tag{Lifted homomorphism}\\
+&= \operatorname{op}(p ; \lambda y .(\overline{\lambda x . e})(c)) \tag{We have to assume $y \notin \mathsf{fv}(\lambda x .e)$} \\
+&= \operatorname{op}(p ; \lambda y . \texttt{ do } x \gets c \texttt{ in } e)) \tag{Definition}
+\end{align}
+
+A similar process can be done for $\texttt{let } \dots \texttt{ in } \dots$
+
+*** Monadic Bind

@@ -84,7 +84,7 @@ keywords = {algebraic effects, handlers, effect system, semantics, logic, tutori
 abstract = {This paper is a tutorial on algebraic effects and handlers. In it, we explain what algebraic effects are, give ample examples to explain how handlers work, define an operational semantics and a type & effect system, show how one can reason about effects, and give pointers for further reading.}
 }
 
-@article{Modal-Effect-Types-Tang-White
+@article{Modal-Effect-Types-Tang-White,
 title = {Modal Effect Types},
 url = {https://homepages.inf.ed.ac.uk/slindley/papers/modal-effects-draft-july2024.pdf}
 }
@@ -161,26 +161,6 @@ location = {Paris, France},
 series = {POPL '17}
 }
 
-@article{10.1145/3093333.3009897,
-author = {Lindley, Sam and McBride, Conor and McLaughlin, Craig},
-title = {Do be do be do},
-year = {2017},
-issue_date = {January 2017},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {52},
-number = {1},
-issn = {0362-1340},
-url = {https://doi.org/10.1145/3093333.3009897},
-doi = {10.1145/3093333.3009897},
-abstract = {We explore the design and implementation of Frank, a strict functional programming language with a bidirectional effect type system designed from the ground up around a novel variant of Plotkin and Pretnar's effect handler abstraction.  Effect handlers provide an abstraction for modular effectful programming: a handler acts as an interpreter for a collection of commands whose interfaces are statically tracked by the type system. However, Frank eliminates the need for an additional effect handling construct by generalising the basic mechanism of functional abstraction itself. A function is simply the special case of a Frank operator that interprets no commands. Moreover, Frank's operators can be multihandlers which simultaneously interpret commands from several sources at once, without disturbing the direct style of functional programming with values.  Effect typing in Frank employs a novel form of effect polymorphism which avoid mentioning effect variables in source code. This is achieved by propagating an ambient ability inwards, rather than accumulating unions of potential effects outwards.  We introduce Frank by example, and then give a formal account of the Frank type system and its semantics. We introduce Core Frank by elaborating Frank operators into functions, case expressions, and unary handlers, and then give a sound small-step operational semantics for Core Frank.  Programming with effects and handlers is in its infancy. We contribute an exploration of future possibilities, particularly in combination with other forms of rich type system.},
-journal = {SIGPLAN Not.},
-month = {jan},
-pages = {500–514},
-numpages = {15},
-keywords = {pattern matching, effect polymorphism, effect handlers, continuations, call-by-push-value, bidirectional typing, algebraic effects}
-}
-
 @article{CONVENT_LINDLEY_MCBRIDE_MCLAUGHLIN_2020, title={Doo bee doo bee doo}, volume={30}, DOI={10.1017/S0956796820000039}, journal={Journal of Functional Programming}, author={CONVENT, LUKAS and LINDLEY, SAM and MCBRIDE, CONOR and MCLAUGHLIN, CRAIG}, year={2020}, pages={e9}}
 
 @inproceedings{10.1145/3331545.3342595,
@@ -199,44 +179,6 @@ numpages = {16},
 keywords = {Transformers, Monads, Handlers, Effects},
 location = {Berlin, Germany},
 series = {Haskell 2019}
-}
-
-@inproceedings{10.1145/3009837.3009897,
-author = {Lindley, Sam and McBride, Conor and McLaughlin, Craig},
-title = {Do be do be do},
-year = {2017},
-isbn = {9781450346603},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-url = {https://doi.org/10.1145/3009837.3009897},
-doi = {10.1145/3009837.3009897},
-abstract = {We explore the design and implementation of Frank, a strict functional programming language with a bidirectional effect type system designed from the ground up around a novel variant of Plotkin and Pretnar's effect handler abstraction.  Effect handlers provide an abstraction for modular effectful programming: a handler acts as an interpreter for a collection of commands whose interfaces are statically tracked by the type system. However, Frank eliminates the need for an additional effect handling construct by generalising the basic mechanism of functional abstraction itself. A function is simply the special case of a Frank operator that interprets no commands. Moreover, Frank's operators can be multihandlers which simultaneously interpret commands from several sources at once, without disturbing the direct style of functional programming with values.  Effect typing in Frank employs a novel form of effect polymorphism which avoid mentioning effect variables in source code. This is achieved by propagating an ambient ability inwards, rather than accumulating unions of potential effects outwards.  We introduce Frank by example, and then give a formal account of the Frank type system and its semantics. We introduce Core Frank by elaborating Frank operators into functions, case expressions, and unary handlers, and then give a sound small-step operational semantics for Core Frank.  Programming with effects and handlers is in its infancy. We contribute an exploration of future possibilities, particularly in combination with other forms of rich type system.},
-booktitle = {Proceedings of the 44th ACM SIGPLAN Symposium on Principles of Programming Languages},
-pages = {500–514},
-numpages = {15},
-keywords = {pattern matching, effect polymorphism, effect handlers, continuations, call-by-push-value, bidirectional typing, algebraic effects},
-location = {Paris, France},
-series = {POPL '17}
-}
-
-@article{10.1145/3093333.3009897,
-author = {Lindley, Sam and McBride, Conor and McLaughlin, Craig},
-title = {Do be do be do},
-year = {2017},
-issue_date = {January 2017},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {52},
-number = {1},
-issn = {0362-1340},
-url = {https://doi.org/10.1145/3093333.3009897},
-doi = {10.1145/3093333.3009897},
-abstract = {We explore the design and implementation of Frank, a strict functional programming language with a bidirectional effect type system designed from the ground up around a novel variant of Plotkin and Pretnar's effect handler abstraction.  Effect handlers provide an abstraction for modular effectful programming: a handler acts as an interpreter for a collection of commands whose interfaces are statically tracked by the type system. However, Frank eliminates the need for an additional effect handling construct by generalising the basic mechanism of functional abstraction itself. A function is simply the special case of a Frank operator that interprets no commands. Moreover, Frank's operators can be multihandlers which simultaneously interpret commands from several sources at once, without disturbing the direct style of functional programming with values.  Effect typing in Frank employs a novel form of effect polymorphism which avoid mentioning effect variables in source code. This is achieved by propagating an ambient ability inwards, rather than accumulating unions of potential effects outwards.  We introduce Frank by example, and then give a formal account of the Frank type system and its semantics. We introduce Core Frank by elaborating Frank operators into functions, case expressions, and unary handlers, and then give a sound small-step operational semantics for Core Frank.  Programming with effects and handlers is in its infancy. We contribute an exploration of future possibilities, particularly in combination with other forms of rich type system.},
-journal = {SIGPLAN Not.},
-month = {jan},
-pages = {500–514},
-numpages = {15},
-keywords = {pattern matching, effect polymorphism, effect handlers, continuations, call-by-push-value, bidirectional typing, algebraic effects}
 }
 
 @article{10.1145/2544174.2500590,
@@ -277,3 +219,12 @@ location = {Boston, Massachusetts, USA},
 series = {ICFP '13}
 }
 
+@misc{whats_algebraic_about_algebraic_effects,
+      title={What is algebraic about algebraic effects and handlers?}, 
+      author={Andrej Bauer},
+      year={2019},
+      eprint={1807.05923},
+      archivePrefix={arXiv},
+      primaryClass={cs.LO},
+      url={https://arxiv.org/abs/1807.05923}, 
+}
