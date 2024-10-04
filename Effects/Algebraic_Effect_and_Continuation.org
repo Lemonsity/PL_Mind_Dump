@@ -97,3 +97,9 @@ With the previously defined definition of lifting, we now get the following prop
 A similar process can be done for $\texttt{let } \dots \texttt{ in } \dots$
 
 *** Monadic Bind
+** What's the Significance?
+The reason you should care about these is because it makes reading the dynamic semantic of any effect handler paper much easier.
+When I first started reading effect handlers papers, I didn't know why the small-step semantic of op_i(\dots) behaved the way it did:
+- Why are we capturing the continuation?
+- Why can we push the continutation into the operation?
+Andrej's paper [cite:@whats_algebraic_about_algebraic_effects] exposes the algebraic reasoning behind those design decisions.
