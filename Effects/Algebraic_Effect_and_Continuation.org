@@ -42,7 +42,7 @@ The free model, have the universal lifting property:
   }
 \end{equation}
 
-In particular, $\overline f$ is defined "inductively and naturally":
+In particular, $\overline f$ is defined "inductively":
 - $\overline{f}$ (return v) = f(v)
 - $\overline{f}$ (op_i(p, \kappa) = op_i(p; \lambda a. $\overline{f}$(\kappa(a)) ) = op_i(p; $\overline{f}$ \circ \kappa)
 Given elements of Tree_\Sigma(X) are "well-founded", the recursive definition of $\overline{f}$ will eventually terminate.
