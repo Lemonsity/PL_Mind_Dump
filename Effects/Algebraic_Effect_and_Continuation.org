@@ -12,7 +12,7 @@ Given a set of operations {op_i} with general arity {A_i} and parameter {P_i}, T
 2. For every \kappa : A_i \to Tree_\Sigma(X) and p \in P_i, op_i(p; \kappa) \in Tree_\Sigma(X)
 
 Unlike algebra of operations with finite arity, I could not imagine the "well-foundedness" of this definition
-Thus, I consult to proof assistance. What follows is my attempt at defining the Free Tree in Coq:
+Thus, I consult to proof assistant. What follows is my attempt at defining the Free Tree in Coq:
 #+begin_src coq
   Inductive FreeTree {X : Type} {param_map : nat -> Type} {arity_map : nat -> Type} : Type :=
   | ret (v : X)
@@ -25,6 +25,29 @@ It may be clearer now how we can construct an element of Tree_\Sigma(X):
 - But how with the function, we can use (op_i) to construct trees of different form
 - Build up from there
   
+** What Each Part of the Tree Represents
+Let us discuss Free_\Sigma(X) represents
+
+*** Free_\Sigma(X)
+This is supposed to represents a computation that outputs a value of type ~X~, with the potential to call operations with side effects from the signature \Sigma
+
+*** return v
+This corresponds to the ~return~ from Haskell's monad definition.
+For every value in the type ~X~, we put it into an "effectful" context
+
+*** op_i(p ; \kappa)
+- i :: Identifies the operation
+- p :: Operation parameter
+- \kappa :: The continuation for the remaining computation
+
+\kappa is supposed to represent the continuation of the operation call.
+If we look back at signature, you can see each operation is defined as:
+#+begin_quote
+op_i : P_i -> A_i
+#+end_quote
+This tells us that operator expects some parameters. When it received all the parameters, it will produce a value of type A_i
+Now looking back at \kappa, we see it indeed represents the continuation after the operation call.
+
 ** Lifting Functions to Homomorphisms
 The free model, have the universal lifting property:
 
@@ -45,7 +68,7 @@ The free model, have the universal lifting property:
 In particular, $\overline f$ is defined "inductively and naturally":
 - $\overline{f}$ (return v) = f(v)
 - $\overline{f}$ (op_i(p, \kappa) = op_i(p; \lambda a. $\overline{f}$(\kappa(a)) ) = op_i(p; $\overline{f}$ \circ \kappa)
-Given elements of Tree_\Sigma(X) are "well-founded", the recursive definition of $\overline{f}$ will eventually terminate.
+Given elements of Tree_\Sigma(X) are "well-founded", the recursive definition of $\overline{f}$ will eventually terminates.
 Coq also accepts the definition:
 #+begin_src coq
   Fixpoint lifting (X Y : Type) (param_map : nat -> Type) (arity_map : nat -> Type)
@@ -57,13 +80,8 @@ Coq also accepts the definition:
     | op i p k => op i p (fun a => lifting X Y param_map arity_map f (k a))
     end.
 #+end_src
-In particular, we can specialize M to Tree_\Sigma(X) also, and consider some f : X \to Tree_\Sigma(X),
-Such f get can get lifted to $\overline{f}$ : Tree_\Sigma(X) \to Tree_\Sigma(X) with the same mappign.
-
-Before moving further, let us notice the following:
-- Let us understand an element in Tree_\Sigma(X) as some computation with effects, then
-- The function f : X \to M has the same type as the function given to the operator
-  (>>=) : ...  \to *(a \to M _)* \to ...
+In particular, we can specialize M to Tree_\Sigma(Y) for the same tree, and consider some f : X \to Tree_\Sigma(Y),
+Such f get can get lifted to $\overline{f}$ : Tree_\Sigma(X) \to Tree_\Sigma(Y).
   
 ** Pushing Continuation In
 Let us now look at some more familiar notations that will thread the ideas together
@@ -72,7 +90,7 @@ Let us now look at some more familiar notations that will thread the ideas toget
 We first make a few assumptions:
 - x \in X
 - *x is bounded in e*
-- e \in Tree_\Sigma(X)
+- e \in Tree_\Sigma(Y)
 Now, let us consider the following block of code:
 #+begin_src haskell
   do x <- op(p ; \y -> c) in e
@@ -80,25 +98,68 @@ Now, let us consider the following block of code:
   let x = op(p ; \y -> c) in e
 #+end_src
 
-*\lambda x. e* now behaves like a function of type X \to Tree_\Sigma(X), so we 
+*\lambda x. e* now behaves like a function of type X \to Tree_\Sigma(Y), so we 
 and we *define* the following:
 - $\lambda r . \texttt{ do } x \gets r \texttt{ in } e$ \equiv $\overline{\lambda x . e}$
 - $\lambda r . \texttt{ let } x = r \texttt{ in } e$ \equiv $\overline{\lambda x . e}$
 
 With the previously defined definition of lifting, we now get the following property through 
 
-\begin{align}
-\lambda r . \texttt{ do } x \gets \operatorname{op}(p ; \lambda y . c) \texttt{ in } e &= (\overline{\lambda x . e}) \, (\operatorname{op}(p ; \lambda y . c)) \tag{Definition}\\
-&= \operatorname{op}(p ; (\overline{\lambda x . e}) \circ (\lambda y . c)) \tag{Lifted homomorphism}\\
-&= \operatorname{op}(p ; \lambda y .(\overline{\lambda x . e})(c)) \tag{We have to assume $y \notin \mathsf{fv}(\lambda x .e)$} \\
+\begin{align*}
+\texttt{do } x \gets \operatorname{op}(p ; \lambda y . c) \texttt{ in } e
+&= (\lambda r . \texttt{ do } x \gets r \texttt{ in } e) (\operatorname{op}(p ; \lambda y . c))  \\
+&= \overline{(\lambda x . e)}) \, (\operatorname{op}(p ; \lambda y . c)) \tag{Definition}\\
+&= \operatorname{op}(p ; \overline{(\lambda x . e)} \circ (\lambda y . c)) \tag{Lifted homomorphism}\\
+&= \operatorname{op}(p ; \lambda y .\overline{(\lambda x . e)}(c)) \tag{We have to assume $y \notin \mathsf{fv}(\lambda x .e)$} \\
+&= \operatorname{op}(p ; \lambda y . (\lambda r . \texttt{ do } x \gets r \texttt{ in } e)\,(c)) \tag{Definition} \\
 &= \operatorname{op}(p ; \lambda y . \texttt{ do } x \gets c \texttt{ in } e)) \tag{Definition}
-\end{align}
+\end{align*}
 
 A similar process can be done for $\texttt{let } \dots \texttt{ in } \dots$
 
+\begin{align*}
+\texttt{let } x = \operatorname{op}(p ; \lambda y . c) \texttt{ in } e
+&= (\lambda r . \texttt{ let } x = r \texttt{ in } e) (\operatorname{op}(p ; \lambda y . c)) \\
+&= \overline {(\lambda x . e)} (\operatorname{op}(p ; \lambda y . c)) \\
+&= \operatorname{op}(p ; \overline{(\lambda x . e)} \circ (\lambda y . c)) \\
+&= \operatorname{op}(p ; \lambda y . \overline{(\lambda x . e)}(c)) \\
+&= \operatorname{op}(p ; \lambda y . (\lambda r . \texttt{ let } x = r \texttt{ in } e)\,(c)) \\
+&= \operatorname{op}(p ; \lambda y . \texttt{ let } x = c \texttt{ in } e) \\
+\end{align*}
+
 *** Monadic Bind
+We will do a similar process for monadic bind ~>>=~.
+
+Let us first examine the type signature of ~>>=~ in Haskell:
+#+begin_src haskell
+  (>>=) : (Monad m) => (M a) -> (a -> M b) -> (M b)
+#+end_src
+
+We understand ~M b~ as a computation that gives a value of type ~b~, with possible side effects represented by the monad ~M~.
+
+Let us instantiate ~(M -)~ = Tree_\Sigma(-). This turns the type of the second argument of ~(>>=)~ into (a \to Tree_\Sigma(b)).
+
+What is the meaning of ~(>>=)~? it is precisely generating the unique lifting of (a \to Tree_\Sigma(b)) to (Tree_\Sigma(a) \to Tree_\Sigma(b)) (Well, more precisely, that is the job of ~flip (>>=)~)
+
+Thus we can define the following
+
+\[\lambda r . r \texttt{ >>= }\, f = \overline{f} \]
+
+And get the following equations.
+
+\begin{align*}
+\operationname{op}(p ; \lambda y . c) \texttt{ >>= } f
+&= (\lambda r . r \texttt{ >>= } f) (\operatorname{op}(p ; \lambda y . c) \\
+&= \overline{f} (\operatorname{op}(p ; \lambda y . c) \\
+&= \operatorname{op}(p ; \overline{f} \circ (\lambda y . c)) \\
+&= \operatorname{op}(p ; \lambda y . \overline{f}(c)) \\
+&= \operatorname{op}(p ; \lambda y . (\lambda r . r \texttt{ >>= } f) (c)) \\
+&= \operatorname{op}(p ; \lambda y . c \texttt{ >>= } f)
+\end{align*}
+
 ** What's the Significance?
 The reason you should care about these is because it makes reading the dynamic semantic of any effect handler paper much easier.
+
 When I first started reading effect handlers papers, I didn't know why the small-step semantic of op_i(\dots) behaved the way it did:
 - Why are we capturing the continuation?
 - Why can we push the continutation into the operation?
