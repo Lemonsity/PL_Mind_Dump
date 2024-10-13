@@ -1,9 +1,9 @@
-;; ====================== Startup Setup ======================
+;; ===================== Startup Setup =====================
 ; (tool-bar-mode -1)
 ; (menu-bar-mode -1)
 (setq visible-bell t)
 
-;; ====================== Init Package Source ======================
+;; ===================== Init Package Source =====================
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
@@ -13,7 +13,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; ====================== Setup use-package ======================
+;; ===================== Setup use-package =====================
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (require 'use-package)
@@ -30,7 +30,7 @@
 ;; Not necessary, but now we can show keystroke
 (use-package command-log-mode)
 
-;; ====================== Ivy / Counsel Completion ======================
+;; ===================== Ivy / Counsel Completion =====================
 ;; Ivy completion setup
 (use-package ivy
   :diminish
@@ -49,14 +49,14 @@
   :config
   (counsel-mode 1))
 
-;; ====================== Flymake ======================
+;; ===================== Flymake =====================
 ;; Flymake comes with a backend called ['flymake-proc-legacy-flymake]
 ;; However this is deprecated.
 ;; TODO: find a way to perma disable it
 ;; (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-;; =====================================================
+;; ======================================================
 ;; Flymake is so garbage, use Flycheck instead
-;; =====================================================
+;; ======================================================
 	  
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -70,7 +70,7 @@
  '(org-agenda-files
    '())
  '(package-selected-packages
-   '(flycheck visual-fill-column visual-line org-indent org-tree-slide auctex company-coq-mode diminish counsel ivy command-log-mode company-coq racket-mode company rust-mode lsp-mode proof-general))
+   '(ligature hasklig-mode flycheck visual-fill-column visual-line org-indent org-tree-slide auctex company-coq-mode diminish counsel ivy command-log-mode company-coq racket-mode company rust-mode lsp-mode proof-general))
  '(proof-splash-enable nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -79,7 +79,7 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; ====================== Font Setup ======================
+;; ===================== Font Setup =====================
 
 ;; Set up on agda mode
 ;; https://www.emacswiki.org/emacs/FacesPerBuffer#toc3
@@ -94,11 +94,77 @@
 (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
 
 (set-face-attribute 'default nil
-		    :family "Iosevka"
+		    :family "JetBrainsMono"
 		    :width 'expanded
 		    :overline nil)
 
-;; ====================== Languages Setup ======================
+(set-face-attribute 'fixed-pitch nil
+		    :family "JetBrainsMono")
+
+(set-face-attribute 'variable-pitch nil
+		    :family "IosevkaEtoile")
+
+(use-package ligature
+  :config
+  ;; Enable the www ligature in every possible major mode
+  (ligature-set-ligatures 't '("www"))
+  ;; Enable ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("www" "**" "***"  "\\\\" "\\\\\\"
+				       
+				       "{-" "-}" "/*" "/**" "**/" "*/" "//" "///"
+				       "<#--" "<!--"
+				       "</" "</>" "/>"
+				       
+				       "##" "###" "####"
+				       "---" "----"
+                                       
+				       "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+
+				       "[||]" "|]" "[|" "|}" "{|" "[<" ">]" 
+                                     				       
+                                       ".-" ".=" ".." "..." "..<"  ".="
+
+				       "??" "!!" "%%"
+				       "???" "?:" ":?" "?." ".?"
+				       
+                                       ":=" "::=" "||=" "&=" "|=" "^=" "?="
+				       
+				       "&&" "||"
+				       "->" "<-" "-->" "<--" "->>" "<<-"
+				       "=>" "<=" "==>" "<==" "=>>" "<<="
+				       "~>"  "<~" "~~>" "<~~"
+				       "~-" "-~"
+				       "<->" "<=>" "<==>" "~~" "<~>" 
+
+				       ">>=" "=<<" ">=>" "<=<" ">>" "<<"
+				       
+				       "***" "&&&" ">>>" "<<<"
+
+				       ">-" "-<" ">>-" "-<<" ">->" "<-<" 
+
+				       ">=" "<="
+				       
+				       "|->" "<-|" "|=>" "<=|"
+
+				       "-|" "_|_" "|-" "||-" 
+				       
+				       "<*" "<*>" "*>" "<$" "<$>" "$>" "<+" "<+>" "+>" "<|" "<|>" "|>"
+				       "<>" "<|>" 
+				       
+                                       "++" "+++"
+				       "=:=" "==" "===" "=/=" "/=" "/==" "//=" "!=" "!==" "=!="
+
+				       "::" ":::"
+				       "<:" ":<" ":>" ">:" "<:<" ":?>"
+
+				       "|>" "<|" "||>" "<||" "|||>" "<|||"
+
+				       ";;;"  ";;"
+                                                                            
+				       "~@" "@_" "__" ))
+  (global-ligature-mode 't))
+
+;; ===================== Languages Setup =====================
 
 ;; ---------------------- Multi-language Tools ----------------------
 ;; Flycheck Syntax Checking
@@ -195,44 +261,51 @@
 ;;   :diminish
 ;;   :hook ((LaTeX-mode . latex-preview-pane-mode)))
 
-;; ====================== Productivity Setup ======================
+;; ===================== Productivity Setup =====================
 
 ;; ---------------------- Org Setup ----------------------
 (defun lemon/org-mode-setup ()
   (visual-line-mode 1)
   (org-indent-mode)
+  (variable-pitch-mode 1)
   )
 
 (defun lemon/org-font-setup ()
   (set-face-attribute 'org-code nil
+		      :inherit 'fixed-pitch
 		      :foreground "black"
 		      :background "LightGray")
   (set-face-attribute 'org-block nil
+		      :inherit 'fixed-pitch
 		      :foreground "black"
 		      :background "LightGray")
   (set-face-attribute 'org-meta-line nil
+		      :inherit 'fixed-pitch
 		      ;; :background "#EAEAFF"
 		      :foreground "#008ED1")
+  
   (set-face-attribute 'org-table nil
+		      :inherit 'fixed-pitch
 		      :background "#d6e4fc")
   (set-face-attribute 'org-quote nil
 		      :foreground "black"
 		      :background "AntiqueWhite1")
-  (set-face-attribute 'org-block-begin-line nil ;; <--- end line inherit this
+  (set-face-attribute 'org-block-begin-line nil ;; <-- end line inherit this
+		      :inherit 'fixed-pitch
 		      :inherit 'default
 		      :foreground "Gray")
   (set-face-attribute 'org-drawer nil
+		      :inherit 'fixed-pitch
 		      :foreground "Gray")
 		      
   (setq org-fontify-quote-and-verse-blocks t))
 
 (defun lemon/org-appearance-setup ()
-  (setq org-adapt-indentation t)
   (setq org-hide-leading-stars t)
   (setq org-pretty-entities t)
   (setq org-fontify-emphasized-text t)
   (setq org-hide-emphasis-markers t)
-  (setq org-blank-before-new-entry '((heading . auto) (plain-list-item . auto)))
+  ; (setq org-blank-before-new-entry '((heading . auto) (plain-list-item . auto)))
   (setq org-highlight-latex-and-related '(latex))
   (setq org-tags-column -100)
   )
@@ -240,27 +313,29 @@
 (defun lemon/org-todo-setup ()
   ;; Add keywords
   (setq org-todo-keywords
-	'((sequence "TODO(t)" "IDEA(i)" "PROG(p)" "READ(r)" "CHECK(c)" "|" "DONE(d)")
-	  (sequence "|" "BACKLOG(b)" "CANCELED(x)")))
+	'((sequence "TODO(t)" "IDEA(i)" "PROG(p)" "READ(r)" "WONDER(w)" "CHECK(c)" "|" "DONE(d)")
+	  (sequence "BLOCKED(l)" "BACKLOG(b)" "|" "CANCELED(x)")))
   ;; Customize keywords
   (setq org-todo-keyword-faces
 	'(("IDEA" :inherit 'org-todo :foreground "gold2")
 	  ("PROG" :inherit 'org-todo :foreground "gold2")
 	  ("READ" :inherit 'org-todo :foreground "gold2")
 	  ("CHECK" :inherit 'org-todo :foreground "gold2")
+	  ("WONDER" :inherit 'org-todo :foreground "gold2")
+	  ("BLOCKED" :inherit 'org-todo :foreground "gold2")
 	  ("BACKLOG" :inherit 'org-todo :foreground "SteelBlue")
 	  ("CANCELED" :inherit 'org-todo :foreground "CadetBlue")))
   ;; Log time on DONE
   (setq org-log-done 'time)
   )
 
-
 (defun lemon/org-agenda-setup ()
   (setq org-agenda-span 14))
 
 (use-package org
   :hook
-  ((org-mode . lemon/org-mode-setup))
+  ((org-mode . lemon/org-mode-setup)
+   (org-mode . flyspell-mode))
   :config
   (lemon/org-appearance-setup)
   (lemon/org-font-setup)
@@ -272,17 +347,16 @@
   :custom (org-image-actual-width nil))
 
 (defun lemon/org-mode-visual-fill ()
-  (setq visual-fill-column-width 150
+  (setq visual-fill-column-width 120
         visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
+  (visual-line-fill-column-mode 1))
 
 (use-package visual-fill-column
   :hook (org-mode . lemon/org-mode-visual-fill))
 
-;; ====================== Misc ======================
+;; ===================== Misc =====================
 
 ;; This activate a shortcut in Dired mode
 ;; You can now press [a] to replace current buffer
 ;; by the directory hovering over
 (put 'dired-find-alternate-file 'disabled nil)
-
