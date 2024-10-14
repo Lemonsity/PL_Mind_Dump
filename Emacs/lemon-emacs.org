@@ -1,0 +1,536 @@
+#+TITLE: Lemon's Emacs Configuration
+#+AUTHOR: Lemon
+
+Here you can find my Emacs configuration.
+
+To use this file directly:
+- Create a file ~~/.emacs.d/init.el~
+- Put the following in the ~init.el~ file:
+  #+begin_quote
+  (require 'package)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+
+  ;; Install Proof General before you add the following line
+  (org-babel-load-file "~/.emacs.d/lemon-emacs.org")
+  #+end_quote
+- Place this file in ~~/.emacs.d/~ also
+- Launch Emacs
+
+
+* Config for Config 
+We will get some basic configurations to streamline the configuration process
+
+I forgot what this does:
+#+begin_src emacs-lisp
+  (unless package-archive-contents
+    (package-refresh-contents))
+#+end_src
+
+** /use-package/
+/use-package/ will streamline the package installation and configuration process.
+We can group configurations together
+
+#+begin_src emacs-lisp
+  (require 'use-package)
+#+end_src
+
+We will also make sure the package is always downloaded.
+#+begin_src emacs-lisp
+  (setq use-package-always-ensure t)
+#+end_src
+
+** /diminish/
+Minor mode can junk up the mode line.
+/diminish/ can hide some of the minor modes.
+
+#+begin_src emacs-lisp
+  (use-package diminish :ensure t)
+#+end_src
+
+To use /diminish/ with /use-package/, add ~:diminish~ to hide a package (But, sometimes it doesn't work...).
+
+* Emacs Configuration
+
+** Minibuffer Completion
+Minibuffer by default is very minimal.
+It would be nice if we can get
+- Suggestions
+- Completions
+- Preview
+as I type in the minibuffer.
+
+#+begin_src emacs-lisp
+  (use-package ivy
+    :diminish
+    :bind
+    (("C-s" . swiper)) ;; Swiper gives list of completion suggestion
+    :config
+    (ivy-mode 1))
+
+  ;; counsel will give us better completion when:
+  ;; - Finding files
+  ;; - Switching Buffer
+  (use-package counsel
+    :diminish
+    :bind
+    (("M-x" . 'counsel-M-x)) ;; Default to counsel's interactive command
+    :config
+    (counsel-mode 1))
+#+end_src
+
+** Position in File
+Some people don't like it.
+But I do.
+
+#+begin_src emacs-lisp
+  (setq column-number-mode t)
+  (setq display-line-numbers t)
+#+end_src
+
+** /Dired/ Mode
+/Dired/ mode handled directory related browsing and modification
+
+#+begin_src emacs-lisp
+  ;; ask before create dir
+  (setq dired-create-destination-dirs 'ask) 
+  ;; press [a] to open dir without open new buffer
+  (put 'dired-find-alternate-file 'disabled nil) 
+#+end_src
+
+* Face / Font                                                                                :Faces:
+Emacs calls the text display /face/.
+
+** General Face
+I have some favourite fonts, which I will configure here.
+
+*** Default Face
+JetBrains Mono is a very solid font
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil
+		    :family "JetBrainsMono"
+		    :width 'expanded
+		    :overline nil)
+#+end_src
+
+I also suggest Iosevka, but it seems to not display well for small fonts.
+#+begin_quote
+  (set-face-attribute 'default nil
+                      :family "IosevkaCustom"
+                      :width 'expanded
+                      :overline nil)
+#+end_quote
+
+*** Fixed Pitch Face
+This is for mono-width faces.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'fixed-pitch nil
+                      :family "JetBrainsMono")
+#+end_src
+
+*** Variable Pitch Face
+This is for normal faces. It is potentially useful for a read-heavy format, such as Org mode.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'variable-pitch nil
+                      :family "IosevkaEtoile")
+#+end_src
+
+** Ligature
+[[https://en.wikipedia.org/wiki/Ligature_(writing)][Ligature]] is when adjacent letters are rendered together as one entity.
+
+#+begin_src emacs-lisp
+  (use-package ligature
+    :config
+    ;; Enable the www ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    ;; Enable ligatures in programming modes
+    (ligature-set-ligatures 'prog-mode '("www" "**" "***"  "\\\\" "\\\\\\"
+
+                                         "{-" "-}" "/*" "/**" "**/" "*/" "//" "///"
+                                         "<#--" "<!--"
+                                         "</" "</>" "/>"
+
+                                         "##" "###" "####"
+                                         "---" "----"
+
+                                         "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+
+                                         "[||]" "|]" "[|" "|}" "{|" "[<" ">]" 
+
+                                         ".-" ".=" ".." "..." "..<"  ".="
+
+                                         "??" "!!" "%%"
+                                         "???" "?:" ":?" "?." ".?"
+
+                                         ":=" "::=" "||=" "&=" "|=" "^=" "?="
+
+                                         "&&" "||"
+                                         "->" "<-" "-->" "<--" "->>" "<<-"
+                                         "=>" "<=" "==>" "<==" "=>>" "<<="
+                                         "~>"  "<~" "~~>" "<~~"
+                                         "~-" "-~"
+                                         "<->" "<=>" "<==>" "~~" "<~>" 
+
+                                         ">>=" "=<<" ">=>" "<=<" ">>" "<<"
+
+                                         "***" "&&&" ">>>" "<<<"
+
+                                         ">-" "-<" ">>-" "-<<" ">->" "<-<" 
+
+                                         ">=" "<="
+
+                                         "|->" "<-|" "|=>" "<=|"
+
+                                         "-|" "_|_" "|-" "||-" 
+
+                                         "<*" "<*>" "*>" "<$" "<$>" "$>" "<+" "<+>" "+>" "<|" "<|>" "|>"
+                                         "<>" "<|>" 
+
+                                         "++" "+++"
+                                         "=:=" "==" "===" "=/=" "/=" "/==" "//=" "!=" "!==" "=!="
+
+                                         "::" ":::"
+                                         "<:" ":<" ":>" ">:" "<:<" ":?>"
+
+                                         "|>" "<|" "||>" "<||" "|||>" "<|||"
+
+                                         ";;;"  ";;"
+
+                                         "~@" "@_" "__" ))
+    (global-ligature-mode 't))
+#+end_src
+
+** Agda Face
+Agda has a recommended face.
+We setup that face to be only active in Agda mode
+
+#+begin_src emacs-lisp
+  (defun agda-buffer-face-mode ()
+    "Set font to a variable width (proportional) fonts in current buffer"
+    (interactive)
+    (setq buffer-face-mode-face '(:family "mononoki"
+                                          :height 120
+                                          :width normal
+                                          :weight normal))
+    (buffer-face-mode))
+  (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
+#+end_src
+
+
+
+* Languages Setup                                                                        :Languages:
+
+** Universal Configurations                                                             :Universal:
+
+*** /flycheck/
+/flycheck/ is a universal syntax checker.
+It supports many languages out of the box, and seems to be better than the /flymake/ that comes by default with Emacs.
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+  :ensure t)
+#+end_src
+
+*** /lsp-mode/
+/lsp-mode/ provides a way to integrates Language Server with Emacs, and works out of the box for many languages.
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :init
+    (setq lsp-keymap-prefix "C-c l") ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    :hook
+    ((haskell-mode . lsp)
+     (haskell-literate-mode . lsp)
+     (rust-mode . lsp)
+     (lsp-mode . lsp-enable-which-key-integration)) ;; if you want which-key integration
+    :commands
+    (lsp lsp-deferred))
+#+end_src
+
+*** /company/
+/company/ provides completion suggestions.
+
+#+begin_src emacs-lisp
+  (use-package company
+    :diminish
+    :config
+    (setq company-minimum-prefix-length 1
+          company-idle-delay 0.0))
+#+end_src
+
+** Haskell
+#+begin_src emacs-lisp
+  (use-package lsp-haskell)
+
+  (use-package haskell-mode
+    :hook
+    ((haskell-mode . interactive-haskell-mode)))
+#+end_src
+
+** /Proof General/
+I don't know how to do /Proof General/ through /use-package/.
+Install it manually.
+
+#+begin_src emacs-lisp
+  (setq proof-splash-enable nil) ; get your anime girl out of my face
+#+end_src
+
+** Coq
+#+begin_src emacs-lisp
+  (use-package company-coq
+    :diminish
+    :hook
+    ((coq-mode . company-coq-mode)))
+#+end_src
+
+** Rust
+#+begin_src emacs-lisp
+  (use-package rust-mode)
+#+end_src
+
+** Racket
+/racket-mode/ is a package that doesn't integrate with /lsp-mode/.
+But it works quite well. And I won't need to use DrRacket
+
+#+begin_src emacs-lisp
+  (use-package racket-mode
+    :init
+    (setq auto-mode-alist
+          (append
+           '(("\\.rkt\\'" . racket-mode))
+           auto-mode-alist))
+    :hook
+    ((racket-mode . racket-unicode-input-method-enable)
+     (racket-repl-mode . racket-unicode-input-method-enable)))
+
+#+end_src
+
+** Agda
+Agda is difficulty too.
+The [[https://plfa.github.io/GettingStarted/][PLFA Get Started]] chapter has instruction on installation.
+The following is portion of the setup that stays in the config file
+
+#+begin_src emacs-lisp
+  (load-file (let ((coding-system-for-read 'utf-8))
+               (shell-command-to-string "agda-mode locate")))
+
+  ;; auto-load agda-mode for .agda and .lagda.md
+  (setq auto-mode-alist
+        (append
+         '(("\\.agda\\'" . agda2-mode)
+           ("\\.lagda.md\\'" . agda2-mode))
+         auto-mode-alist))
+#+end_src
+
+** TeX
+
+*** /AucTeX/
+Emacs has some default TeX support.
+But AucTeX is better.
+
+#+begin_src emacs-lisp
+  (use-package tex
+  :ensure auctex
+  :hook
+  ((LaTeX-mode . visual-line-mode))
+  :config (setq TeX-auto-save t
+		TeX-parse-self t))
+#+end_src
+
+
+
+*** /latex-preview-pane/
+This package opens a side panel when editing LaTeX files, and auto recompile on save.
+However, the resolution is poor.
+Now I use the default preview coming with /AucTeX/.
+Activate the package if you wish
+
+#+begin_quote
+  (use-package latex-preview-pane
+    :diminish
+    :hook ((LaTeX-mode . latex-preview-pane-mode)))
+#+end_quote
+
+* Productivity                                                                        :Productivity:
+
+** /Org Mode/                                                                                   :Org:
+Perhaps the best thing about Emacs.
+Agenda, calender, todolist, all in one.
+
+*** Behaviour
+By default Org can be ugly.
+The following config does the following:
+- Line wrap when too long
+- Indent actual content for you
+- Normal texts are displaying using variable pitch face
+
+  #+begin_src emacs-lisp
+    (defun lemon/org-mode-setup ()
+      (visual-line-mode 1)
+      (org-indent-mode)
+      (variable-pitch-mode 1))
+  #+end_src
+
+*** Faces
+We want certain fonts to stand out, or be hidden, or have background
+
+#+begin_src emacs-lisp
+  (require 'org-indent) ; This is essential, or the face 'org-indent cannot be found
+
+  (defun lemon/org-font-setup ()
+    ;; Code block and inline code
+    (set-face-attribute 'org-code nil
+                        :inherit 'fixed-pitch
+                        :foreground "black"
+                        :background "LightGray")
+    ;; Normal block
+    (set-face-attribute 'org-block nil
+                        :inherit 'fixed-pitch
+                        :foreground "black"
+                        :background "LightGray")
+    ;; #+ started lines
+    (set-face-attribute 'org-meta-line nil
+                        :inherit 'fixed-pitch
+                        ;; :background "#EAEAFF"
+                        :foreground "#008ED1")
+    ;; Default Org indents should be hidden
+    (set-face-attribute 'org-indent nil
+                        :inherit '(org-hide fixed-pitch))
+    ;; Check box are now fixed pitch
+    (set-face-attribute 'org-checkbox nil
+                        :inherit 'fixed-pitch)
+    ;; Special keywords are now fixed pitch
+    (set-face-attribute 'org-special-keyword nil
+                        :inherit '(font-lock-comment-face fixed-pitch))
+    ;; Tables needs to be fixed pitch for lines to align
+    (set-face-attribute 'org-table nil
+                        :inherit 'fixed-pitch
+                        :background "#d6e4fc")
+    ;; Quotes now have a yellow background, like old paper
+    (set-face-attribute 'org-quote nil
+                        :foreground "black"
+                        :background "AntiqueWhite1")
+    ;; Block begin and ending are closer to white, less distracting
+    (set-face-attribute 'org-block-begin-line nil ;; <-- end line inherit this
+                        :inherit 'fixed-pitch
+                        :inherit 'default
+                        :foreground "Gray")
+    ;; Drawer are also less distracting now
+    (set-face-attribute 'org-drawer nil
+                        :inherit 'fixed-pitch
+                        :foreground "Gray")
+
+    ;; In variable pitch mode, line numbers are also variable pitch
+    ;; Reset to fixed pitch
+    (set-face-attribute 'line-number nil
+                        :inherit 'fixed-pitch)
+
+    ;; A weird setting
+    (setq org-fontify-quote-and-verse-blocks t))
+#+end_src
+
+The last line is a result of [[https://list.orgmode.org/orgmode/Ml33lIeToTUsXIzeVEIolD5SsK-HJ0yrdPgOMr2N9WrldhU72LtjnGjehgViKAjMOgN5IAwM5Tx5TfCJlRBrTfnGnxqpuhy3-lEbUNycPMY=@williamdenton.org/][this]]
+
+*** Appearance
+There are more to appearance than faces and font.
+
+**** Centred Text
+By default, Org mode lines will be left aligned.
+But we make it centred.
+Better reading experience.
+
+#+begin_src emacs-lisp
+  (defun lemon/org-mode-visual-fill ()
+    (setq visual-fill-column-width 120
+          visual-fill-column-center-text t)
+    (visual-line-fill-column-mode 1))
+
+  (use-package visual-fill-column
+    :hook (org-mode . lemon/org-mode-visual-fill))
+#+end_src
+
+**** General Appearances
+We want to hide as much distraction, gives us better literary programming experience.
+WYSIWYG
+
+#+begin_src emacs-lisp
+  (defun lemon/org-appearance-setup ()
+    ;; One show one star for headline
+    ;; Indentation from org-indent-mode will handle depth
+    (setq org-hide-leading-stars t)
+    ;; Render superscript, subscript, special symbols
+    (setq org-pretty-entities t)
+    ;; Bold, italic, etc. are rendered as such, WYSIWYG
+    (setq org-fontify-emphasized-text t)
+    ;; Hiding the *...*, /.../ end markers
+    ;; But will be harder to edit
+    ;; (setq org-hide-emphasis-markers t)
+
+    ;; Highlight LaTeX
+    (setq org-highlight-latex-and-related '(latex))
+    ;; Use with 
+    (setq org-tags-column -100))
+#+end_src
+
+*** Task Management
+Org's TODO list is great.
+It would be better if there are more tags.
+
+#+begin_src emacs-lisp
+  (defun lemon/org-todo-setup ()
+    ;; Add keywords
+    (setq org-todo-keywords
+          '((sequence "TODO(t)" "IDEA(i)" "PROG(p)" "READ(r)" "WONDER(w)" "CHECK(c)" "|" "DONE(d)")
+            (sequence "BLOCKED(l)" "BACKLOG(b)" "|" "CANCELED(x)")))
+
+    ;; Customize keywords
+    (setq org-todo-keyword-faces
+          '(("IDEA" :inherit 'org-todo :foreground "gold2")
+            ("PROG" :inherit 'org-todo :foreground "gold2")
+            ("READ" :inherit 'org-todo :foreground "gold2")
+            ("CHECK" :inherit 'org-todo :foreground "gold2")
+            ("WONDER" :inherit 'org-todo :foreground "gold2")
+            ("BLOCKED" :inherit 'org-todo :foreground "gold2")
+            ("BACKLOG" :inherit 'org-todo :foreground "SteelBlue")
+            ("CANCELED" :inherit 'org-todo :foreground "CadetBlue")))
+
+    ;; Log time on DONE
+    (setq org-log-done 'time))
+#+end_src
+
+*** Agenda
+Agenda is a way to overview all the tasks.
+By default, it shows 7 days, but we might want more.
+
+#+begin_src emacs-lisp
+  (defun lemon/org-agenda-setup ()
+  (setq org-agenda-span 14))
+#+end_src
+
+*** Activation
+We wrap all the configuration together now.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :hook
+    ((org-mode . lemon/org-mode-setup)
+     (org-mode . flyspell-mode)))
+
+  (lemon/org-appearance-setup)
+  (lemon/org-font-setup)
+  (lemon/org-todo-setup)
+  (lemon/org-agenda-setup)
+#+end_src
+
+** Presentation                                                                      :Presentation:
+We use Org mode to do simple presentations.
+
+#+begin_src emacs-lisp
+  (use-package org-tree-slide
+    :custom (org-image-actual-width nil))
+#+end_src
+
