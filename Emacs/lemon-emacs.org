@@ -4,22 +4,218 @@
 
 Here you can find my Emacs configuration.
 
+* Dependencies / Prerequisites
+I try to document this configuration file to a good extend,
+this way you can pick and choose the parts you want.
+Maybe the configuration throws a bug for a feature you never use.
+In which case hopefully you can find the related configuration and just throw it out.
+
+However, if you want the same environment as I do, here is how you should set up your machine.
+
+** Fonts
+:PROPERTIES:
+:CUSTOM_ID: dependency-fonts
+:END:
+You will need two fonts
+
+#+begin_quote
+*WARNING*:
+It seems the font name can be different based on the platform.
+Edit [[#emacs-faces][setting for faces]] to match the font name
+#+end_quote
+
+*** [[https://www.jetbrains.com/lp/mono/][JetBrain Mono]]
+This is a mono-width font for programmers, with Ligature support
+You can find the download [[https://www.jetbrains.com/lp/mono/][here]]
+
+*** [[https://typeof.net/Iosevka/][Iosevka]]
+This is also a font with Ligature support.
+
+You can find the download [[https://typeof.net/Iosevka/][here]].
+
+For some reason the ligature I want doesn't work well on small font size,
+so I only activated it for the variable-width version in Org text mode.
+
+**** Customization *(Optional)*
+
+You can also customize it:
+- [[https://typeof.net/Iosevka/customizer][Visual customizer that generates the specifications]]
+- [[https://github.com/be5invis/Iosevka/blob/main/doc/custom-build.md][Instruction for generating custom font]]
+
+The font generation also have dependencies:
+- [[#dependency-nodejs][Node.js]] :: Code for font generation
+- [[https://freetype.org/ttfautohint/#download][ttfautohint]] :: Tool for font generation. You might be able to find it in your package manager. Otherwise, there is direct ~.exe~ executable for Windows
+
+** Languages
+
+*** [[https://www.haskell.org/][Haskell]]
+:PROPERTIES:
+:CUSTOM_ID: dependency-haskell
+:END:
+[[https://en.wikipedia.org/wiki/Haskell][A purely functional programming language]].
+Influential and well-known for some groups of people.
+[[http://james-iry.blogspot.com/2009/05/brief-incomplete-and-mostly-wrong.html]["A monad is just a monoid in the category of endofunctors, what's the problem?"]]
+
+**** [[https://www.haskell.org/ghcup/][GHCup]]
+My recommended installation method.
+Easy to use, handled many aspects of Haskell
+
+You can find installation instructions [[https://www.haskell.org/ghcup/][here]].
+
+Some of the software GHCup can help manage:
+- GHC :: Compiler
+- HLS :: Language server
+- stack :: Project manager
+- cabal :: Package manager
+
+**** Other Installation Methods
+I did not try these methods, but they are worth a try:
+- You might be able to find on your package manager
+- You can go directly to the [[https://www.haskell.org/ghc/download.html][source]]
+- You can try install through [[https://docs.haskellstack.org/en/stable/][stack]]
+
+*** [[https://www.rust-lang.org/][Rust]]
+[[https://en.wikipedia.org/wiki/Rust_(programming_language)][A safe, low-level programming language.]]
+A safe C.
+
+**** Official Installation Method
+The official install is quite solid, you can find it on the [[https://www.rust-lang.org/][homepage]], under [[https://www.rust-lang.org/tools/install][a tab]].
+
+**** [[https://rust-analyzer.github.io/][rust-analyzer]]
+/rust-analyzer/ is a language server that provides a huge amount of information about your Rust program.
+
+It is used by [[#emacs-lsp-mode][lsp-mode]]
+
+Installation details:
+1. Make sure ~rustup~ is usable in CLI. If you installed Rust using official method, you will likely have it.
+2. You can add /rust-analyzer/ as a [[https://rust-lang.github.io/rustup/concepts/components.html][component]] using ~rustup~.
+3. [[https://rust-analyzer.github.io/manual.html#installation][rust-analyzer also need the source code of Rust]], you should add it as a component.
+
+Hopefully the install will be more mainstream in the future
+
+**** Other Installation Methods
+- Some package managers can install Rust
+  
+*** [[https://racket-lang.org/][Racket]]
+[[https://en.wikipedia.org/wiki/Racket_(programming_language)][A functional programming language]] from the [[https://en.wikipedia.org/wiki/Scheme_(programming_language)][Scheme]] / [[https://en.wikipedia.org/wiki/Lisp_(programming_language)][Lisp]] family
+
+**** Package Manager
+Manjaro's package manager, ~pacman~, came with a pretty up to date version of Racket.
+So I used that, which comes with:
+- ~raco~ :: Package manager
+- DrRacket  :: Racket's official editor
+  
+**** Other Installation Methods
+You can find some recommended installation on [[https://racket-lang.org/][the official website]]:
+- Windows :: I used an installer from [[https://download.racket-lang.org/][the official website]]
+  
+*** [[https://ocaml.org/][OCaml]] *(Indirectly Required)*
+:PROPERTIES:
+:CUSTOM_ID: dependency-ocaml
+:END:
+[[https://en.wikipedia.org/wiki/OCaml][A industry-ready functional programming language]].
+
+It is used by [[#dependency-coq][Coq]].
+
+**** Official Installation Methods
+You can find the official installation methods [[https://ocaml.org/docs/installing-ocaml][here]].
+It will by extension install the ~opam~ package manager
+
+I used the ~pacman~ package manager
+
+*** [[https://coq.inria.fr/][Coq]]
+:PROPERTIES:
+:CUSTOM_ID: dependency-coq
+:END:
+[[https://en.wikipedia.org/wiki/Coq_(software)][A battle-/proven/ proof assistant]].
+
+It is used by [[#emacs-proof-general][Proof General]]
+
+**** My Installation Method
+I used ~opam~ to install Coq.
+You can find the instruction [[https://coq.inria.fr/opam-using.html][here]].
+
+**** Official Installation Methods
+There are other recommended ways to install Coq.
+You can find them [[https://coq.inria.fr/download][here]].
+
+Unfortunately I did not try them
+
+*** [[https://wiki.portal.chalmers.se/agda/pmwiki.php][Agda]]
+:PROPERTIES:
+:CUSTOM_ID: dependency-agda
+:END:
+[[https://en.wikipedia.org/wiki/Agda_(programming_language)][A functional proof assistant]]. The language that truly representing the /Curry/ in [[https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence][Curry-Howard]].
+
+**** My Installation Method
+I followed the [[https://plfa.github.io/GettingStarted/][Getting Started]] chapter of [[https://plfa.github.io/][Programming Language Foundations in Agda]].
+It also includes some setup advice for Emacs
+
+You can find the installation guide [[https://plfa.github.io/GettingStarted/][here]].
+
+*** [[https://tug.org/][TeX]] / [[https://www.latex-project.org/][LaTeX]]
+:PROPERTIES:
+:CUSTOM_ID: dependency-tex
+:END:
+Donald Knuth's legacy, perhaps the best [[https://en.wikipedia.org/wiki/TeX][typesetting program]] ever.
+(Slowly overtaken by [[https://github.com/typst/typst][Typst]], also [[https://orgmode.org/][Org]] is pretty solid)
+
+**** My Installation Method
+I actually lost my installation method, but tracking my opened links, I think I followed the following guide:
+
+[[https://www.tug.org/texlive/quickinstall.html][TeX Live - Quick Install for Unix]]
+
+The installation was very long, take your time.
+
+*** [[https://nodejs.org/en][Node.js]] *(Optional)*
+:PROPERTIES:
+:CUSTOM_ID: dependency-nodejs
+:END:
+[[https://en.wikipedia.org/wiki/Node.js][Love it or hate it]], [[https://en.wikipedia.org/wiki/Jeff_Atwood][you will use it...]]
+
+Try your package manager first (Manjaro has version 18, 20).
+Then try [[https://nodejs.org/en][official website]].
+
+**** nvm
+Unfortunately Node version is messy that people have to develop their own version manager.
+
+You can find the repository [[https://github.com/nvm-sh/nvm][here]]
+
+* Preparing To Load Emacs
+
+** Manual Install Ahead
+:PROPERTIES:
+:CUSTOM_ID: emacs-manual-install
+:END:
+
+A few features don't use /use-package/ and need manual installation:
+- Proof General :: Installation guide [[https://proofgeneral.github.io/][here]]
+- Agda :: Emacs setup can be found latter half [[https://plfa.github.io/GettingStarted/][here]]
+  
+** General Guide
 To use this file directly:
 - Create a file ~~/.emacs.d/init.el~
 - Put the following in the ~init.el~ file:
-  #+begin_quote
+  #+begin_src
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                            ("org" . "https://orgmode.org/elpa/")
                            ("elpa" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
 
-  ;; Install Proof General before you add the following line
+  ;; Get Proof-General and Agda mode working before adding the following line
   (org-babel-load-file "~/.emacs.d/lemon-emacs.org")
-  #+end_quote
-- Place this file in ~~/.emacs.d/~ also
+  #+end_src
+- Place this ~.org~ file in ~~/.emacs.d/~ also
 - Launch Emacs
 
+** Troubleshooting
+
+*** Font Not Loading
+Refer to [[#dependency-fonts][earlier]].
+
+*** Proof General / Agda Giving Errors
+Refer to [[#emacs-manual-install][earlier]]
 
 * Config for Config 
 We will get some basic configurations to streamline the configuration process
@@ -30,7 +226,7 @@ I forgot what this does:
     (package-refresh-contents))
 #+end_src
 
-** /use-package/
+** [[https://jwiegley.github.io/use-package/][/use-package/]]
 /use-package/ will streamline the package installation and configuration process.
 We can group configurations together
 
@@ -42,6 +238,8 @@ We will also make sure the package is always downloaded.
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)
 #+end_src
+
+You can find the source code [[https://github.com/jwiegley/use-package][here]].
 
 ** /diminish/
 Minor mode can junk up the mode line.
@@ -93,6 +291,8 @@ as I type in the minibuffer.
     (counsel-mode 1))
 #+end_src
 
+You can find the source code [[https://github.com/abo-abo/swiper][here]], and documentation [[https://oremacs.com/swiper/][here]]
+
 ** Position in File
 Some people don't like it.
 But I do.
@@ -113,11 +313,19 @@ But I do.
   (put 'dired-find-alternate-file 'disabled nil) 
 #+end_src
 
-* Face / Font                                                                                :Faces:
-Emacs calls the text display /face/.
+* Faces / Fonts *(Breakable with bad dependency)*                                            :Faces:
+:PROPERTIES:
+:CUSTOM_ID: emacs-faces
+:END:
+In Emacs, /face/ means the properties of a displayed text.
 
-** General Face
+** General Faces *(Breakable with bad dependency)*
 I have some favourite fonts, which I will configure here.
+
+#+begin_quote
+*WARNING*
+This part is breakable if you didn't install the [[#dependency-fonts][fonts from dependency]].
+#+end_quote
 
 *** Default Face
 JetBrains Mono is a very solid font
@@ -129,12 +337,12 @@ JetBrains Mono is a very solid font
 #+end_src
 
 I also suggest Iosevka, but it seems to not display well for small fonts.
-#+begin_quote
+#+begin_src
   (set-face-attribute 'default nil
                       :family "IosevkaCustom"
                       :width 'expanded
                       :overline nil)
-#+end_quote
+#+end_src
 
 *** Fixed Pitch Face
 This is for mono-width faces.
@@ -152,7 +360,7 @@ This is for normal faces. It is potentially useful for a read-heavy format, such
                       :family "IosevkaEtoile")
 #+end_src
 
-** Ligature
+** [[https://github.com/mickeynp/ligature.el][Ligature.el]]
 [[https://en.wikipedia.org/wiki/Ligature_(writing)][Ligature]] is when adjacent letters are rendered together as one entity.
 
 #+begin_src emacs-lisp
@@ -217,7 +425,12 @@ This is for normal faces. It is potentially useful for a read-heavy format, such
     (global-ligature-mode 't))
 #+end_src
 
-** Agda Face
+  
+** Agda Face *(Breakable with bad dependency)*
+#+begin_quote
+*WARNING*: This part is really breakable if you didn't [[#dependency-agda][setup Agda]] properly
+#+end_quote
+
 Agda has a recommended face.
 We setup that face to be only active in Agda mode
 
@@ -233,14 +446,12 @@ We setup that face to be only active in Agda mode
   (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
 #+end_src
 
-
-
-* Languages Setup                                                                        :Languages:
+* Languages Setup *(Breakable with bad dependency)*                                      :Languages:
 
 ** Universal Configurations                                                             :Universal:
 
-*** /flycheck/
-/flycheck/ is a universal syntax checker.
+*** [[https://www.flycheck.org/en/latest/][/flycheck/]]
+[[https://www.flycheck.org/en/latest/][/flycheck/]] is a universal syntax checker.
 It supports many languages out of the box, and seems to be better than the /flymake/ that comes by default with Emacs.
 
 #+begin_src emacs-lisp
@@ -248,8 +459,14 @@ It supports many languages out of the box, and seems to be better than the /flym
   :ensure t)
 #+end_src
 
-*** /lsp-mode/
-/lsp-mode/ provides a way to integrates Language Server with Emacs, and works out of the box for many languages.
+This package is the recommended syntax checker for [[#emacs-lsp-mode][/lsp-mode/]].
+
+*** [[https://emacs-lsp.github.io/lsp-mode/][/lsp-mode/]]
+:PROPERTIES:
+:CUSTOM_ID: emacs-lsp-mode
+:END:
+
+[[https://emacs-lsp.github.io/lsp-mode/][/lsp-mode/]] provides a way to integrates Language Server with Emacs, and works out of the box for many languages.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -264,7 +481,13 @@ It supports many languages out of the box, and seems to be better than the /flym
     (lsp lsp-deferred))
 #+end_src
 
-*** /company/
+The documentation is heavy, I have a few suggested reads:
+- [[https://emacs-lsp.github.io/lsp-mode/page/main-features/][Main features]]
+- [[https://emacs-lsp.github.io/lsp-mode/page/installation/#use-package][Install using /use-package/]]
+- [[https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/][Rust setup]]
+- [[https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/][En/disabling features]]
+
+*** [[https://company-mode.github.io/][/company-mode/]]
 /company/ provides completion suggestions.
 
 #+begin_src emacs-lisp
@@ -275,7 +498,16 @@ It supports many languages out of the box, and seems to be better than the /flym
           company-idle-delay 0.0))
 #+end_src
 
+[[#emacs-lsp-mode][/lsp-mode/]] uses this to autocomplete.
+However, everywhere else you need to manually activate with ~M-x company-mode~
+
+You can find the source code [[https://github.com/company-mode/company-mode][here]].
+
 ** Haskell
+Mostly just hooking up to [[#emacs-lsp-mode][/lsp-mode/]].
+You can find related manual here:
+- [[http://haskell.github.io/haskell-mode/manual/latest/][/haskell-mode/]] :: Provides access to REPL, editing shortcut, other quality of life
+
 #+begin_src emacs-lisp
   (use-package lsp-haskell)
 
@@ -284,15 +516,31 @@ It supports many languages out of the box, and seems to be better than the /flym
     ((haskell-mode . interactive-haskell-mode)))
 #+end_src
 
-** /Proof General/
+Make sure you have [[#dependency-haskell][HLS installed]].
+
+** [[https://proofgeneral.github.io/][/Proof General/]] *(Breakable with bad dependency)*
+:PROPERTIES:
+:CUSTOM_ID: emacs-proof-general
+:END:
+
+Used by many proof assistants.
+
+#+begin_quote
+*WARNING*:
+This part is breakable if you don't have Proof General installed
+#+end_quote
+
 I don't know how to do /Proof General/ through /use-package/.
-Install it manually.
+[[#emacs-manual-install][Install it manually]].
 
 #+begin_src emacs-lisp
   (setq proof-splash-enable nil) ; get your anime girl out of my face
 #+end_src
 
 ** Coq
+
+[[https://github.com/cpitclaudel/company-coq][/company-coq/]] gives us completion support for Coq
+
 #+begin_src emacs-lisp
   (use-package company-coq
     :diminish
@@ -301,13 +549,19 @@ Install it manually.
 #+end_src
 
 ** Rust
+
+Not going to lie, I forgot why you need to manually add [[https://github.com/rust-lang/rust-mode][/rust-mode/]]...
+
 #+begin_src emacs-lisp
   (use-package rust-mode)
 #+end_src
 
 ** Racket
-/racket-mode/ is a package that doesn't integrate with /lsp-mode/.
-But it works quite well. And I won't need to use DrRacket
+[[https://racket-mode.com/][/racket-mode/]] is a package that doesn't integrate with /lsp-mode/.
+But it works quite well:
+- REPL integration
+- Syntax highlight
+- No need for DrRacket
 
 #+begin_src emacs-lisp
   (use-package racket-mode
@@ -341,7 +595,7 @@ The following is portion of the setup that stays in the config file
 
 ** TeX
 
-*** /AucTeX/
+*** [[https://www.gnu.org/software/auctex/][/AucTeX/]]
 Emacs has some default TeX support.
 But AucTeX is better.
 
@@ -354,23 +608,21 @@ But AucTeX is better.
 		TeX-parse-self t))
 #+end_src
 
-
-
-*** /latex-preview-pane/
+*** [[https://github.com/jsinglet/latex-preview-pane][/latex-preview-pane/]]
 This package opens a side panel when editing LaTeX files, and auto recompile on save.
 However, the resolution is poor.
 Now I use the default preview coming with /AucTeX/.
 Activate the package if you wish
 
-#+begin_quote
+#+begin_src
   (use-package latex-preview-pane
     :diminish
     :hook ((LaTeX-mode . latex-preview-pane-mode)))
-#+end_quote
+#+end_src
 
 * Productivity                                                                        :Productivity:
 
-** /Org Mode/                                                                                   :Org:
+** [[https://orgmode.org/][/Org Mode/]]                                                                                 :Org:
 Perhaps the best thing about Emacs.
 Agenda, calender, todolist, all in one.
 
@@ -446,7 +698,7 @@ We want certain fonts to stand out, or be hidden, or have background
     (setq org-fontify-quote-and-verse-blocks t))
 #+end_src
 
-The last line is a result of [[https://list.orgmode.org/orgmode/Ml33lIeToTUsXIzeVEIolD5SsK-HJ0yrdPgOMr2N9WrldhU72LtjnGjehgViKAjMOgN5IAwM5Tx5TfCJlRBrTfnGnxqpuhy3-lEbUNycPMY=@williamdenton.org/][this]]
+The last line is needed as a result of [[https://list.orgmode.org/orgmode/Ml33lIeToTUsXIzeVEIolD5SsK-HJ0yrdPgOMr2N9WrldhU72LtjnGjehgViKAjMOgN5IAwM5Tx5TfCJlRBrTfnGnxqpuhy3-lEbUNycPMY=@williamdenton.org/][this]]
 
 *** Appearance
 There are more to appearance than faces and font.
