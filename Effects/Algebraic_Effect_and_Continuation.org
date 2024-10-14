@@ -80,7 +80,7 @@ Coq also accepts the definition:
     | op i p k => op i p (fun a => lifting X Y param_map arity_map f (k a))
     end.
 #+end_src
-In particular, we can specialize M to Tree_\Sigma(Y) for the same tree, and consider some f : X \to Tree_\Sigma(Y),
+In particular, we can specialize M to Tree_\Sigma(Y) for the same signature, and consider some f : X \to Tree_\Sigma(Y),
 Such f get can get lifted to $\overline{f}$ : Tree_\Sigma(X) \to Tree_\Sigma(Y).
   
 ** Pushing Continuation In
