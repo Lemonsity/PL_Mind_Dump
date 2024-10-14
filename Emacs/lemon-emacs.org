@@ -1,5 +1,6 @@
 #+TITLE: Lemon's Emacs Configuration
 #+AUTHOR: Lemon
+#+STARTUP: content
 
 Here you can find my Emacs configuration.
 
@@ -54,6 +55,17 @@ To use /diminish/ with /use-package/, add ~:diminish~ to hide a package (But, so
 
 * Emacs Configuration
 
+** General Appearance
+We customize some appearance to:
+- Remove menu bar on top
+- Add visual cue to bad input
+
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (setq visible-bell t)
+#+end_src
+
 ** Minibuffer Completion
 Minibuffer by default is very minimal.
 It would be nice if we can get
@@ -88,6 +100,7 @@ But I do.
 #+begin_src emacs-lisp
   (setq column-number-mode t)
   (setq display-line-numbers t)
+  (global-display-line-numbers-mode 1)
 #+end_src
 
 ** /Dired/ Mode
