@@ -10,3 +10,7 @@
   - But one may not find use for it
 - It may be valuable to open up / explore the middle ground between purely theoretical and practical
   - Of course this won't be easy either, but it is an area to consider
+
+* How to Read with Purpose?
+
+* How to Evaluate Soundness of the Result?
