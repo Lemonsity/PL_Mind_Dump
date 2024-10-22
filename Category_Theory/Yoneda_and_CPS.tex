@@ -1,0 +1,181 @@
+% Created 2024-10-22 Tue 02:10
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{xypic}
+\date{\today}
+\title{Yoneda and CPS}
+\hypersetup{
+ pdfauthor={},
+ pdftitle={Yoneda and CPS},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.4 (Org mode 9.6.15)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+This is a note based on a short conversation with \href{https://bartoszmilewski.com/}{Bartosz Milewski} at ICFP 2024.
+Bartosz Milewski is the author of \href{https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/}{Category Theory for Programmers}.
+I am grateful for his kindness and the short conversation.
+
+\section{Why I am Writing This}
+\label{sec:org0ab80d1}
+While at ICFP 2024, I asked Bartosz: "How is Yoneda Lemma used in the field of programming language".
+I got an answer along the line of:
+\begin{quote}
+Apply Yoneda Lemma to the identity functor gives you CPS
+\end{quote}
+
+I shall attempt to illustrate my understanding of this concept
+
+\section{Background and Setup}
+\label{sec:orgb8d5dd3}
+
+\subsection{Yoneda Lemma}
+\label{sec:org77c9f61}
+We shall take Yoneda lemma for granted, which is stated as follow:
+
+\[\forall F : \mathsf C \to \mathsf{Set} \,.\,  \operatorname{Hom}(\mathsf C (c, {-}), F) \cong F c \]
+
+\subsubsection{Meaning of the Symbols}
+\label{sec:orgb044529}
+\begin{description}
+\item[{\(\mathsf C\)}] A locally small category
+\item[{\(c\)}] An object in \(\mathsf C\)
+\item[{\(F\)}] A normal (a.k.a covariant) functor of the type C \(\to\) Set
+\item[{\(\operatorname{Hom}(F, G)\)}] The collection of natural transformations from functor \(F\) to functor \(G\)
+\item[{\(F c\)}] The image of object \(c \in \mathsf C\) mapped by \(F\)
+\item[{\(\cong\)}] Set isomorphism
+\end{description}
+
+\subsection{Category of Types}
+\label{sec:org14e0e08}
+We make the assumption the reader is familiar with the concept of "category of types"
+(Those without can refer to Steve Awodey's Textbook (Awodey, Steve, 2010), Chapter 6, Section 6)
+
+We shall denote a category of types as \(\mathsf C (\lambda)\)
+
+\emph{I also made the assumption that each type is concretely represented by a set of expressions with that type.}
+
+I think this is needed to make the "identity functor" part make sense
+
+\subsection{Natural Transformation in the Context of Category of Types}
+\label{sec:orgc7ca5b7}
+
+\textbf{WARNING: For this section, I only have intuition, I very much may explain things wrong. I recommend reading more from more experienced people}
+\begin{itemize}
+\item \href{https://bartoszmilewski.com/2014/09/22/parametricity-money-for-nothing-and-theorems-for-free/}{Bartosz's own blog}
+\item \emph{Theorems for Free} by Philip Wadler (Wadler, Philip, 1989)
+\item \emph{Types, Abstraction and Parametric Polymorphism} by John C. Reynolds
+\end{itemize}
+
+Intuitively, a parametric function of the type \texttt{forall a . F a} is:
+
+\begin{center}
+A collection of functions, one for each type
+\end{center}
+
+This definition is similar to the definition of natural transformation:
+
+\begin{center}
+A collection of morphism, one for each object
+\end{center}
+
+I believe, a parametric polymorphic function of the type \texttt{forall a . F a \textbackslash{}to G a} is in fact, a natural transformation between functor \texttt{F, G}
+
+\section{Main Theorem}
+\label{sec:orgbb482da}
+
+Let us instantiate Yoneda Lemma with:
+\begin{itemize}
+\item \(\mathsf C = \mathsf C (\lambda)\)
+\item \(F = I\)
+\item \(c = A\) for some type \(A\)
+\end{itemize}
+
+Our isomorphism now becomes
+
+\[\operatorname{Hom}(\mathsf C (\lambda) (A, {-}), I) \cong I A = A \]
+
+\subsection{RHS}
+\label{sec:org1dd8122}
+On the RHS, we have a type \(A\), which is the set of all the expressions of type \(A\)
+
+\subsection{LHS}
+\label{sec:org2f2fb4e}
+Consider an arbitrary natural transformation \(\alpha\) in \(\operatorname{Hom}(\mathsf C (\lambda) (A, {-}), I)\)
+We have the following commutative diagram w.r.t \(\alpha\)
+
+\begin{equation*}
+\xymatrix{
+\carrier{\mathsf C (\lambda) (A, B)}
+\ar[r]^{\alpha_B}^{}
+\ar[d]^{f_*}
+&
+\carrier{B}
+\ar[d]^{If}
+\\
+\carrier{\mathsf C (\lambda) (A, C)}
+\ar[r]^{\alpha_C}^{}
+&
+\carrier{C}
+}
+\end{equation*}
+
+We now notice:
+\begin{itemize}
+\item \(\mathsf C (\lambda) (A, B)\) in the category of types is functions of type \(A \to B\). (This is also the exponential \(B^A \in \mathsf C(\lambda)\))
+\end{itemize}
+
+Thus we get:
+
+\begin{equation*}
+\xymatrix{
+\carrier{(A \to B)}
+\ar[r]^{\alpha_B}^{}
+\ar[d]^{f_*}
+&
+\carrier{B}
+\ar[d]^{If}
+\\
+\carrier{(A \to C)}
+\ar[r]^{\alpha_C}^{}
+&
+\carrier{C}
+}
+\end{equation*}
+
+Thus each component of \(\alpha\) has type:
+
+\[ \alpha_b : (A \to b) \to b \]
+
+Consider \(\alpha\) as a collection of functions, we get
+
+\[\alpha : \forall b \,.\, (A \to b) \to b\]
+
+Which is the type of CPS.
+
+\subsection{Isomorphism}
+\label{sec:orgc883ade}
+Bringing back isomorphism between LHS and RHS, we get:
+
+\begin{center}
+The collection of CPS functions of type
+\[\forall b \,.\, (A \to b) \to b\] 
+is isomorphic to the collection of expressions of type
+\[A\]
+\end{center}
+\end{document}
