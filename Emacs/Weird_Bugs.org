@@ -1,0 +1,4 @@
+* Org Mode
+
+** Caption uses ~org-block~ face
+https://mail.gnu.org/archive/html/emacs-orgmode/2024-03/msg00206.html
