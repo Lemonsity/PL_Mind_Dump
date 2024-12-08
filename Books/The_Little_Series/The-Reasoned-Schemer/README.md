@@ -2,7 +2,7 @@
 
 This directory contains the notes I took for *The Reasoned Schemer (1st Edition 2005)*
 
-The book is out of date, and as of time of writing this (2024), the latest version is *2nd Edition (2018)*
+The book is out of date, and as of the time of writing this (2024), the latest version is *2nd Edition (2018)*
 
 You can find the implementations in the books here:
 - [1st Edition](https://github.com/miniKanren/TheReasonedSchemer/)
@@ -23,6 +23,6 @@ If you are reading the 1st Edition, but using implementation closer to the 2nd E
 I haven't read the 2nd Edition as the time of writing this, but I suspect it is unlikely you will encounter similar issue. I started reading while using the [canonical version of miniKanren ported to Racket](https://github.com/miniKanren/Racket-miniKanren), and I realize the `conde` in there secretly does interleaving, which I believe is what the 2nd Edition does.
 
 ## My Opinions
-I like the implementation of `conde` from the [canonical version](https://github.com/miniKanren/miniKanren) better. Interleaving guarantee discovery. If we think of each branch of `conde` as a thread, interleaving is similar to the `no staring` concept from operating systems.
+I like the implementation of `conde` from the [canonical version](https://github.com/miniKanren/miniKanren) better. Interleaving guarantees discovery. If we think of each branch of `conde` as a thread, interleaving is similar to the `no starving` concept from operating systems.
 
-However, I disagree with replacing `conde` from the 1st Edition. It does make the language much simplier, but it also limit my control over the program behaviour. `conde` also more closely resemble the behaviour of Prolog, which might help get people with Prolog experience onboard
+However, I disagree with replacing `conde` from the 1st Edition. It does make the language much simpler, but it also limits my control over the program behaviour. `conde` from 1st edition also more closely resembles the behaviour of Prolog, which might help get people with Prolog experience onboard
