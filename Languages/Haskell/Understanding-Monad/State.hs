@@ -25,7 +25,7 @@ instance Functor (State s) where
   fmap = liftM
 
 instance Applicative (State s) where
-  pure = return
+  pure = return 
   (<*>) = ap
 
 instance Monad (State s) where
@@ -44,7 +44,6 @@ evalState p sInit = fst (runState p sInit)
 -- Only return the new state
 execState :: State s a -> s -> s
 execState p sInit = snd (runState p sInit)
-
 
 {- Setting State in Testing -}
 put :: s -> State s ()

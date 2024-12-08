@@ -1,4 +1,4 @@
-#+STARTUP: content
+
 #+bibliography: "../References/PL/Effects/Effect_Handlers/Ref.bib"
 #+LATEX_HEADER: \usepackage{xypic}
 
