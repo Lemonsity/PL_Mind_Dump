@@ -15,106 +15,128 @@ Proof.
   - apply ReflectF. unfold not. rewrite <- H. intros contra. discriminate contra.
 Qed.
 
-Module WFF.
   
-  Inductive wff : Type :=
-  | var (n : nat)
-  | negate (a : wff)
-  | implies (a : wff) (b : wff).
+Inductive wff : Type :=
+| var (n : nat)
+| negate (a : wff)
+| implies (a : wff) (b : wff).
 
-  Definition is_implies_bool (a : wff) : bool :=
-    match a with
-    | implies _ _ => true
-    | _ => false
-    end.
+Definition is_implies_bool (a : wff) : bool :=
+  match a with
+  | implies _ _ => true
+  | _ => false
+  end.
 
-  Definition is_implies_prop (a : wff) : Prop :=
-    exists (a' b' : wff) , a = implies a' b'.
+Definition is_implies_prop (a : wff) : Prop :=
+  exists (a' b' : wff) , a = implies a' b'.
 
-  Theorem deconstruct_implies : forall (a : wff) ,
-      is_implies_bool a = true
-      <-> is_implies_prop a.
-  Proof.
-    intros a.
-    split.
-    { (* -> *)
-      intros a_is_implies.
-      destruct a as [n | a' | a' b'] eqn:E.
-      - simpl in a_is_implies. discriminate a_is_implies. (* Variable *)
-      - simpl in a_is_implies. discriminate a_is_implies. (* Negation *)
-      - exists a', b'. reflexivity. (* Implication *)
+Theorem deconstruct_implies : forall (a : wff) ,
+    is_implies_bool a = true
+    <-> is_implies_prop a.
+Proof.
+  intros a.
+  split.
+  { (* -> *)
+    intros a_is_implies.
+    destruct a as [n | a' | a' b'] eqn:E.
+    - simpl in a_is_implies. discriminate a_is_implies. (* Variable *)
+    - simpl in a_is_implies. discriminate a_is_implies. (* Negation *)
+    - exists a', b'. reflexivity. (* Implication *)
+  }
+  { (* <- *)
+    intros witness.
+    destruct witness as [a' [b' P]].
+    rewrite -> P. simpl. reflexivity.
+  }
+Qed.
+
+Fixpoint eqb (a b : wff) : bool :=
+  match a, b with
+  | var n, var m => n =? m
+  | negate a, negate a' => eqb a a'
+  | implies a b, implies a' b' => eqb a a' && eqb b b'
+  | _, _ => false
+  end.
+
+Theorem eqb_refl : forall (a : wff) , eqb a a = true.
+Proof.
+  intros a.
+  induction a as [ n | a' IH | l IH_l r IH_r].
+  - apply PeanoNat.Nat.eqb_refl.
+  - simpl. apply IH.
+  - simpl. rewrite -> IH_l. rewrite -> IH_r. reflexivity.
+Qed.
+
+Theorem same_wff_bool_iff_prop : forall (a b : wff) ,
+    eqb a b = true <-> a = b.
+Proof.
+  intros a b. split.
+  { (* -> *)
+    generalize dependent b.
+    induction a as [ n | a' IH_neg | l_a IH_l r_a IH_r ].
+    { intros b.
+      destruct b as [m | b' | l_b r_b ] eqn:Eb.
+      - simpl.
+        rewrite -> (PeanoNat.Nat.eqb_eq n m).
+        intros n_eq_m.
+        rewrite -> n_eq_m.
+        reflexivity.
+      - simpl. intros contra. discriminate contra.
+      - simpl. intros contra. discriminate contra.
     }
-    { (* <- *)
-      intros witness.
-      destruct witness as [a' [b' P]].
-      rewrite -> P. simpl. reflexivity.
+    { intros b.
+      destruct b as [m | b' | l_b r_b ] eqn:Eb.
+      - simpl. intros contra. discriminate contra.
+      - simpl.
+        intros a'_eqb_b'.
+        rewrite -> (IH_neg b' a'_eqb_b').
+        reflexivity.
+      - simpl. intros contra. discriminate contra.
     }
-  Qed.
-
-  Fixpoint same_wff_bool (a b : wff) : bool :=
-    match a, b with
-    | var n, var m => n =? m
-    | negate a, negate a' => same_wff_bool a a'
-    | implies a b, implies a' b' => same_wff_bool a a' && same_wff_bool b b'
-    | _, _ => false
-    end.
-
-  Definition same_wff_prop (a b : wff) : Prop :=
-    a = b.
-
-  Theorem eqb_refl : forall (a : wff) , same_wff_bool a a = true.
-  Proof.
-    intros a.
-    induction a as [ n | a' IH | l IH_l r IH_r].
-    - apply PeanoNat.Nat.eqb_refl.
-    - simpl. apply IH.
-    - simpl. rewrite -> IH_l. rewrite -> IH_r. reflexivity.
-  Qed.
-      
-  Theorem same_wff_bool_iff_prop : forall (a b : wff) ,
-      same_wff_bool a b = true <-> same_wff_prop a b.
-  Proof.
-    intros a b. split.
-    { (* -> *)
-      generalize dependent b.
-      induction a as [ n | a' IH_neg | l_a IH_l r_a IH_r ].
-      
-      
-      intros a_eqb_b.
-      induction a as [ n | a' IH_neg | l_a IH_l r_a IH_r ].
-      generalize b.
-      { destruct b as [m | b' | l_b r_b ] eqn:Eb.
-        { simpl in a_eqb_b. Search (_ =? _).
-          destruct (PeanoNat.Nat.eqb_spec n m) as [ prf | contra ].
-          - rewrite -> prf. reflexivity.
-          - discriminate a_eqb_b.
+    {
+      intros b.
+      destruct b as [m | b' | l_b r_b ] eqn:Eb.
+      - simpl. intros contra. discriminate contra.
+      - simpl. intros contra. discriminate contra.
+      - simpl.
+        intros H.
+        assert (both_side_is_true : (eqb l_a l_b = true /\ eqb r_a r_b = true)).
+        { rewrite <- Bool.andb_true_iff.
+          apply H.
         }
-        { simpl in a_eqb_b. discriminate a_eqb_b. }
-        { simpl in a_eqb_b. discriminate a_eqb_b. }
-      }
-      {
-        destruct b as [m | b' | l_b r_b ] eqn:Eb.
-        { simpl in a_eqb_b. discriminate a_eqb_b. }
-        
-        { simpl in a_eqb_b. discriminate a_eqb_b. }
-        { simpl in a_eqb_b. discriminate a_eqb_b. }
-      admit.
+        destruct both_side_is_true as [la_eqb_lb ra_eqb_rb].
+        rewrite -> (IH_l _ la_eqb_lb).
+        rewrite -> (IH_r _ ra_eqb_rb).
+        reflexivity.
     }
-    { (* <- *)
-      intros a_eq_b. rewrite -> a_eq_b. apply eqb_refl. 
-    }
-    Admitted.
+  }
+  {
+    intros a_eq_b.
+    rewrite -> a_eq_b.
+    apply eqb_refl.
+  }
+Qed.
 
-  Theorem reflect_is_implies : forall (a : wff) ,
-      reflect (is_implies_prop a) (is_implies_bool a).
-  Proof.
-    intros a.
-    apply (iff_reflect _ _ (deconstruct_implies a)).
-  Qed.
+Theorem same_wff_bool_iff_prop' : forall (a b : wff) ,
+    a = b <-> eqb a b = true.
+Proof.
+  symmetry.
+  apply same_wff_bool_iff_prop.
+Qed.
 
-End WFF.
+Theorem reflect_is_implies : forall (a : wff) ,
+    reflect (is_implies_prop a) (is_implies_bool a).
+Proof.
+  intros a.
+  apply (iff_reflect _ _ (deconstruct_implies a)).
+Qed.
 
-Module Import WFF.
+Theorem reflect_wff : forall (a b : wff) ,
+    reflect (a = b) (eqb a b).
+Proof.
+  intros a b.
+  apply (iff_reflect _ _ (same_wff_bool_iff_prop a b)).
+Qed.
 
 Fixpoint lift (assignment : nat -> bool) (a : wff) : bool :=
   match a with
@@ -126,8 +148,149 @@ Fixpoint lift (assignment : nat -> bool) (a : wff) : bool :=
 Definition tautology (a : wff) : Prop :=
   forall assignment : nat -> bool , lift assignment a = true.
 
-Inductive deduce : list wff -> wff -> Prop :=
-| in_context : forall (gamma : list wff) (a : wff) , In a gamma -> deduce gamma a
-| is_tautology : forall (gamma : list wff) (a : wff) , tautology a -> deduce gamma a
-| mp : forall (gamma : list wff) (a b : wff) , deduce gamma a -> deduce gamma b -> is_implies_prop 
-                                                     .
+Theorem tautology_1 : forall (a : wff) , tautology (implies a a).
+Proof.
+  intros a assignment.
+  simpl.
+  destruct (lift assignment a) as [ | ].
+  - reflexivity.
+  - reflexivity.
+Qed.
+
+Definition wff_2 (a b : wff) : wff := implies b (implies a b).
+
+Theorem tautology_2 : forall (a b : wff) , tautology (wff_2 a b).
+Proof.
+  intros a b assignment.
+  simpl.
+  destruct (lift assignment b) , (lift assignment a).
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+Qed.
+
+Definition wff_3 (a b c : wff) : wff :=
+  implies
+    (implies a c)
+    (implies
+       (implies a (implies c b))
+       (implies a b)).
+
+Theorem tautology_3 : forall (a b c : wff) ,
+      tautology (wff_3 a b c).
+          
+Proof.
+  intros a b c assignment.
+  simpl.
+  destruct (lift assignment a) , (lift assignment b) , (lift assignment c).
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+Qed.              
+
+(** The d   
+ *)
+Inductive deduce (gamma : list wff) : list wff -> Prop :=
+| start : deduce gamma []
+| is_tauto : forall (history : list wff) (a : wff) ,
+    (deduce gamma history) -> (tautology a) -> deduce gamma (a :: history)
+| in_context : forall (history : list wff) (a : wff) ,
+    (deduce gamma history) -> (In a gamma) -> deduce gamma (a :: history)
+| mp : forall (history history' : list wff) (a b : wff) ,
+    (deduce gamma (a :: history)) -> (deduce gamma ((implies a b) :: history'))
+    -> deduce gamma (b :: ((implies a b) :: history') ++ (a :: history)).
+
+Lemma deduction_theorem_is_tautology : forall (b : wff) ,
+  (tautology b) -> (forall (gamma : list wff) (a : wff) , exists (history : list wff) , deduce gamma (implies a b :: history)).
+Proof.
+  intros b b_is_tautology.
+  intros gamma a.
+  exists [].
+  apply (is_tauto _ _ _ (start _)).
+  intros assignment.
+  simpl.
+  rewrite -> b_is_tautology.
+  rewrite -> Bool.orb_true_r.
+  reflexivity.
+Qed.
+
+Lemma deduction_theorem_in_context : forall (b : wff) , forall (gamma : list wff) (a : wff) ,
+    (In b (a :: gamma)) -> (exists (history : list wff) , deduce gamma (implies a b :: history)).
+Proof.
+  intros b gamma a.
+  intros b_in_a_gamma.
+  destruct (reflect_wff a b) as [ eq | neq ].
+  {
+    rewrite -> eq.
+    exists [].
+    apply is_tauto.
+    apply start.
+    apply tautology_1.
+  }
+  {
+    simpl in b_in_a_gamma.
+    destruct b_in_a_gamma as [ a_eq_b | b_in_gamma ].
+    { destruct (neq a_eq_b). }
+    { 
+      exists [(wff_2 a b) ; b].
+      apply (mp gamma [] []).
+      (* [b] is in [gamma] *)
+      apply (in_context _ _ _ (start _) b_in_gamma).
+      (* [b -> (a -> b)] is a tautology *)
+      apply (is_tauto _ _ _ (start _) (tautology_2 a b)).
+    }
+  }
+Qed.
+
+Theorem deduction_theorem : forall (gamma history : list wff) (a b : wff) ,
+    deduce (a :: gamma) (b :: history) -> (exists (history' : list wff), deduce gamma ((implies a b) :: history')).
+Proof.
+  intros gamma history.
+  generalize dependent gamma.
+  induction history as [ | h history' IH].
+  {
+    intros gamma a b.
+    intros deduction.
+    inversion deduction as [
+      | history b' sub_deduction b_is_tautology
+      | history b' sub_deduction b_in_a_gamma
+      | ].
+    {
+      apply (deduction_theorem_is_tautology b b_is_tautology _ _).
+    }
+    {
+      apply (deduction_theorem_in_context b gamma a b_in_a_gamma).
+    }
+  }
+  {
+    intros gamma a b.
+    intros deduction.
+    inversion deduction as [
+      | history b' sub_deduction b_is_tautology
+      | history b' sub_deduction b_in_a_gamma
+      | history_c history_c_b c b' deduction_c deduction_c_b].
+    {
+      apply (deduction_theorem_is_tautology b b_is_tautology _ _).
+    }
+    {
+      apply (deduction_theorem_in_context b gamma a b_in_a_gamma).
+    }
+    {
+      assert (deduction_a_c : (exists (history_a_c : list wff) , deduce gamma ((implies a c) :: history_a_c))).
+      {
+        exists 
+        apply IH.
+      }
+    }
+    
+    
+    admit. }
+Admitted.
+  
+  
