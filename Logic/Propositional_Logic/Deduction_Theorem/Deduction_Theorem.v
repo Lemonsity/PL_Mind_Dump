@@ -127,6 +127,8 @@ Qed.
 
     I made things much more complicated than necessary
     But I did got practice with proving decidability
+
+    This is a cautionary tale about not over-engineering your system
     =======================================================================================
  *)
 
