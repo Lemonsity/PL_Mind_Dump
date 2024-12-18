@@ -28,9 +28,8 @@ Theorem tautology_1 : forall (a : wff) , tautology (implies a a).
 Proof.
   intros a assignment.
   simpl.
-  destruct (lift assignment a) as [ | ].
-  - reflexivity.
-  - reflexivity.
+  destruct (lift assignment a)
+  ; reflexivity.
 Qed.
 
 Definition wff_2 (a b : wff) : wff := implies b (implies a b).
@@ -39,11 +38,8 @@ Theorem tautology_2 : forall (a b : wff) , tautology (wff_2 a b).
 Proof.
   intros a b assignment.
   simpl.
-  destruct (lift assignment b) , (lift assignment a).
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
+  destruct (lift assignment b) , (lift assignment a)
+  ; reflexivity.
 Qed.
 
 Definition wff_3 (a b c : wff) : wff :=
@@ -59,17 +55,9 @@ Theorem tautology_3 : forall (a b c : wff) ,
 Proof.
   intros a b c assignment.
   simpl.
-  destruct (lift assignment a) , (lift assignment b) , (lift assignment c).
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
-  - reflexivity.
+  destruct (lift assignment a) , (lift assignment b) , (lift assignment c)
+  ; reflexivity.
 Qed.
-
 
 Inductive deduce (gamma : list wff) : wff -> Prop :=
 | is_tauto : forall (a : wff) , (tautology a) -> (deduce gamma a)
