@@ -1,0 +1,14 @@
+#+TITLE: Predicative Polymorphism
+
+#+BIBLIOGRAPHY: "../References/PL/Type_System/Type_Inference/Ref.bib"
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+/Predicative Polymorphism/ or /Stratified/ is a form of polymorphism where quantifiers can only be instantiated with monomorphic types. [cite:@10.1145/2544174.2500582]
+
+/Impredicative Polymorphism/ is defined differently. From TAPL [cite:@10.5555/509043], it is as follow:
+
+#+begin_quote
+In general, a deﬁnition (of a set, a type, etc.) is called “impredicative” if it involves a quantifier whose domain includes the very thing being defined.
+
+For example, in System F, the type variable X in the type (T = \forall X . X \to X) ranges over all types, including T itself
+#+end_quote

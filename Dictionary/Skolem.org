@@ -1,0 +1,19 @@
+#+TITLE: Skolem
+
+A /Skolem/ variable is a variable created during unification that can only equal to itself.
+
+* Example
+
+When considering types like $(\forall \beta . \beta \to \beta)$, we can remove the "\forall" by turning the "\beta" into a Skolem. This process turns the type into $(\beta \to \beta)$.
+
+After the transformation, the meta-variable \beta now takes on new property, that it cannot be assigned to any value other than itself. So from this point on, the following assignments are *INVALID*:
+- \beta := Int (Skolem cannot be assigned to monomorphic types)
+- \beta := \alpha (Skolem cannot be assigned to other type variables)
+
+However, Skolem can be used as solutions to other assignments:
+- \alpha := \beta
+
+Skolem also enjoys reflexivity property: \beta = \beta
+
+* Related Materials
+- [[./Unification_Variable.org][/Unification Variables/]] are the counter to Skolem, they can be assigned a solution

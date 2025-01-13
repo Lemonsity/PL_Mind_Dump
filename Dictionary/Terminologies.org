@@ -8,3 +8,12 @@
 | Barendregt's Variable Convention |      |
 | Modal Type Theory                |      |
 | Call by Push Value               |      |
+
+* Types 
+
+** Polymorphisms
+
+| Term        | Definition | Examples |
+|-------------+------------+----------|
+| Predicative | Type variables can only be  |          |
+

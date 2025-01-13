@@ -1,0 +1,20 @@
+#+TITLE: Unification Variable
+
+A /Unification Variable/ is a variable used during unification that can be solved with a substitution.
+
+This is likely the most common variable vduring unification
+
+* Relationship with Skolem
+
+Unlike Skolems, unification variables can be assigned to other values.
+
+* Example with Skolem (Credit to @Andong)
+
+Suppose we are solving the subtyping relation: $(\forall \alpha . \alpha \to \alpha) <: (\forall \beta . \beta \to \beta)$. We can following the steps:
+1. Turn \beta into a Skolem: $(\forall \alpha . \alpha \to \alpha) <: \beta \to \beta$ (But \beta is a Skolem)
+2. Turn \alpha into a unification variable: $(\hat{\alpha} \to \hat{\alpha}) <: (\beta \to \beta)$ (\beta is a Skolem, $\hat{\alpha}$ is a unification variable)
+3. Choose the assignment $\hat{\alpha} := \beta$
+4. Substitute to get $(\beta \to \beta) <: (\beta \to \beta)$, which is trivial
+
+* Related Materials
+- [[./Skolem.org][/Skolems/]]: Variables that cannot be assigned other things

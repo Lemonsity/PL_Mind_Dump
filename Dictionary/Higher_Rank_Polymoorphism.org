@@ -1,0 +1,15 @@
+#+TITLE: Higher-Rank Polymorphism
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+/let-polymorphism/ or /Prenex Polymorphism/ is a subset of [[./Predicative_Polymorphism.org][predicative polymorphism]].
+- Variables can only be instantiated with monomorphic types
+- All quantifier cannot appear to the left of the arrow (contravariant position)
+
+/Rank-2 Polymorphism/ is a kind of polymorphism where
+
+#+begin_quote
+A type is said to be of rank 2 if no path from its root to a \forall quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree.
+#+end_quote
+
+
