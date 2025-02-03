@@ -48,18 +48,21 @@ data S :: Type -> Type where
 data Y :: Type -> Type where
   YC :: forall a b . (a ~ b) => a -> b -> Y a
 
+-- f4 :: Y p -> p
 f4 = \t -> case t of
              (YC a b) -> a
 
 data P :: Type -> Type where
   PC :: forall a . P a
 
+-- f5 :: P a -> Integer
 f5 = \t -> case t of
              PC -> 10
 
 data Z :: Type -> Type where
   ZC :: forall a b1 b2 . (a ~ b1) => a -> b1 -> b2 -> Z a
 
+-- Fail to infer, because b2 is an existential type variable
 -- f6 = \t -> case t of
 --              (ZC x y z) -> if True then x else z
   
