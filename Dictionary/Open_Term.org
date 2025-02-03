@@ -1,0 +1,10 @@
+#+TITLE: Open Term
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+An /Open Term/ is a term that may contain free variables [cite:@Pierce:SF2]
+
+* See Also
+
+- [[./Closed_Term.org][Closed Term]]
+- [[./Complete_Program.org][Complete Program]]

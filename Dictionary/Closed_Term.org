@@ -1,0 +1,10 @@
+#+TITLE: Closed Term
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+An /Closed Term/ is a term that contains no free variable [cite:@Pierce:SF2]
+
+* See Also
+
+- [[./Open_Term.org][Open Term]]
+- [[./Complete_Program.org][Complete Program]]

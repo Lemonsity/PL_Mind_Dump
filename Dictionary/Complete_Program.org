@@ -1,0 +1,14 @@
+#+TITLE: Complete Program
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+A /Complete Program/ is a term that does not refer to any undefined variables
+
+A Complete Program is /Closed/
+
+Conversely, a term that may contain free variables is often called an /open term/ [cite:@Pierce:SF2]
+
+* See also
+
+- [[./Open_Term.org][Open Term]]
+- [[./Closed_Term.org][Closed Term]]

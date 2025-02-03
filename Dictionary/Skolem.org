@@ -16,4 +16,5 @@ However, Skolem can be used as solutions to other assignments:
 Skolem also enjoys reflexivity property: \beta = \beta
 
 * Related Materials
+
 - [[./Unification_Variable.org][/Unification Variables/]] are the counter to Skolem, they can be assigned a solution
