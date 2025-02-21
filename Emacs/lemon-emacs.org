@@ -1,40 +1,45 @@
 #+TITLE: Lemon's Emacs Configuration
 #+AUTHOR: Lemon
-#+STARTUP: content
+#+STARTUP: overview
 
 Here you can find my Emacs configuration.
 
-* Dependencies / Prerequisites
-I try to document this configuration file to a good extend,
-this way you can pick and choose the parts you want.
-Maybe the configuration throws a bug for a feature you never use.
-In which case hopefully you can find the related configuration and just throw it out.
+* Introduction 
 
-However, if you want the same environment as I do, here is how you should set up your machine.
+I try to document this configuration file to a good extend, this way you can pick and choose the parts you want.
+Maybe the configuration throws a bug for a feature you never use. In which case hopefully you can find the related configuration and just throw it out.
+
+* Dependencies / Prerequisites
+
+Documentation on the environments I use on my machine. Meant to replicate the same work environment
 
 ** Fonts
 :PROPERTIES:
 :CUSTOM_ID: dependency-fonts
 :END:
-You will need two fonts
 
 #+begin_quote
 *WARNING*:
-It seems the font name can be different based on the platform.
+It seems the font name can be different based on the platforms (Win, Mac, Linux).
 Edit [[#emacs-faces][setting for faces]] to match the font name
 #+end_quote
 
 *** [[https://www.jetbrains.com/lp/mono/][JetBrain Mono]]
-This is a mono-width font for programmers, with Ligature support
-You can find the download [[https://www.jetbrains.com/lp/mono/][here]]
+
+Solid mono-width font for programmers, with Ligature support
+
+[[https://www.jetbrains.com/lp/mono/][- Download]]
 
 *** [[https://typeof.net/Iosevka/][Iosevka]]
-This is also a font with Ligature support.
 
-You can find the download [[https://typeof.net/Iosevka/][here]].
+Solid font with ligature support. Available in both mono-width and variable-width
 
-For some reason the ligature I want doesn't work well on small font size,
-so I only activated it for the variable-width version in Org text mode.
+[[https://typeof.net/Iosevka/][- Download]]
+
+#+begin_quote
+*WARNING*: 
+Ligature may look off on small font size
+#+end_quote
 
 **** Customization *(Optional)*
 
@@ -181,18 +186,8 @@ Unfortunately Node version is messy that people have to develop their own versio
 
 You can find the repository [[https://github.com/nvm-sh/nvm][here]]
 
-* Preparing To Load Emacs
+* Preparing Emacs
 
-** Manual Install Ahead
-:PROPERTIES:
-:CUSTOM_ID: emacs-manual-install
-:END:
-
-A few features don't use /use-package/ and need manual installation:
-- Proof General :: Installation guide [[https://proofgeneral.github.io/][here]]
-- Agda :: Emacs setup can be found latter half [[https://plfa.github.io/GettingStarted/][here]]
-  
-** General Guide
 To use this file directly:
 - Create a file ~~/.emacs.d/init.el~
 - Put the following in the ~init.el~ file:
@@ -209,71 +204,84 @@ To use this file directly:
 - Place this ~.org~ file in ~~/.emacs.d/~ also
 - Launch Emacs
 
-** Troubleshooting
+* Custom Definitions
 
-*** Font Not Loading
-Refer to [[#dependency-fonts][earlier]].
-
-*** Proof General / Agda Giving Errors
-Refer to [[#emacs-manual-install][earlier]]
-
-* Config for Config 
-We will get some basic configurations to streamline the configuration process
-
-I forgot what this does:
 #+begin_src emacs-lisp
-  (unless package-archive-contents
-    (package-refresh-contents))
+  (defun lemon/require-package (package)
+    (unless (package-installed-p package)
+      (package-install package)))
 #+end_src
 
-** [[https://jwiegley.github.io/use-package/][/use-package/]]
-/use-package/ will streamline the package installation and configuration process.
-We can group configurations together
+* Scaffolding Config
+
+** Basic
+#+begin_src emacs-lisp
+  (require 'package)
+
+  (unless package-archive-contents
+      (package-refresh-contents))
+#+end_src
+
+** [[https://jwiegley.github.io/use-package/][/use-package/]]: Streamline Package Installation
 
 #+begin_src emacs-lisp
   (require 'use-package)
 #+end_src
 
-We will also make sure the package is always downloaded.
+Ensure all packages are downloaded by default
 #+begin_src emacs-lisp
+  (require 'use-package-ensure)
   (setq use-package-always-ensure t)
 #+end_src
 
-You can find the source code [[https://github.com/jwiegley/use-package][here]].
+- [[https://github.com/jwiegley/use-package][Source code]]
 
-** /diminish/
-Minor mode can junk up the mode line.
-/diminish/ can hide some of the minor modes.
+** /diminish/: Cleanup Mode Line
 
 #+begin_src emacs-lisp
   (use-package diminish :ensure t)
 #+end_src
 
-To use /diminish/ with /use-package/, add ~:diminish~ to hide a package (But, sometimes it doesn't work...).
+- Add ~:diminish~ to ~use-package~ macro call to hide a package (Occassionally may get overwritten)
 
 * Emacs Configuration
 
 ** General Appearance
 We customize some appearance to:
-- Remove menu bar on top
-- Add visual cue to bad input
-- Highlight the line we are on in the active window
+- [X] Remove menu bar on top
+- [X] Add visual cue to bad input
+- [X] Highlight the line we are on in the active window
+- [ ] Global highlight line
+- [ ] Highlight line in all windows
 
 #+begin_src emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (setq visible-bell t)
-  (global-hl-line-mode 1)
-  (setq hl-line-sticky-flag nil)
+  ;; (global-hl-line-mode 1)
+  ;; (setq hl-line-sticky-flag nil)
+#+end_src
+
+** Windows Splitting
+
+- [X] Split Side by Side : When width > 160
+- [X] Split Over and Under : Never
+
+#+begin_src emacs-lisp
+  (setq
+   split-width-threshold 160
+   split-height-threshold nil) 		; Always split horizontally
 #+end_src
 
 ** Minibuffer Completion
-Minibuffer by default is very minimal.
-It would be nice if we can get
-- Suggestions
-- Completions
-- Preview
-as I type in the minibuffer.
+
+Better minibuffer completion.
+
+Ivy, Counsel, Swiper are all grouped together now
+- [[https://github.com/abo-abo/swiper][Source Code]]
+- [[https://oremacs.com/swiper/][Documentation]]
+
+*** Ivy
 
 #+begin_src emacs-lisp
   (use-package ivy
@@ -282,10 +290,13 @@ as I type in the minibuffer.
     (("C-s" . swiper)) ;; Swiper gives list of completion suggestion
     :config
     (ivy-mode 1))
+#+end_src
 
-  ;; counsel will give us better completion when:
-  ;; - Finding files
-  ;; - Switching Buffer
+*** Counsel
+
+Better file search and buffer search
+
+#+begin_src emacs-lisp
   (use-package counsel
     :diminish
     :bind
@@ -294,11 +305,7 @@ as I type in the minibuffer.
     (counsel-mode 1))
 #+end_src
 
-You can find the source code [[https://github.com/abo-abo/swiper][here]], and documentation [[https://oremacs.com/swiper/][here]]
-
 ** Position in File
-Some people don't like it.
-But I do.
 
 #+begin_src emacs-lisp
   (setq column-number-mode t)
@@ -306,8 +313,7 @@ But I do.
   (global-display-line-numbers-mode 1)
 #+end_src
 
-** /Dired/ Mode
-/Dired/ mode handled directory related browsing and modification
+** /Dired/ Mode: File Explorer in Emacs
 
 #+begin_src emacs-lisp
   ;; ask before create dir
@@ -316,7 +322,7 @@ But I do.
   (put 'dired-find-alternate-file 'disabled nil) 
 #+end_src
 
-* Faces / Fonts *(Breakable with bad dependency)*                                            :Faces:
+* Faces / Fonts                                                                              :Faces:
 :PROPERTIES:
 :CUSTOM_ID: emacs-faces
 :END:
@@ -334,9 +340,9 @@ This part is breakable if you didn't install the [[#dependency-fonts][fonts from
 JetBrains Mono is a very solid font
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil
-		    :family "JetBrainsMono"
-		    :width 'expanded
-		    :overline nil)
+                    :family "VictorMono"
+                    :width 'expanded
+                    :overline nil)
 #+end_src
 
 I also suggest Iosevka, but it seems to not display well for small fonts.
@@ -352,21 +358,22 @@ This is for mono-width faces.
 
 #+begin_src emacs-lisp
   (set-face-attribute 'fixed-pitch nil
-                      :family "JetBrainsMono")
+                      :family "VictorMono"
+                      :width 'expanded)
+  ; A collection of choices includes "IosevkaCustom", "JetBrainsMono", "VictorMono"
 #+end_src
 
-*** Variable Pitch Face
-This is for normal faces. It is potentially useful for a read-heavy format, such as Org mode.
+*** Variable Pitch Face: Good for normal text mode
 
 #+begin_src emacs-lisp
   (set-face-attribute 'variable-pitch nil
                       :family "IosevkaEtoile")
 #+end_src
 
-*** Highlight Line
+*** Line Highlight
 #+begin_src emacs-lisp
-  (set-face-attribute 'hl-line nil
-                      :background "azure2")
+  ;; (set-face-attribute 'hl-line nil
+  ;;                     :background "azure2")
 #+end_src
 
 ** [[https://github.com/mickeynp/ligature.el][Ligature.el]]
@@ -455,7 +462,7 @@ We setup that face to be only active in Agda mode
   (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
 #+end_src
 
-* Languages Setup *(Breakable with bad dependency)*                                      :Languages:
+* Languages Setup                                                                        :Languages:
 
 ** Universal Configurations                                                             :Universal:
 
@@ -477,7 +484,7 @@ This package is the recommended syntax checker for [[#emacs-lsp-mode][/lsp-mode/
 
 [[https://emacs-lsp.github.io/lsp-mode/][/lsp-mode/]] provides a way to integrates Language Server with Emacs, and works out of the box for many languages.
 
-#+begin_src emacs-lisp
+#+begin_src
   (use-package lsp-mode
     :init
     (setq lsp-keymap-prefix "C-c l") ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
@@ -517,9 +524,11 @@ Mostly just hooking up to [[#emacs-lsp-mode][/lsp-mode/]].
 You can find related manual here:
 - [[http://haskell.github.io/haskell-mode/manual/latest/][/haskell-mode/]] :: Provides access to REPL, editing shortcut, other quality of life
 
-#+begin_src emacs-lisp
+#+begin_src
   (use-package lsp-haskell)
+#+end_src
 
+#+begin_src emacs-lisp
   (use-package haskell-mode
     :hook
     ((haskell-mode . interactive-haskell-mode)))
@@ -527,24 +536,23 @@ You can find related manual here:
 
 Make sure you have [[#dependency-haskell][HLS installed]].
 
-** [[https://proofgeneral.github.io/][/Proof General/]] *(Breakable with bad dependency)*
+** /Proof General/: Proof Assistants
 :PROPERTIES:
 :CUSTOM_ID: emacs-proof-general
 :END:
 
-Used by many proof assistants.
-
-#+begin_quote
-*WARNING*:
-This part is breakable if you don't have Proof General installed
-#+end_quote
-
-I don't know how to do /Proof General/ through /use-package/.
-[[#emacs-manual-install][Install it manually]].
+#+begin_src emacs-lisp
+  ;; (lemon/require-package 'proof-general)	;
+  ;; (require 'proof-general)
+#+end_src
 
 #+begin_src emacs-lisp
-  (setq proof-splash-enable nil) ; get your anime girl out of my face
+  (setq
+   proof-splash-enable nil	  ; No splash screen
+   proof-three-window-mode-policy 'hybrid) ; Default to 2 columns layout
 #+end_src
+
+- [[https://proofgeneral.github.io/][Documentation]]
 
 ** Coq
 
@@ -585,11 +593,13 @@ But it works quite well:
 
 #+end_src
 
-** Agda
-Agda is difficulty too.
-The [[https://plfa.github.io/GettingStarted/][PLFA Get Started]] chapter has instruction on installation.
-The following is portion of the setup that stays in the config file
+** Agda: Proof Assistant
 
+Agda needs more setup:
+
+- Installation: [[https://plfa.github.io/GettingStarted/][PLFA -> Get Started]] chapter
+
+Following are the emacs configuration:
 #+begin_src emacs-lisp
   (load-file (let ((coding-system-for-read 'utf-8))
                (shell-command-to-string "agda-mode locate")))
@@ -604,9 +614,7 @@ The following is portion of the setup that stays in the config file
 
 ** TeX
 
-*** [[https://www.gnu.org/software/auctex/][/AUCTeX/]]
-Emacs has some default TeX support.
-But AucTeX is better.
+*** [[https://www.gnu.org/software/auctex/][/AUCTeX/]]: Better TeX Support
 
 #+begin_src emacs-lisp
   (use-package tex
@@ -631,7 +639,7 @@ Activate the package if you wish
 
 * Productivity                                                                        :Productivity:
 
-** [[https://orgmode.org/][/Org Mode/]]                                                                                 :Org:
+** [[https://orgmode.org/][/Org Mode/]]                                                        :Org:
 Perhaps the best thing about Emacs.
 Agenda, calender, todolist, all in one.
 
@@ -750,7 +758,7 @@ WYSIWYG
 
 #+begin_src emacs-lisp
   (defun lemon/org-appearance-setup ()
-    
+
     ;; One show one star for headline
     ;; Indentation from org-indent-mode will handle depth
     (setq org-hide-leading-stars t)
@@ -763,7 +771,7 @@ WYSIWYG
 
     ;; Hiding the *...*, /.../ end markers
     ;; But will be harder to edit
-    ;; (setq org-hide-emphasis-markers t)
+    (setq org-hide-emphasis-markers t)
 
     ;; Highlight LaTeX
     (setq org-highlight-latex-and-related '(latex))
@@ -784,22 +792,29 @@ It would be better if there are more tags.
   (defun lemon/org-todo-setup ()
     ;; Add keywords
     (setq org-todo-keywords
-          '((sequence "TODO(t)" "IDEA(i)" "PROG(p)" "READ(r)" "WONDER(w)" "CHECK(c)" "|" "DONE(d)")
-            (sequence "BLOCKED(l)" "BACKLOG(b)" "|" "CANCELED(x)")))
+          '((sequence "TODO(t)" "IDEA(i)" "PROG(p)" "VERIFY(v)" "|" "DONE(d)")
+            (sequence "SKIM(s)" "READ(r)" "|")
+            (sequence "BLOCKED(l)" "ON HOLD(h)" "BACKLOG(b)" "|" "CANCELED(x)")))
 
     ;; Customize keywords
     (setq org-todo-keyword-faces
           '(("IDEA" :inherit 'org-todo :foreground "gold2")
             ("PROG" :inherit 'org-todo :foreground "gold2")
+            ("VERIFY" :inherit 'org-todo :foreground "gold2")
+            ("SKIM" :inherit 'org-todo :foreground "gold2")
             ("READ" :inherit 'org-todo :foreground "gold2")
-            ("CHECK" :inherit 'org-todo :foreground "gold2")
-            ("WONDER" :inherit 'org-todo :foreground "gold2")
-            ("BLOCKED" :inherit 'org-todo :foreground "gold2")
+            ("BLOCKED" :inherit 'org-todo :foreground "SteelBlue")
             ("BACKLOG" :inherit 'org-todo :foreground "SteelBlue")
+            ("ON HOLD" :inherit 'org-todo :foreground "SteelBlue")
             ("CANCELED" :inherit 'org-todo :foreground "CadetBlue")))
 
     ;; Log time on DONE
-    (setq org-log-done 'time))
+    ;; (setq org-log-done 'time)
+
+    ;; Add more priorities
+    (setq org-priority-lowest 70)
+    (setq org-default-priority 70)
+    )
 #+end_src
 
 *** Agenda
@@ -808,7 +823,25 @@ By default, it shows 7 days, but we might want more.
 
 #+begin_src emacs-lisp
   (defun lemon/org-agenda-setup ()
-  (setq org-agenda-span 14))
+    (setq org-agenda-span 14))
+#+end_src
+
+*** Special Symbols
+We add some special symbols.
+Currently, I added logic symbols useful for programming languages research
+
+#+begin_src emacs-lisp
+  (defun lemon/org-entities-user ()
+    (setq org-entities-user
+          '(("vdash" "\\vdash" t "&RightTee;" "|-" "|-" "⊢")
+            ("vDash" "\\vDash" t "&DoubleRightTee;" "|=" "|=" "⊨")
+            ("dashv" "\\dashv" t "&dashv;" "-|" "-|" "⊣")
+            ("nvdash" "\\nvdash" t "&nvdash;" "|-/-" "|-/-" "⊬")
+            ("mapsto" "\\mapsto" t "&map;" "|->" "|->" "↦")
+            ("top" "\\top" t "&DownTee;" "[down tee]" "[down tee]" "⊤")
+            ("bot" "\\bot" t "&bot;" "[up tee]" "[up tee]" "⊥")
+            ("subseteq" "\\subseteq" t "&sube;" "[subset of or equal to]" "[subset of or equal to]" "⊆")
+          )))
 #+end_src
 
 *** Activation
@@ -817,21 +850,28 @@ We wrap all the configuration together now.
 #+begin_src emacs-lisp
   (use-package org
     :hook
-    ((org-mode . lemon/org-mode-setup)
-     (org-mode . flyspell-mode))
+    ((org-mode . lemon/org-mode-setup))
     :config
     (lemon/org-global-key-setup)
     (lemon/org-appearance-setup)
     (lemon/org-font-setup)
     (lemon/org-todo-setup)
-    (lemon/org-agenda-setup))
+    (lemon/org-agenda-setup)
+    (lemon/org-entities-user))
 #+end_src
 
-** Presentation                                                                      :Presentation:
-We use Org mode to do simple presentations.
+** Org Website Auto Change
+I am making personal website with Org
+The following package can host a website that will be constantly updated.
 
 #+begin_src emacs-lisp
-  (use-package org-tree-slide
-    :custom (org-image-actual-width nil))
+  (use-package simple-httpd
+    :ensure t)
 #+end_src
 
+** Magit: Git in Emacs
+
+#+begin_src emacs-lisp
+  (lemon/require-package 'magit)
+  (require 'magit)
+#+end_src
