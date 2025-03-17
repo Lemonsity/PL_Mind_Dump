@@ -1,0 +1,34 @@
+#+TITLE: Variants
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+In ML-like languages, we can define datatypes (maybe Algebraic Datatypes) like the following (Example in Haskell):
+
+#+begin_src haskell
+  data T
+    = Label1 T1 -- Assume Label is uncurried
+    | Label2 T2
+    | Label3 T3
+    -- ...
+#+end_src
+
+This is a form of /Variant Type/
+
+In TAPL [cite:@10.5555/509043], the type ~T~ from above is written as the following:
+
+\[ \langle {Label_i : T_i} ^{i \in 1 \dots n} \rangle \]
+
+* Parametric Variants
+
+The following example from TAPL [cite:@10.5555/509043] is an example of parametric variants (Capitalization following ML style):
+
+#+begin_src
+  type 'a tyop = Tyoptag of ('a -> 'a)
+#+end_src
+
+~t tyop~ is a variant, while ~(-) tyop~ is a type constructor.
+
+This makes typechecking simpler. The translation between term of type ~t tyop~ and ~t -> t~ is done by an explicit constructor ~Tyoptag~ in the term.
+
+* Related Materials
+
