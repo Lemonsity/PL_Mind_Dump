@@ -1,4 +1,4 @@
-{-# LANGUAGE GADTs, NoMonoLocalBinds #-}
+{-# LANGUAGE GADTs, NoMonoLocalBinds #-}  -- NoMonoLocalBinds to enable let gen
 
 data T a where
   C1 :: Bool -> T Bool
@@ -12,9 +12,35 @@ f = \w ->         -- Give w :: alpha
                   in temp -- ok, w is unified with Bool
           C2 -> False
 
+{-
 g = \w ->               -- Give w :: gamma
       \e ->             -- 
         case e of       -- Give e :: T alpha, the return type of branchs beta
           C1 b -> not w -- not ok, w cannot be unified with Bool
           C2 -> False
+-}
 
+data R where
+  MkR :: (b1 ~ b2) => b1 -> b2 -> R
+
+forceType :: Int -> Int
+forceType x = x
+
+foo t = let f = \x -> case t of
+                      MkR b1 b2 -> forceType x
+        in f
+
+bar t = let f = \x -> case t of
+                      MkR b1 b2 -> x + 1
+        in f
+
+
+{---------------------------------------------------
+Let binds a lower level skolem
+---------------------------------------------------}
+data S a where
+  MkS :: forall b . b -> S Bool
+
+baz = \s -> case s of
+              MkS b -> let temp = \x -> b x
+                       in ()

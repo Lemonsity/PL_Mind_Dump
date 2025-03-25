@@ -1,4 +1,4 @@
-{-# LANGUAGE GADTs , DataKinds #-}
+{-# LANGUAGE GADTs , NoMonoLocalBinds #-}
 
 import Data.Kind
 
@@ -12,7 +12,7 @@ f2 = \t -> case t of
 
 f3 = \x -> case x of
              (TC1 n) -> n > 0
-             (TC2 xs) -> head xs
+             (TC2 xs) -> (length xs) > 0
 
 data Expr :: Type -> Type where
   -- forall a . forall   . (Int ~ a) => Int -> Expr a 
@@ -72,28 +72,28 @@ the type of YC can be simplifed to
 
 YC :: forall a . a -> a -> Y a
 ---------------------------------------------------}
-data Y :: Type -> Type where
-  YC :: forall a b . (a ~ b) => a -> b -> Y a
+data ReductionHappens :: Type -> Type where
+  MkReductionHappens :: forall a b . (a ~ b) => a -> b -> ReductionHappens a
 
 -- f4 :: Y p -> p
 f4 = \t -> case t of
-             (YC a b) -> a
+             (MkReductionHappens a b) -> a
 
 {---------------------------------------------------
 When Existential Type is not used
 ---------------------------------------------------}
-data P :: Type -> Type where
-  PC :: forall a . P a
+data NoExistential :: Type -> Type where
+  MkNoExistential :: forall a . NoExistential a
 
 -- f5 :: P a -> Integer
 f5 = \t -> case t of
-             PC -> 10
+             MkNoExistential -> 10
 
 {---------------------------------------------------
 Existential Types should not leak out
 ---------------------------------------------------}
-data ZZ :: Type -> Type where
-  ZZC :: forall a b . a -> b -> ZZ a
+data DontLeakExist :: Type -> Type where
+  MkDontLeakExist :: forall a b . a -> b -> DontLeakExist a
 
 -- The return type, aka the type of [case] expression,
 -- is assigned a type variable [p]
@@ -104,16 +104,7 @@ data ZZ :: Type -> Type where
 -- Thus unification fails, and no inference is done
 
 -- f6' = \t -> case t of
---               (ZZC x y) -> y
-
--- Alternative example
-data Z :: Type -> Type where
-  ZC :: forall a b1 b2 . (a ~ b1) => a -> b1 -> b2 -> Z a
-
--- Fail to infer, because b2 is an existential type variable
--- f6 = \t -> case t of
---              (ZC x y z) -> if True then x else z
-  
+--               MkDontLeakExist x y -> y
 
 {---------------------------------------------------
 Testing Local Constraints Capability
@@ -125,6 +116,68 @@ data SecretCons :: Type -> Type where
 fSecretCons = \t -> case t of
                       CSecretCons1 x xs -> x : xs
                       CSecretCons2 x -> x
+
+{---------------------------------------------------
+Pushing it with nested cases
+---------------------------------------------------}
+
+data HideSame :: Type -> Type where
+  MkHideSame :: forall a b . (a ~ b) => a -> b -> HideSame a
+
+-- GHC probably does some simplification
+usingHideSame = \t -> case t of
+                        MkHideSame a b -> case MkHideSame b b of
+                                            MkHideSame a' b' -> [b, b']
+
+{---------------------------------------------------
+Bogus Local Constraints
+---------------------------------------------------}
+data MyU = MyU
+data MyB = MyT | MyF
+
+myNot = \myb -> case myb of
+                  MyT -> MyF
+                  MyF -> MyT
+
+data Bogus where
+  MkBogus :: ( Bool ~ () ) => Bool -> () -> Bogus
+
+-- The bogus local constaint is used to type check the body
+useBogus bogus = case bogus of
+                   MkBogus b unit -> not ()
+
+-- The bogus local constraint is no use to check the branch body
+-- Thus the type error is raise in the branch body too
+useBogusAgain bogus = case bogus of
+                        MkBogus b unit -> myNot MyU
+
+{---------------------------------------------------
+Axiom
+---------------------------------------------------}
+data Axiom :: Type -> Type -> Type where
+  MkAxiom :: forall a1 a2 . (a1 ~ (Int -> a2)) => a1 -> a2 -> Axiom a1 a2
+
+data AxiomSkEsc :: Type -> Type -> Type where
+  MkAxiomSkEsc1 :: forall a1 b1 . (a1 ~ b1) => b1 -> AxiomSkEsc a1 Bool
+  MkAxiomSkEsc2 :: forall a     .              a -> AxiomSkEsc a a
+
+
+attemptEsc = \ase -> case ase of
+                       MkAxiomSkEsc1 b1 -> b1
+                       MkAxiomSkEsc2 a  -> a
+
+
+
+-- Alternative example
+data Z :: Type -> Type where
+  ZC :: forall a b1 b2 . (a ~ b1) => a -> b1 -> b2 -> Z a
+
+-- Fail to infer, because b2 is an existential type variable
+-- f6 = \t -> case t of
+--              (ZC x y z) -> if True then x else z
+  
+
+                       
 
 
 main :: IO ()
