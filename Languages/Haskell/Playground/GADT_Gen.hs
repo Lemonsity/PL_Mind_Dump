@@ -74,8 +74,36 @@ data JustifyQuantifyResidual :: Type -> Type where
   MkJQR2 :: forall a1  . () =>
             () -> JustifyQuantifyResidual a1
 
+-- Interestingly, the code below does type-check
+-- The problem is that there is no way of using
+-- [f] in the body of the let
+-- Because [f]'s input type is some existential variable
 justifyQuantifiedResidual t =
   case t of
     MkJQR1 b -> let f = \g -> not (g b)
                 in ()
     MkJQR2 _ -> ()
+
+
+{---------------------------------------------------
+Is it possible for a Unification Variable of level
+[> n + 1] to be returned?
+---------------------------------------------------}
+data GTPlusOne :: Type -> Type where
+  MkGTPlusOne1 :: forall a1 b1 . (a1 ~ Bool) =>
+                b1 -> GTPlusOne a1
+  MkGTPlusOne2 :: forall a1 . () =>
+                () -> GTPlusOne a1
+
+gtPlusOne = \gadt -> let f1 = \x -> -- [x :: αx¹]
+                                -- Generate
+                                -- α¹, β¹ for the type argument for GADT and return type of [case]
+                                case gadt of
+                                  -- (I don't really care constraints are generated here)
+                                  MkGTPlusOne1 b1 -> (\y -> y)
+                                  -- This branch is unified first
+                                  -- Generate y :: αy²
+                                  -- Generate constraint [∀ . ϵ ⊃ β¹ ~ ay² -> ay²]
+                                  MkGTPlusOne2 () -> (\y -> y)
+                     -- After some solving, we will get [f1 :: αx¹ -> (ay² -> ay²)]
+                     in f1
