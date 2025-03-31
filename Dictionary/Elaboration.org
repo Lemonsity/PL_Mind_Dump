@@ -1,0 +1,59 @@
+#+TITLE: Elaboration
+
+/Elaboration/ is often discussed in the context of /surface/ and /core/ language.
+
+A surface language can be /elaborated/ to a core language
+
+* Intuition
+
+Sometime, it is possible to implement a complex feature using a combination of simpler features.
+
+A language can be designed such that on the surface, there is plenty of features, which can be elaborated down to a core set of features.
+
+The core language can be designed to be simpler, making metatheorem easier to prove.
+
+Additional complexity still exists, in the form of:
+- Preservation of types
+- Soundness
+
+* Connection with Inference
+
+Some elaboration are /type-driven/. This requires full type information at the stage of elaboration.
+
+Realistically, the programmer will not supply all the type annotation. /Type inference/ can assist by providing the missing types used for type-driven elaboration
+
+* Example: Haskell Typeclasses
+
+Consider the following Haskell program:
+#+begin_src haskell
+  class Combinable a where
+    combine :: a -> a -> a
+
+  instance Combinable Bool where
+    combine b1 b2 = (&&) b1 b2
+
+  combineWithSelf :: (Combinable a) => a -> a
+  combineWithSelf x = combine x x
+#+end_src
+
+In Haskell, typeclass does not have direct semantic. Its implementation is elaborated down to record types, record projections, and type applications.
+
+~combineWithSelf~ is elaborate down the following result: (*Roughly, with perhaps some mistakes with type application details*)
+
+#+begin_src haskell
+  combineWithSelf =
+    \ (a :: Type) ->
+    \ (impl :: { combine :: a -> a -> a } ) ->
+    \ (x :: a) ->
+      (combine impl) x -- Perhaps a type instantiation on [combine]
+#+end_src
+
+The ~instance~ definition turns into a record. When a function is define under the constraints of a typeclass, it will elaborated down to a function that takes two additional arguments:
+1. A type, the type that is an instance of the typeclass
+2. A record, the instance implementation of the typeclass with respect to the type from (1)
+
+When calling a function defined in association with a typeclass, the call is replaced by a concrete implementation by projecting the implementation out of a concrete record
+
+* See Also
+
+- [[./Type_Inference.org][Type Inference]]

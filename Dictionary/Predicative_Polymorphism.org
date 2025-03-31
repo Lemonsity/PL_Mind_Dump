@@ -5,7 +5,7 @@
 
 /Predicative Polymorphism/ or /Stratified/ is a form of polymorphism where quantifiers can only be instantiated with monomorphic types. [cite:@10.1145/2544174.2500582]
 
-/Impredicative Polymorphism/ is defined differently. From TAPL [cite:@10.5555/509043], it is as follow:
+/Impredicative Polymorphism/ is basically the opposite. From TAPL [cite:@10.5555/509043], impredicative polymorphism is defined as follow:
 
 #+begin_quote
 In general, a deﬁnition (of a set, a type, etc.) is called “impredicative” if it involves a quantifier whose domain includes the very thing being defined.

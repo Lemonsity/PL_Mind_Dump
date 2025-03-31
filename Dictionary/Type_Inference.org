@@ -1,0 +1,37 @@
+#+TITLE: Type Inference
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+/Type Inference/ is the process of "guessing" types that are not explicitly written out by programmers
+
+* Intuition
+
+In Simply Typed \lambda-Calculus, all \lambda-terms require its input type to be specified:
+
+\[ \lambda x : Int \,.\, e\]
+
+However, sometimes, it is obvious what the input type is:
+
+\[ (\lambda x : Int \,.\, e) ~ 10 \]
+
+In some programs, it is possible to /Infer/ the input type of the function, thus allowing us to forgo writing type annotations explicitly:
+
+\[ (\lambda x \,.\, e) ~ 10 \]
+
+This provides better UX.
+
+In a broader sense, all languages implements some form of type inference. Even in C:
+
+#+begin_src c
+  int main() {
+    int a = 10, b = 20;
+    a + b; // The type of this expression is likely inferred to be [int]
+  }
+#+end_src
+
+The question is to what extend can be reduce the amount of annotation
+
+* See Also
+
+- [[./Elaboration.org][Elaboration]]
+- [[./Let_Generalization.org][let-Generalization]]

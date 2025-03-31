@@ -11,5 +11,3 @@
 #+begin_quote
 A type is said to be of rank 2 if no path from its root to a \forall quantifier passes to the left of 2 or more arrows, when the type is drawn as a tree.
 #+end_quote
-
-
