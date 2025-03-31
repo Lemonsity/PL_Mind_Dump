@@ -28,10 +28,19 @@ Proof.
     apply true_forall.
 Qed.
 
+
+(** A Perspective on Induction Principles
+
+    Here is question, is the PSI proof doable without
+    the use of [nat_ind]?
+
+    Perhaps the point of induction principle is to
+    bring some of the power of meta-logic into the
+    object-logic by asserting it as axiom *)
 Theorem psi_proof : psi.
 Proof.
   intros P P0 step.
-  apply (nat_ind P P0 step).
+  apply (nat_ind P P0 step). 
 Qed.
 
 Definition pci :=
