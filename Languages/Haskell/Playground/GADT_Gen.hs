@@ -104,6 +104,21 @@ gtPlusOne = \gadt -> let f1 = \x -> -- [x :: αx¹]
                                   -- This branch is unified first
                                   -- Generate y :: αy²
                                   -- Generate constraint [∀ . ϵ ⊃ β¹ ~ ay² -> ay²]
+                                  -- Solved to get { β¹ := ay'¹ -> ay'¹, ay² := ay'¹ } (Notice promotion)
                                   MkGTPlusOne2 () -> (\y -> y)
                      -- After some solving, we will get [f1 :: αx¹ -> (ay² -> ay²)]
                      in f1
+
+{---------------------------------------------------
+Guide Design on Whether UVar in Residual Should
+be Generalized
+
+It turns out if a UVar that are free in Fₛ' should
+not be generalized
+---------------------------------------------------}
+data Guide where
+  MkGuide :: forall b1. (b1 ~ (() -> Int)) => b1 -> Guide
+
+foo = \gadt -> case gadt of
+                 MkGuide y -> let h = \x -> [y, \() -> x]
+                              in ()
