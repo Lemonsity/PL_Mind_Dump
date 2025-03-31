@@ -54,6 +54,8 @@ The ~instance~ definition turns into a record. When a function is define under t
 
 When calling a function defined in association with a typeclass, the call is replaced by a concrete implementation by projecting the implementation out of a concrete record
 
+In this case, we are elaborating the Haskell surface language to a language closer to System $F$, which has better studied metatheory.
+
 * See Also
 
 - [[./Type_Inference.org][Type Inference]]
