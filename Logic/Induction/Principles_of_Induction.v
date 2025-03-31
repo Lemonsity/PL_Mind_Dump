@@ -34,9 +34,17 @@ Qed.
     Here is question, is the PSI proof doable without
     the use of [nat_ind]?
 
+    If writing proof is the process of generating
+    derivation tree, then the inclusion of induction
+    principle can be understood as the inclusion of a
+    new way to construct a tree.
+    
     Perhaps the point of induction principle is to
     bring some of the power of meta-logic into the
-    object-logic by asserting it as axiom *)
+    object-logic by asserting it as axiom
+
+    By collapsing infinite number of derivation trees
+    (one for each natural number) into a single one *)
 Theorem psi_proof : psi.
 Proof.
   intros P P0 step.
