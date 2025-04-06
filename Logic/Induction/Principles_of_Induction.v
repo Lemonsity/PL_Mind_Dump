@@ -28,7 +28,6 @@ Proof.
     apply true_forall.
 Qed.
 
-
 (** A Perspective on Induction Principles
 
     Here is question, is the PSI proof doable without
@@ -59,7 +58,7 @@ Definition pci :=
 Definition pci_converse :=
   forall (P : predicate) ,
     (forall n , P n) ->
-    (forall n , (forall k , k < n -> P k) -> P n).
+    (forall n , ((forall k , k < n -> P k) -> P n)).
 
 Theorem pci_converse_proof : pci_converse.
 Proof.
@@ -71,17 +70,39 @@ Qed.
 Theorem pci_proof : pci.
 Proof.
   intros P.
+  assert (stronger : (forall n , ((forall k , k < n -> P k) -> P n)) ->
+                     (forall n , forall k , k <= n -> P k) ).
+  {
+    intros forall_steppable.
+    intros n.
+    induction n as [ | n' IHn'].
+    {
+      intros k.
+      intros k_lte_0.
+      inversion k_lte_0.
+      apply forall_steppable.
+      intros k' k'_lt_0.
+      exfalso.
+      apply (Nat.nlt_0_r _ k'_lt_0).
+    }
+    {
+      intros k k_lte_Sn'.
+      inversion k_lte_Sn'.
+      - apply forall_steppable.
+        intros k' k'_lt_Sn'.
+        inversion k'_lt_Sn' as [ | Sk_lte_n'] ; subst.
+        + apply IHn'.
+          apply le_n.
+        + apply IHn'.
+          apply (Nat.le_trans _ (S k') _).
+          * apply (le_S k' k' (le_n k')).
+          * assumption.
+      - subst.
+        apply (IHn' _ H0).
+    }
+  }
   intros forall_steppable.
   intros n.
-  induction n as [ | n'].
-  {
-    apply forall_steppable.
-    intros k k_lt_zero.
-    Search (_ < 0).
-    exfalso.
-    apply (Nat.nlt_0_r k k_lt_zero).
-  }
-  {
-    admit.
-  }
-Admitted.
+  apply (stronger forall_steppable n n).
+  apply le_n.
+Qed.
