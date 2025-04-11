@@ -10,10 +10,3 @@ Fixpoint lifting (X Y : Type) (param_map : nat -> Type) (arity_map : nat -> Type
   | ret v => f v
   | op i p k => op i p (fun a => lifting X Y param_map arity_map f (k a))
   end.
-
-    
-             
-
-  
-      
-  

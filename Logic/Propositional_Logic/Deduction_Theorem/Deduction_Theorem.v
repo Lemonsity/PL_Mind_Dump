@@ -12,8 +12,6 @@ Definition is_implies_bool (a : wff) : bool :=
   | _ => false
   end.
 
-
-
 Fixpoint lift (assignment : nat -> bool) (a : wff) : bool :=
   match a with
   | var n => assignment n
