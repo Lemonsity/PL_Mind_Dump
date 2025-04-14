@@ -1,0 +1,23 @@
+* WIP
+
+Nat(C(c , -) , F) \cong F c
+
+\phi(\eta) = \eta_c(id_c)
+
+\psi(\phi(\eta))_a = \eta_a : C(c, a) \to F a
+
+\psi(\phi(\eta)) (g) = F f (\phi(\eta))
+
+\phi (\psi (x) ) = \psi(x)_c(id_c) = x
+
+
+    id_c    \psi(x)_c      x
+C(c, c)     \to       F c
+
+
+    \darr f \circ -            \darr   F f
+
+
+C(c, a)     \to       F a
+
+    f       \psi(x)_a     \psi(x)_a(f) = F f (x)

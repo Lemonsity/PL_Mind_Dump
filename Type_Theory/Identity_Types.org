@@ -1,0 +1,62 @@
+#+TITLE: Identity Types (WIP)
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+* WIP
+
+* Background
+
+This question came up while reading books such as [cite:@Pierce:SF2] and [cite:@plfa22.08].
+
+The question is also related to the difference between /indexed/ and /parameterized/ datatypes.
+
+* Introduction of /Indexed/ and /Parameterized/ Datatypes
+
+Quoting from PLFA [cite:@plfa22.08]
+
+#+begin_quote
+Unlike an indexed datatype, where the indexes can vary
+(as in ~zero ≤ n~ and ~suc m ≤ suc n~), in a parameterised datatype
+the parameters must always be the same (as in ~Total m n~).
+#+end_quote
+
+What this mean is that if we are defining a datatype that takes arguments:
+
+#+begin_src agda2
+  data MyData a₁ a₂ ... where
+    Cons₁ : ... → MyData b₁₁ b₁₂ ...
+    Cons₂ : ... → MyData b₂₁ b₂₂ ...
+    Cons₃ : ... → MyData b₃₁ b₃₂ ...
+    ...
+#+end_src
+
+If for some $j$ we have b_{1j} = b_{2j} = b_{3j} = ...
+Then the argument at position $j$ can be treated as a parameter.
+
+In the case of ~Total~, the output on constructors are all ~Total m n~, both arguments remain constant across all constructors, which is why it is possible to define ~Total~ as ~Total (m n : ℕ)~
+
+In comparison, Consider the relation  ~≤ _ _~ (using prefix notation to match earlier example), where the output type of the two constructors are:
+
+#+begin_src agda2
+  ≤ zero n
+  ≤ (suc n) (suc m)
+#+end_src
+
+It is clear the argument does not remain the same. Hence these two type arguments are indexed instead
+
+* The Identity Type
+
+In PLFA [cite:@plfa22.08], Part 1, Equality, the identity type is defined as follow:
+
+#+begin_src agda2
+  data _≡_ {A : Set} (x : A) : A → Set where
+    refl : x ≡ x
+#+end_src
+
+Noted by [[https://yanningchen.me/][Yanning]],
+
+#+begin_src agda2
+  data _≡_ {A : Set} : A → A → Set where
+    refl : ∀ (x y : A) → (same x y) → x ≡ y
+#+end_src
+
