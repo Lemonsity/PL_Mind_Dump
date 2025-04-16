@@ -1,0 +1,114 @@
+#+TITLE: Indexed_Types (WIP)
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+#+BIBLIOGRAPHY: "../References/PL/Type_Theory/Dependent_Type/Ref.bib"
+#+BIBLIOGRAPHY: "../References/PL/Type_System/Type_Inference/Ref.bib"
+
+* How This Note Came to Be
+
+A few events triggered writing of this note:
+
+1. In PLFA [cite:@plfa22.08], indexed datatype was first introduced in /Part 1, Equality/. However, there is only one more brief mention of indexed datatype throughout the remaining of the book, at /Part 1, Lists/. The book did not go into detail regarding what indices are.
+2. An indexed datatype inhabits at a universe level 1 higher than the maximum universe level of its indices. [[https://yanningchen.me/][Yanning]] mentioned this to me slightly, but the conversation got lost and I wanted to recover as much as I can
+3. I ran into a problem when writing the following code:
+
+#+begin_src coq
+  Inductive MyVec (A : Type) : nat -> Type :=
+  | vnil : MyVec A 0
+  | vcons : forall (n : nat) , A -> MyVec A n -> MyVec A (S n).
+
+  Fixpoint append_lam (A : Type) (n m : nat) :
+    MyVec A n -> MyVec A m -> MyVec A (n + m) :=
+    fun vn vm =>
+      match vn with
+      | vnil _ => vm (* <-- Issue here *)
+      | vcons _ n' x vn' => vcons A (n' + m) x (append_lam A n m vn' vm)
+      end.
+#+end_src
+
+Which gave the following error:
+
+#+begin_src
+The term "vm" has type "MyVec A m"
+while it is expected to have type "MyVec A (add ?n@{n1:=O} m)".
+#+end_src
+
+I wanted to know why
+ 
+* Promoting Index to Parameter
+
+Quoting from PLFA [cite:@plfa22.08]
+
+#+begin_quote
+Unlike an indexed datatype, where the indexes can vary
+(as in ~zero ≤ n~ and ~suc m ≤ suc n~), in a parameterised datatype
+the parameters must always be the same (as in ~Total m n~).
+#+end_quote
+
+What this mean is that if we are defining a datatype that takes arguments:
+
+#+begin_src agda2
+  data MyData (s₁ : S₁) (s₂ : S₂) ... : T₁ → T₂ → ... where
+    Cons₁ : ... → MyData t₁₁ t₁₂ ...
+    Cons₂ : ... → MyData t₂₁ t₂₂ ...
+    Cons₃ : ... → MyData t₃₁ t₃₂ ...
+    ...
+#+end_src
+
+If for some $j$ we have t_{1j} = t_{2j} = t_{3j} = ...
+Then the argument at position $j$ can be treated as a parameter.
+
+In the case of ~Total~, the output on constructors are all ~Total m n~, both arguments remain constant across all constructors, which is why it is possible to define ~Total~ as ~Total (m n : ℕ)~
+
+In comparison, Consider the relation  ~≤ _ _~ (using prefix notation to match earlier example), where the output type of the two constructors are:
+
+#+begin_src agda2
+  ≤ zero n
+  ≤ (suc n) (suc m)
+#+end_src
+
+It is clear the argument does not remain the same. Hence these two type arguments are indexed instead
+
+* Fording
+
+In his thesis [cite:@mcbride2000dependently], McBride pointed out the technique of turning an indexed type with some fixed argument into an indexed type with universally quantified argument.
+
+The example from the thesis (section 3.5) is as follow (Slightly adjusted to highlight important area):
+
+#+begin_src agda2
+  ∀ x . x ≤ 0 → P x
+#+end_src
+
+The definition of ~≤~ is indexed by two ℕs, the latter of which is fixed to ~0~.
+It is possible to express this same meaning, but with both arguments to ~≤~ universally quantified, by adding a precondition that constraints the second index (Notice the new ~n ≃ 0~):
+
+#+begin_src agda2
+  newP = λ x n . n ≃ 0 → P x
+
+  ∀ x n . x ≤ n → n ≃ 0 → P x
+  -- Same as:
+  ∀ x n . x ≤ n → newP x n
+#+end_src
+
+** Relation with GADT
+
+A similar approach can be seen in the /OutsideIn/ paper [cite:@10.1145/1596550.1596599].
+
+In that paper, a constructor that specifies the output type argument:
+
+#+begin_src haskell
+  data T a where
+    C :: T Bool
+#+end_src
+
+is translated into a constructor with type equality constraint:
+
+#+begin_src haskell
+  data T a where
+    C :: (a ~ Bool) => T a
+#+end_src
+
+** Misc Notes on Fording
+
+- The thesis goes on to more details about how to generate and simplify the version of goal with constraint. Unfortunately that is out of the scope of this note
+- Fording can still be done manually, and can serve as a proof technique even in pen and paper proofs
