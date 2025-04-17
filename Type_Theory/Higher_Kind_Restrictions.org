@@ -1,0 +1,39 @@
+#+TITLE: Some Restrictions in Higher-Kinded Systems
+
+#+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
+
+This note came to be after noticing some details when reading Chapter 30, Higher-Order Polymorphism of TAPL [cite:@10.5555/509043]. 
+
+* Background
+
+One of the kinding rule for $F_\omega$ is as follow:
+
+\[\frac
+{\Gamma , X :: K_1 \vdash T_2 :: \star}
+{\Gamma \vdash \forall X :: K_1 ~.~ T_2 :: \star}
+\]
+
+Consider the highlighted part. The question we pose is:
+
+#+begin_center
+In the presumption, why does $T_2$ need to have the kind \star?
+#+end_center
+
+* Intuition
+
+Intuitively, the kind "\star" are:
+
+#+begin_center
+Types that can be inhabited with actual value.
+#+end_center
+
+We illustrate this idea with some examples:
+- The type ~Int~ has kind "\star", and we can construct values such as ~10 : Int~
+- The type ~Maybe Char~ has kind "\star", and we can construct values such as ~Just 'A' : Maybe Char~
+- The type ~Maybe~ has kind "\star \to \star", and there is no value with the type just ~Maybe~
+
+* 
+
+* Thanks
+
+To Ningning and Ethan for the discussion
