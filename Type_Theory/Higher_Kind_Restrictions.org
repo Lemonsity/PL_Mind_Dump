@@ -13,7 +13,7 @@ One of the kinding rule for $F_\omega$ is as follow:
 {\Gamma \vdash \forall X :: K_1 ~.~ T_2 :: \star}
 \]
 
-Consider the highlighted part. The question we pose is:
+We pose the question:
 
 #+begin_center
 In the presumption, why does $T_2$ need to have the kind \star?
