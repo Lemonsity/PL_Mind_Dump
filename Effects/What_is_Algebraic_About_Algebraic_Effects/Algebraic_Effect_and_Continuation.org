@@ -1,3 +1,4 @@
+#+TITLE: Notes on "What is Algebraic About Algebraic Effects and Handlers"
 
 #+bibliography: "../References/PL/Effects/Effect_Handlers/Ref.bib"
 #+LATEX_HEADER: \usepackage{xypic}
