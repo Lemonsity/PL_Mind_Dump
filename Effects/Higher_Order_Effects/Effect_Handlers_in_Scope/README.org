@@ -22,7 +22,7 @@ I also added some extra examples to illustrate (what I thought are) subtle nuanc
 
 I also cleaned up some code, adding brackets and type annotations as needed to make sure code executes
 
-* TODO
+* TODO WIP
 
 - [ ] Finish Section 9 & 11
 - [ ] Add dedicated note file
