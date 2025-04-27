@@ -27,3 +27,6 @@ I also cleaned up some code, adding brackets and type annotations as needed to m
 - [ ] Finish Section 9 & 11
 - [ ] Add dedicated note file
 
+* Bibliography
+
+#+print_bibliography:
