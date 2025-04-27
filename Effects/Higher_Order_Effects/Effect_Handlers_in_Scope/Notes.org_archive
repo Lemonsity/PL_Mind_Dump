@@ -1,0 +1,54 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /home/lemon/University/Master_01/Research/Higher_Order_Effects/Effect_Handlers_in_Scope/Notes.org
+
+
+* Bad interpretation
+:PROPERTIES:
+:ARCHIVE_TIME: 2025-03-04 Tue 14:59
+:ARCHIVE_FILE: ~/University/Master_01/Research/Higher_Order_Effects/Effect_Handlers_in_Scope/Notes.org
+:ARCHIVE_CATEGORY: Notes
+:END:
+
+The key detail is in the definition of ~begin~: (With some naming of terms)
+
+- ~return~ is actually just ~Return~
+
+
+#+begin_src haskell
+  beginContent = BCall' (Return ())
+  endContent = ECall' (Return ())
+
+  call' :: (Call ⊂ sig) => Prog sig a -> Prog sig a
+  call' p = do { begin
+               ; x <- p
+               ; end
+               ; return x } where
+    begin = inject beginContent
+    end = inject endContent
+#+end_src
+
+There are two things to notice here:
+1. the ~return~ used in ~beginContent, endContent~ is implemented as ~return = Return~.
+2. As a consequence of (1.), although from the surface, ~begin~ and ~end~ are returning some ~()~ type, in actuality, it is returning /a whole program/. ~inject~ make we lose information about top-level operation
+
+Now go to ~bcall~ and ~ecall~
+
+#+begin_src haskell
+  bcall :: (Nondet ⊂ sig) =>
+           Prog (Call + (Cut + sig)) a -> Prog (Cut + sig) a
+  bcall (Return a) = return a
+  bcall (BCall p) = upcast (call (ecall p)) >>= bcall
+  -- ...
+
+  ecall :: (Nondet ⊂ sig) =>
+           Prog (Call + (Cut + sig)) a ->
+           Prog (Cut + sig) (Prog (Call + (Cut + sig)) a)
+  ecall (Return a) = return (Return a)
+  -- ...
+#+end_src
+
+Now imagine we ~bcall~ some ~Prog~ wrapped with ~begin, end~
+
+

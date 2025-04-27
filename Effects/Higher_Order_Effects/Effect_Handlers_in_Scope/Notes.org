@@ -1,0 +1,50 @@
+#+TITLE: Notes
+#+STARTUP: content
+
+* ~cut, go, call~
+
+** Is it true to say Haskell's laziness is integral to the design to work
+
+Because without laziness, for any finite computation tree ~p~, we will have
+
+#+begin_src haskell
+  once p = Fail'
+#+end_src
+
+Because
+1. ~once~ will bind a ~Cutfail~ to the leafs of the computation
+2. ~call~ will eventually find the ~Cutfail~ and fail the entire program
+
+
+* Understanding ~call'~
+
+The issue with the naive ~call~ comes in two parts
+1. ~call~ handled ~Nondet~, in particular ~Branch~
+2. ~symbol '+'~ gets pushed out of the ~call~ handler
+
+One solution is to /somehow/:
+- Make sure ~symbol '+'~ is handled before the computation is handled by ~call~
+- Make sure not too much computation is disposed by a ~cutfail~
+
+I believe the following line of code best represents the solution:
+
+#+begin_src haskell
+  ecall (ECall p) = return p
+#+end_src
+
+Here we see, the computation after the delimit of a scope is returned in entirety, with the internal structure unobservable.
+
+If the continuation after the scope becomes opaque, ~call~ cannot preemptively prune away the computation, because there is no observable branching happening.
+
+In essence, I think ~ecall~ does the following:
+- Traverse through a computation tree ~T~
+- When reached an ~ECall'~, tie up all remaining computation into a single object
+- Return a modified version of ~T~, where every ~ECall'~ is followed immediately by a ~Return~ of the remaining computation tree
+Now the line ~call (ecall p)~ seems safer, because this ~call~ can only "see" up to the next ~ECall'~
+
+The remaining computation may have more ~call~ scope, which is why the ~>>= bcall~ is needed after 
+
+* Higher-Order Syntax 
+
+* ~call'~                                                                                    :ARCHIVE:
+

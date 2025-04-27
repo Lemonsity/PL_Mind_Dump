@@ -1,0 +1,29 @@
+#+TITLE: Code for "Effect Handlers in Scope"
+
+#+bibliography: "../../../References/PL/Effects/Higher_Order_Effects/Ref.bib"
+
+* About this Directory
+
+Here you can find the code for "Effect Handlers in Scope" [cite:@wu_effect_2014] by Nicolas Wu, Tom Schrijvers and Ralf Hinze
+
+The code is written in GHC 9.10.1
+
+* Code Structure
+
+Code is currently contained in two files:
+- ~TraditionalAndScoped.hs~ :: Mostly cover Section 1-9. Mainly on traditional and scoped effects
+- ~HigherOrderSyntax.hs~ :: Mostly cover Section 10-11. Mainly on higher-order effects
+
+* Self-indulgence
+
+I added some notes to the code to help me understand the implementation better
+
+I also added some extra examples to illustrate (what I thought are) subtle nuances
+
+I also cleaned up some code, adding brackets and type annotations as needed to make sure code executes
+
+* TODO
+
+- [ ] Finish Section 9 & 11
+- [ ] Add dedicated note file
+
