@@ -337,7 +337,7 @@ This part is breakable if you didn't install the [[#dependency-fonts][fonts from
 #+end_quote
 
 *** Default Face
-JetBrains Mono is a very solid font
+Victor Mono is a very solid font
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil
                     :family "VictorMono"
@@ -349,7 +349,7 @@ I also suggest Iosevka, but it seems to not display well for small fonts.
 #+begin_src
   (set-face-attribute 'default nil
                       :family "IosevkaCustom"
-                      :width 'expanded
+                      :width 'extended
                       :overline nil)
 #+end_src
 
@@ -442,26 +442,6 @@ This is for mono-width faces.
 #+end_src
 
   
-** Agda Face *(Breakable with bad dependency)*
-#+begin_quote
-*WARNING*: This part is really breakable if you didn't [[#dependency-agda][setup Agda]] properly
-#+end_quote
-
-Agda has a recommended face.
-We setup that face to be only active in Agda mode
-
-#+begin_src emacs-lisp
-  (defun agda-buffer-face-mode ()
-    "Set font to a variable width (proportional) fonts in current buffer"
-    (interactive)
-    (setq buffer-face-mode-face '(:family "mononoki"
-                                          :height 120
-                                          :width normal
-                                          :weight normal))
-    (buffer-face-mode))
-  (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
-#+end_src
-
 * Languages Setup                                                                        :Languages:
 
 ** Universal Configurations                                                             :Universal:
@@ -484,8 +464,9 @@ This package is the recommended syntax checker for [[#emacs-lsp-mode][/lsp-mode/
 
 [[https://emacs-lsp.github.io/lsp-mode/][/lsp-mode/]] provides a way to integrates Language Server with Emacs, and works out of the box for many languages.
 
-#+begin_src
+#+begin_src emacs-lisp
   (use-package lsp-mode
+    :ensure t
     :init
     (setq lsp-keymap-prefix "C-c l") ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
     :hook
@@ -511,7 +492,7 @@ The documentation is heavy, I have a few suggested reads:
     :diminish
     :config
     (setq company-minimum-prefix-length 1
-          company-idle-delay 0.0))
+          company-idle-delay 0.2))
 #+end_src
 
 [[#emacs-lsp-mode][/lsp-mode/]] uses this to autocomplete.
@@ -524,8 +505,9 @@ Mostly just hooking up to [[#emacs-lsp-mode][/lsp-mode/]].
 You can find related manual here:
 - [[http://haskell.github.io/haskell-mode/manual/latest/][/haskell-mode/]] :: Provides access to REPL, editing shortcut, other quality of life
 
-#+begin_src
-  (use-package lsp-haskell)
+#+begin_src emacs-lisp
+  (use-package lsp-haskell
+    :ensure t)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -611,6 +593,27 @@ Following are the emacs configuration:
            ("\\.lagda.md\\'" . agda2-mode))
          auto-mode-alist))
 #+end_src
+
+*** Agda Face *(Breakable with bad dependency)*
+#+begin_quote
+*WARNING*: This part is really breakable if you didn't [[#dependency-agda][setup Agda]] properly
+#+end_quote
+
+Agda has a recommended face.
+We setup that face to be only active in Agda mode
+
+#+begin_src emacs-lisp
+  (defun agda-buffer-face-mode ()
+    "Set font to a variable width (proportional) fonts in current buffer"
+    (interactive)
+    (setq buffer-face-mode-face '(:family "mononoki"
+                                          :height 120
+                                          :width normal
+                                          :weight normal))
+    (buffer-face-mode))
+  (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
+#+end_src
+
 
 ** TeX
 
@@ -848,16 +851,17 @@ Currently, I added logic symbols useful for programming languages research
 We wrap all the configuration together now.
 
 #+begin_src emacs-lisp
-  (use-package org
-    :hook
-    ((org-mode . lemon/org-mode-setup))
-    :config
-    (lemon/org-global-key-setup)
-    (lemon/org-appearance-setup)
-    (lemon/org-font-setup)
-    (lemon/org-todo-setup)
-    (lemon/org-agenda-setup)
-    (lemon/org-entities-user))
+    (use-package org
+      :hook
+      ((org-mode . lemon/org-mode-setup)
+       (org-mode . flyspell-mode))
+      :config
+      (lemon/org-global-key-setup)
+      (lemon/org-appearance-setup)
+      (lemon/org-font-setup)
+      (lemon/org-todo-setup)
+      (lemon/org-agenda-setup)
+      (lemon/org-entities-user))
 #+end_src
 
 ** Org Website Auto Change
