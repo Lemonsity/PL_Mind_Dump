@@ -14,24 +14,7 @@
 	month = sep,
 	year = {2014},
 	pages = {1--12},
-	file = {Full Text PDF:/home/lemon/Zotero/storage/GVLEN4EW/Wu et al. - 2014 - Effect handlers in scope.pdf:application/pdf},
-}
-
-@article{van_den_berg_framework_2024,
-	title = {A framework for higher-order effects \& handlers},
-	volume = {234},
-	issn = {0167-6423},
-	url = {https://www.sciencedirect.com/science/article/pii/S0167642324000091},
-	doi = {10.1016/j.scico.2024.103086},
-	abstract = {Algebraic effects \& handlers are a modular approach for modeling side-effects in functional programming. Their syntax is defined in terms of a signature of effectful operations, encoded as a functor, that are plugged into the free monad; their denotational semantics is defined by fold-style handlers that only interpret their part of the syntax and forward the rest. However, not all effects are algebraic: some need to access an internal computation. For example, scoped effects distinguish between a computation in scope and out of scope; parallel effects parallelize over a computation, latent effects defer a computation. Separate definitions have been proposed for these higher-order effects and their corresponding handlers, often leading to expedient and complex monad definitions. In this work we propose a generic framework for higher-order effects, generalizing algebraic effects \& handlers: a generic free monad with higher-order effect signatures and a corresponding interpreter. Specializing this higher-order syntax leads to various definitions of previously defined (scoped, parallel, latent) and novel (writer, bracketing) effects. Furthermore, we formally show our framework theoretically correct, also putting different effect instances on formal footing; a significant contribution for parallel, latent, writer and bracketing effects.},
-	urldate = {2025-02-04},
-	journal = {Science of Computer Programming},
-	author = {van den Berg, Birthe and Schrijvers, Tom},
-	month = may,
-	year = {2024},
-	keywords = {Algebraic effects and handlers, Datatypes à la carte, Free monad, Higher-order effects and handlers},
-	pages = {103086},
-	file = {Accepted Version:/home/lemon/Zotero/storage/VPP8I2WM/van den Berg and Schrijvers - 2024 - A framework for higher-order effects & handlers.pdf:application/pdf;ScienceDirect Snapshot:/home/lemon/Zotero/storage/ATLN48RR/S0167642324000091.html:text/html},
+	
 }
 
 @article{bosman_calculus_2024,
@@ -47,5 +30,40 @@
 	month = nov,
 	year = {2024},
 	note = {Publisher: Episciences.org},
-	file = {Full Text PDF:/home/lemon/Zotero/storage/XES9EKM8/Bosman et al. - 2024 - A Calculus for Scoped Effects & Handlers.pdf:application/pdf},
+	
+}
+
+@inproceedings{hinze_kan_2012,
+	address = {Berlin, Heidelberg},
+	title = {Kan {Extensions} for {Program} {Optimisation} {Or}: {Art} and {Dan} {Explain} an {Old} {Trick}},
+	isbn = {978-3-642-31113-0},
+	shorttitle = {Kan {Extensions} for {Program} {Optimisation} {Or}},
+	doi = {10.1007/978-3-642-31113-0_16},
+	abstract = {Many program optimisations involve transforming a program in direct style to an equivalent program in continuation-passing style. This paper investigates the theoretical underpinnings of this transformation in the categorical setting of monads. We argue that so-called absolute Kan Extensions underlie this program optimisation. It is known that every Kan extension gives rise to a monad, the codensity monad, and furthermore that every monad is isomorphic to a codensity monad. The end formula for Kan extensions then induces an implementation of the monad, which can be seen as the categorical counterpart of continuation-passing style. We show that several optimisations are instances of this scheme: Church representations and implementation of backtracking using success and failure continuations, among others. Furthermore, we develop the calculational properties of Kan extensions, powers and ends. In particular, we propose a two-dimensional notation based on string diagrams that aims to support effective reasoning with Kan extensions.},
+	language = {en},
+	booktitle = {Mathematics of {Program} {Construction}},
+	publisher = {Springer},
+	author = {Hinze, Ralf},
+	editor = {Gibbons, Jeremy and Nogueira, Pablo},
+	year = {2012},
+	keywords = {adjunction, backtracking, Church representation, codensity monad, CPS, end, Haskell, Kan extension, power, string diagram},
+	pages = {324--362},
+	
+}
+
+@article{van_den_berg_framework_2024,
+	title = {A framework for higher-order effects \& handlers},
+	volume = {234},
+	issn = {0167-6423},
+	url = {https://www.sciencedirect.com/science/article/pii/S0167642324000091},
+	doi = {10.1016/j.scico.2024.103086},
+	abstract = {Algebraic effects \& handlers are a modular approach for modeling side-effects in functional programming. Their syntax is defined in terms of a signature of effectful operations, encoded as a functor, that are plugged into the free monad; their denotational semantics is defined by fold-style handlers that only interpret their part of the syntax and forward the rest. However, not all effects are algebraic: some need to access an internal computation. For example, scoped effects distinguish between a computation in scope and out of scope; parallel effects parallelize over a computation, latent effects defer a computation. Separate definitions have been proposed for these higher-order effects and their corresponding handlers, often leading to expedient and complex monad definitions. In this work we propose a generic framework for higher-order effects, generalizing algebraic effects \& handlers: a generic free monad with higher-order effect signatures and a corresponding interpreter. Specializing this higher-order syntax leads to various definitions of previously defined (scoped, parallel, latent) and novel (writer, bracketing) effects. Furthermore, we formally show our framework theoretically correct, also putting different effect instances on formal footing; a significant contribution for parallel, latent, writer and bracketing effects.},
+	urldate = {2025-04-30},
+	journal = {Science of Computer Programming},
+	author = {van den Berg, Birthe and Schrijvers, Tom},
+	month = may,
+	year = {2024},
+	keywords = {Algebraic effects and handlers, Datatypes à la carte, Free monad, Higher-order effects and handlers},
+	pages = {103086},
+	
 }

@@ -1,87 +1,320 @@
-@article{article,
-author = {McBride, Conor and Paterson, Ross},
-year = {2008},
-month = {01},
-pages = {1-13},
-title = {Applicative Programming with Effects},
-volume = {18},
-journal = {Journal of Functional Programming},
-doi = {10.1017/S0956796807006326}
+
+@article{ullrich__2022,
+	title = {‘do’ unchained: embracing local imperativity in a purely functional language (functional pearl)},
+	volume = {6},
+	shorttitle = {‘do’ unchained},
+	url = {https://dl.acm.org/doi/10.1145/3547640},
+	doi = {10.1145/3547640},
+	abstract = {Purely functional programming languages pride themselves with reifying effects that are implicit in imperative languages into reusable and composable abstractions such as monads. This reification allows for more exact control over effects as well as the introduction of new or derived effects. However, despite libraries of more and more powerful abstractions over effectful operations being developed, syntactically the common 'do' notation still lags behind equivalent imperative code it is supposed to mimic regarding verbosity and code duplication. In this paper, we explore extending 'do' notation with other imperative language features that can be added to simplify monadic code: local mutation, early return, and iteration. We present formal translation rules that compile these features back down to purely functional code, show that the generated code can still be reasoned over using an implementation of the translation in the Lean 4 theorem prover, and formally prove the correctness of the translation rules relative to a simple static and dynamic semantics in Lean.},
+	number = {ICFP},
+	urldate = {2024-09-11},
+	journal = {Supplement of "'do' Unchained: Embracing Local Imperativity in a Purely Functional Language"},
+	author = {Ullrich, Sebastian and de Moura, Leonardo},
+	month = aug,
+	year = {2022},
+	pages = {109:512--109:539},
+	
 }
 
-@article{10.1145/601775.601776,
-author = {Wadler, Philip and Thiemann, Peter},
-title = {The marriage of effects and monads},
-year = {2003},
-issue_date = {January 2003},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {4},
-number = {1},
-issn = {1529-3785},
-url = {https://doi.org/10.1145/601775.601776},
-doi = {10.1145/601775.601776},
-abstract = {Gifford and others proposed an effect typing discipline to delimit the scope of computational effects within a program, while Moggi and others proposed monads for much the same purpose. Here we marry effects to monads, uniting two previously separate lines of research. In particular, we show that the type, region, and effect system of Talpin and Jouvelot carries over directly to an analogous system for monads, including a type and effect reconstruction algorithm. The same technique should allow one to transpose any effect system into a corresponding monad system.},
-journal = {ACM Trans. Comput. Logic},
-month = {jan},
-pages = {1–32},
-numpages = {32},
-keywords = {type reconstruction, type, region, effect, Monad}
+@inproceedings{orchard_embedding_2014,
+	address = {New York, NY, USA},
+	series = {Haskell '14},
+	title = {Embedding effect systems in {Haskell}},
+	isbn = {978-1-4503-3041-1},
+	url = {https://dl.acm.org/doi/10.1145/2633357.2633368},
+	doi = {10.1145/2633357.2633368},
+	abstract = {Monads are now an everyday tool in functional programming for abstracting and delimiting effects. The link between monads and effect systems is well-known, but in their typical use, monads provide a much more coarse-grained view of effects. Effect systems capture fine-grained information about the effects, but monads provide only a binary view: effectful or pure.Recent theoretical work has unified fine-grained effect systems with monads using a monad-like structure indexed by a monoid of effect annotations (called parametric effect monads). This aligns the power of monads with the power of effect systems.This paper leverages recent advances in Haskell's type system (as provided by GHC) to embed this approach in Haskell, providing user-programmable effect systems. We explore a number of practical examples that make Haskell even better and safer for effectful programming. Along the way, we relate the examples to other concepts, such as Haskell's implicit parameters and coeffects.},
+	urldate = {2024-09-10},
+	booktitle = {Proceedings of the 2014 {ACM} {SIGPLAN} symposium on {Haskell}},
+	publisher = {Association for Computing Machinery},
+	author = {Orchard, Dominic and Petricek, Tomas},
+	month = sep,
+	year = {2014},
+	pages = {13--24},
+	
 }
 
-@inproceedings{10.1145/2633357.2633368,
-author = {Orchard, Dominic and Petricek, Tomas},
-title = {Embedding effect systems in Haskell},
-year = {2014},
-isbn = {9781450330411},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-url = {https://doi.org/10.1145/2633357.2633368},
-doi = {10.1145/2633357.2633368},
-abstract = {Monads are now an everyday tool in functional programming for abstracting and delimiting effects. The link between monads and effect systems is well-known, but in their typical use, monads provide a much more coarse-grained view of effects. Effect systems capture fine-grained information about the effects, but monads provide only a binary view: effectful or pure.Recent theoretical work has unified fine-grained effect systems with monads using a monad-like structure indexed by a monoid of effect annotations (called parametric effect monads). This aligns the power of monads with the power of effect systems.This paper leverages recent advances in Haskell's type system (as provided by GHC) to embed this approach in Haskell, providing user-programmable effect systems. We explore a number of practical examples that make Haskell even better and safer for effectful programming. Along the way, we relate the examples to other concepts, such as Haskell's implicit parameters and coeffects.},
-booktitle = {Proceedings of the 2014 ACM SIGPLAN Symposium on Haskell},
-pages = {13–24},
-numpages = {12},
-keywords = {type systems, parametric effect monads, effect systems},
-location = {Gothenburg, Sweden},
-series = {Haskell '14}
+@inproceedings{schrijvers_monad_2019,
+	address = {New York, NY, USA},
+	series = {Haskell 2019},
+	title = {Monad transformers and modular algebraic effects: what binds them together},
+	isbn = {978-1-4503-6813-1},
+	shorttitle = {Monad transformers and modular algebraic effects},
+	url = {https://dl.acm.org/doi/10.1145/3331545.3342595},
+	doi = {10.1145/3331545.3342595},
+	abstract = {For over two decades, monad transformers have been the main modular approach for expressing purely functional side-effects in Haskell. Yet, in recent years algebraic effects have emerged as an alternative whose popularity is growing. While the two approaches have been well-studied, there is still confusion about their relative merits and expressiveness, especially when it comes to their comparative modularity. This paper clarifies the connection between the two approaches—some of which is folklore—and spells out consequences that we believe should be better known. We characterise a class of algebraic effects that is modular, and show how these correspond to a specific class of monad transformers. In particular, we show that our modular algebraic effects gives rise to monad transformers. Moreover, every monad transformer for algebraic operations gives rise to a modular effect handler.},
+	urldate = {2024-09-10},
+	booktitle = {Proceedings of the 12th {ACM} {SIGPLAN} {International} {Symposium} on {Haskell}},
+	publisher = {Association for Computing Machinery},
+	author = {Schrijvers, Tom and Piróg, Maciej and Wu, Nicolas and Jaskelioff, Mauro},
+	month = aug,
+	year = {2019},
+	keywords = {Effect\_Handlers, Monad},
+	pages = {98--113},
+	
 }
 
-@article{10.1145/2775050.2633368,
-author = {Orchard, Dominic and Petricek, Tomas},
-title = {Embedding effect systems in Haskell},
-year = {2014},
-issue_date = {December 2014},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {49},
-number = {12},
-issn = {0362-1340},
-url = {https://doi.org/10.1145/2775050.2633368},
-doi = {10.1145/2775050.2633368},
-abstract = {Monads are now an everyday tool in functional programming for abstracting and delimiting effects. The link between monads and effect systems is well-known, but in their typical use, monads provide a much more coarse-grained view of effects. Effect systems capture fine-grained information about the effects, but monads provide only a binary view: effectful or pure.Recent theoretical work has unified fine-grained effect systems with monads using a monad-like structure indexed by a monoid of effect annotations (called parametric effect monads). This aligns the power of monads with the power of effect systems.This paper leverages recent advances in Haskell's type system (as provided by GHC) to embed this approach in Haskell, providing user-programmable effect systems. We explore a number of practical examples that make Haskell even better and safer for effectful programming. Along the way, we relate the examples to other concepts, such as Haskell's implicit parameters and coeffects.},
-journal = {SIGPLAN Not.},
-month = {sep},
-pages = {13–24},
-numpages = {12},
-keywords = {type systems, parametric effect monads, effect systems}
+@article{moggi_notions_1991,
+	series = {Selections from 1989 {IEEE} {Symposium} on {Logic} in {Computer} {Science}},
+	title = {Notions of computation and monads},
+	volume = {93},
+	issn = {0890-5401},
+	url = {https://www.sciencedirect.com/science/article/pii/0890540191900524},
+	doi = {10.1016/0890-5401(91)90052-4},
+	abstract = {The λ-calculus is considered a useful mathematical tool in the study of programming languages, since programs can be identified with λ-terms. However, if one goes further and uses βη-conversion to prove equivalence of programs, then a gross simplification is introduced (programs are identified with total functions from values to values) that may jeopardise the applicability of theoretical results. In this paper we introduce calculi, based on a categorical semantics for computations, that provide a correct basis for proving equivalence of programs for a wide range of notions of computation.},
+	number = {1},
+	urldate = {2024-09-20},
+	journal = {Information and Computation},
+	author = {Moggi, Eugenio},
+	month = jul,
+	year = {1991},
+	pages = {55--92},
+	
 }
 
-@article{10.1145/3547640,
-author = {Ullrich, Sebastian and de Moura, Leonardo},
-title = {‘do’ unchained: embracing local imperativity in a purely functional language (functional pearl)},
-year = {2022},
-issue_date = {August 2022},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {6},
-number = {ICFP},
-url = {https://doi.org/10.1145/3547640},
-doi = {10.1145/3547640},
-abstract = {Purely functional programming languages pride themselves with reifying effects that are implicit in imperative languages into reusable and composable abstractions such as monads. This reification allows for more exact control over effects as well as the introduction of new or derived effects. However, despite libraries of more and more powerful abstractions over effectful operations being developed, syntactically the common 'do' notation still lags behind equivalent imperative code it is supposed to mimic regarding verbosity and code duplication. In this paper, we explore extending 'do' notation with other imperative language features that can be added to simplify monadic code: local mutation, early return, and iteration. We present formal translation rules that compile these features back down to purely functional code, show that the generated code can still be reasoned over using an implementation of the translation in the Lean 4 theorem prover, and formally prove the correctness of the translation rules relative to a simple static and dynamic semantics in Lean.},
-journal = {Proc. ACM Program. Lang.},
-month = {aug},
-articleno = {109},
-numpages = {28},
-keywords = {interactive theorem proving, functional programming, Lean}
+@article{moggi_notions_1991-1,
+	title = {Notions of computation and monads},
+	volume = {93},
+	copyright = {https://www.elsevier.com/tdm/userlicense/1.0/},
+	issn = {08905401},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/0890540191900524},
+	doi = {10.1016/0890-5401(91)90052-4},
+	abstract = {The λ-calculus is considered an useful mathematical tool in the study of programming languages, since programs can be identiﬁed with λ-terms. However, if one goes further and uses βη-conversion to prove equivalence of programs, then a gross simpliﬁcation is introduced (programs are identiﬁed with total functions from values to values), that may jeopardise the applicability of theoretical results. In this paper we introduce calculi based on a categorical semantics for computations, that provide a correct basis for proving equivalence of programs, for a wide range of notions of computation.},
+	language = {en},
+	number = {1},
+	urldate = {2024-09-20},
+	journal = {Information and Computation},
+	author = {Moggi, Eugenio},
+	month = jul,
+	year = {1991},
+	pages = {55--92},
+	
+}
+
+@misc{noauthor_httpswwwcscmueducrary819-f09moggi91pdf_nodate,
+	title = {https://www.cs.cmu.edu/{\textasciitilde}crary/819-f09/{Moggi91}.pdf},
+	url = {https://www.cs.cmu.edu/~crary/819-f09/Moggi91.pdf},
+	urldate = {2024-09-20},
+}
+
+@article{dumas_hilbert-post_nodate,
+	title = {Hilbert-{Post} completeness for the state and the exception effects},
+	abstract = {A theory is complete if it does not contain a contradiction, while all of its proper extensions do. In this paper, ﬁrst we introduce a relative notion of syntactic completeness; then we prove that adding exceptions to a programming language can be done in such a way that the completeness of the language is not made worse. These proofs are formalized in a logical system which is close to the usual syntax for exceptions, and they have been checked with the proof assistant Coq.},
+	language = {en},
+	author = {Dumas, Jean-Guillaume and Duval, Dominique and Ekici, Burak and Pous, Damien and Reynaud, Jean-Claude},
+	
+}
+
+@article{katsumata_parametric_2014,
+	title = {Parametric effect monads and semantics of effect systems},
+	volume = {49},
+	issn = {0362-1340},
+	url = {https://dl.acm.org/doi/10.1145/2578855.2535846},
+	doi = {10.1145/2578855.2535846},
+	abstract = {We study fundamental properties of a generalisation of monad called parametric effect monad, and apply it to the interpretation of general effect systems whose effects have sequential composition operators. We show that parametric effect monads admit analogues of the structures and concepts that exist for monads, such as Kleisli triples, the state monad and the continuation monad, Plotkin and Power's algebraic operations, and the categorical ┬┬-lifting. We also show a systematic method to generate both effects and a parametric effect monad from a monad morphism. Finally, we introduce two effect systems with explicit and implicit subeffecting, and discuss their denotational semantics and the soundness of effect systems.},
+	number = {1},
+	urldate = {2024-10-07},
+	journal = {SIGPLAN Not.},
+	author = {Katsumata, Shin-ya},
+	month = jan,
+	year = {2014},
+	pages = {633--645},
+	
+}
+
+@inproceedings{moggi_computational_1989,
+	title = {Computational lambda-calculus and monads},
+	url = {https://ieeexplore.ieee.org/document/39155},
+	doi = {10.1109/LICS.1989.39155},
+	abstract = {The lambda -calculus is considered a useful mathematical tool in the study of programming languages. However, if one uses beta eta -conversion to prove equivalence of programs, then a gross simplification is introduced. The author gives a calculus based on a categorical semantics for computations, which provides a correct basis for proving equivalence of programs, independent from any specific computational model.{\textless}{\textgreater}},
+	urldate = {2024-10-21},
+	booktitle = {[1989] {Proceedings}. {Fourth} {Annual} {Symposium} on {Logic} in {Computer} {Science}},
+	author = {Moggi, E.},
+	month = jun,
+	year = {1989},
+	keywords = {Calculus, Computer languages, Computer science, Contracts, Logic programming, Mathematical model, Mathematical programming, Reasoning about programs},
+	pages = {14--23},
+	
+}
+
+@inproceedings{wadler_comprehending_1990,
+	address = {New York, NY, USA},
+	series = {{LFP} '90},
+	title = {Comprehending monads},
+	isbn = {978-0-89791-368-3},
+	url = {https://dl.acm.org/doi/10.1145/91556.91592},
+	doi = {10.1145/91556.91592},
+	abstract = {Category theorists invented monads in the 1960's to concisely express certain aspects of universal algebra. Functional programmers invented list comprehensions in the 1970's to concisely express certain programs involving lists. This paper shows how list comprehensions may be generalised to an arbitrary monad, and how the resulting programming feature can concisely express in a pure functional language some programs that manipulate state, handle exceptions, parse text, or invoke continuations. A new solution to the old problem of destructive array update is also presented. No knowledge of category theory is assumed.},
+	urldate = {2024-10-21},
+	booktitle = {Proceedings of the 1990 {ACM} conference on {LISP} and functional programming},
+	publisher = {Association for Computing Machinery},
+	author = {Wadler, Philip},
+	month = may,
+	year = {1990},
+	pages = {61--78},
+	
+}
+
+@inproceedings{wadler_monads_1993,
+	address = {Berlin, Heidelberg},
+	title = {Monads for functional programming},
+	isbn = {978-3-662-02880-3},
+	doi = {10.1007/978-3-662-02880-3_8},
+	abstract = {The use of monads to structure functional programs is described. Monads provide a convenient framework for simulating effects found in other languages, such as global state, exception handling, output, or non-determinism. Three case studies are looked at in detail: how monads ease the modification of a simple evaluator; how monads act as the basis of a datatype of arrays subject to in-place update; and how monads can be used to build parsers.},
+	language = {en},
+	booktitle = {Program {Design} {Calculi}},
+	publisher = {Springer},
+	author = {Wadler, Philip},
+	editor = {Broy, Manfred},
+	year = {1993},
+	keywords = {Monad},
+	pages = {233--264},
+	
+}
+
+@article{torczon_effects_2024,
+	title = {Effects and {Coeffects} in {Call}-by-{Push}-{Value}},
+	volume = {8},
+	url = {https://dl.acm.org/doi/10.1145/3689750},
+	doi = {10.1145/3689750},
+	abstract = {Effect and coeffect tracking integrate many types of compile-time
+ 
+ 
+ 
+ analysis, such as cost, liveness, or dataflow, directly into a language's type
+ 
+ 
+ 
+ system. In this paper, we investigate the addition of effect and coeffect
+ 
+ 
+ 
+ tracking to the type system of call-by-push-value (CBPV), a computational
+ 
+ 
+ 
+ model useful in compilation for its isolation of effects and for its ability
+ 
+ 
+ 
+ to cleanly express both call-by-name and call-by-value computations. Our
+ 
+ 
+ 
+ main result is effect-and-coeffect soundness, which asserts that the
+ 
+ 
+ 
+ type system accurately bounds the effects that the program may trigger
+ 
+ 
+ 
+ during execution and accurately tracks the demands that the program may make
+ 
+ 
+ 
+ on its environment. This result holds for two different dynamic semantics: a
+ 
+ 
+ 
+ generic one that can be adapted for different coeffects and one that is
+ 
+ 
+ 
+ adapted for reasoning about resource usage. In particular, the second 
+ 
+ 
+ 
+ semantics discards the evaluation of unused values and pure computations
+ 
+ 
+ 
+ while ensuring that effectful computations are always evaluated, even if 
+ 
+ 
+ 
+ their results are not required. Our results have been mechanized using 
+ 
+ 
+ 
+ the Coq proof assistant.},
+	number = {OOPSLA2},
+	urldate = {2024-10-27},
+	journal = {Artifact Associated with "Effects and Coeffects in Call-by-Push-Value"},
+	author = {Torczon, Cassia and Suárez Acevedo, Emmanuel and Agrawal, Shubh and Velez-Ginorio, Joey and Weirich, Stephanie},
+	month = oct,
+	year = {2024},
+	pages = {310:1108--310:1134},
+	
+}
+
+@inproceedings{kiselyov_freer_2015,
+	address = {New York, NY, USA},
+	series = {Haskell '15},
+	title = {Freer monads, more extensible effects},
+	isbn = {978-1-4503-3808-0},
+	url = {https://dl.acm.org/doi/10.1145/2804302.2804319},
+	doi = {10.1145/2804302.2804319},
+	abstract = {We present a rational reconstruction of extensible effects, the recently proposed alternative to monad transformers, as the confluence of efforts to make effectful computations compose. Free monads and then extensible effects emerge from the straightforward term representation of an effectful computation, as more and more boilerplate is abstracted away. The generalization process further leads to freer monads, constructed without the Functor constraint. The continuation exposed in freer monads can then be represented as an efficient type-aligned data structure. The end result is the algorithmically efficient extensible effects library, which is not only more comprehensible but also faster than earlier implementations. As an illustration of the new library, we show three surprisingly simple applications: non-determinism with committed choice (LogicT), catching IO exceptions in the presence of other effects, and the semi-automatic management of file handles and other resources through monadic regions. We extensively use and promote the new sort of `laziness', which underlies the left Kan extension: instead of performing an operation, keep its operands and pretend it is done.},
+	urldate = {2024-11-03},
+	booktitle = {Proceedings of the 2015 {ACM} {SIGPLAN} {Symposium} on {Haskell}},
+	publisher = {Association for Computing Machinery},
+	author = {Kiselyov, Oleg and Ishii, Hiromi},
+	month = aug,
+	year = {2015},
+	pages = {94--105},
+	
+}
+
+@article{dyvbig_monadic_2007,
+	title = {A monadic framework for delimited continuations},
+	volume = {17},
+	issn = {1469-7653, 0956-7968},
+	url = {https://www.cambridge.org/core/journals/journal-of-functional-programming/article/monadic-framework-for-delimited-continuations/D99D1394370DFA8EA8428D552B5D8E7E},
+	doi = {10.1017/S0956796807006259},
+	abstract = {Delimited continuations are more expressive than traditional abortive continuations and they apparently require a framework beyond traditional continuation-passing style (CPS). We show that this is not the case: standard CPS is sufficient to explain the common control operators for delimited continuations. We demonstrate this fact and present an implementation as a Scheme library. We then investigate a typed account of delimited continuations that makes explicit where control effects can occur. This results in a monadic framework for typed and encapsulated delimited continuations, which we design and implement as a Haskell library.},
+	language = {en},
+	number = {6},
+	urldate = {2024-11-22},
+	journal = {Journal of Functional Programming},
+	author = {Dyvbig, R. Kent and Jones, Simon Peyton and Sabry, Amr},
+	month = nov,
+	year = {2007},
+	pages = {687--730},
+	
+}
+
+@article{mcbride_applicative_2008,
+	title = {Applicative programming with effects},
+	volume = {18},
+	issn = {1469-7653, 0956-7968},
+	url = {https://www.cambridge.org/core/journals/journal-of-functional-programming/article/applicative-programming-with-effects/C80616ACD5687ABDC86D2B341E83D298},
+	doi = {10.1017/S0956796807006326},
+	abstract = {In this article, we introduce Applicative functors – an abstract characterisation of an applicative style of effectful programming, weaker than Monads and hence more widespread. Indeed, it is the ubiquity of this programming pattern that drew us to the abstraction. We retrace our steps in this article, introducing the applicative pattern by diverse examples, then abstracting it to define the Applicative type class and introducing a bracket notation that interprets the normal application syntax in the idiom of an Applicative functor. Furthermore, we develop the properties of applicative functors and the generic operations they support. We close by identifying the categorical structure of applicative functors and examining their relationship both with Monads and with Arrow.},
+	language = {en},
+	number = {1},
+	urldate = {2025-05-04},
+	journal = {Journal of Functional Programming},
+	author = {Mcbride, Conor and Paterson, Ross},
+	month = jan,
+	year = {2008},
+	pages = {1--13},
+	
+}
+
+@article{wadler_marriage_2003,
+	title = {The marriage of effects and monads},
+	volume = {4},
+	issn = {1529-3785},
+	url = {https://dl.acm.org/doi/10.1145/601775.601776},
+	doi = {10.1145/601775.601776},
+	abstract = {Gifford and others proposed an effect typing discipline to delimit the scope of computational effects within a program, while Moggi and others proposed monads for much the same purpose. Here we marry effects to monads, uniting two previously separate lines of research. In particular, we show that the type, region, and effect system of Talpin and Jouvelot carries over directly to an analogous system for monads, including a type and effect reconstruction algorithm. The same technique should allow one to transpose any effect system into a corresponding monad system.},
+	number = {1},
+	urldate = {2025-05-04},
+	journal = {ACM Trans. Comput. Logic},
+	author = {Wadler, Philip and Thiemann, Peter},
+	month = jan,
+	year = {2003},
+	pages = {1--32},
+	
 }
