@@ -1,4 +1,4 @@
-#+TITLE: Indexed_Types (WIP)
+#+TITLE: Indexed Types (WIP)
 
 #+BIBLIOGRAPHY: "../References/PL/Textbooks/Ref.bib"
 #+BIBLIOGRAPHY: "../References/PL/Type_Theory/Dependent_Type/Ref.bib"
@@ -39,7 +39,7 @@ In the case of ~Total~, the output on constructors are all ~Total m n~, both arg
 In comparison, Consider the relation  ~≤ _ _~ (using prefix notation to match earlier example), where the output type of the two constructors are:
 
 #+begin_src agda2
-  ≤ zero n
+  ≤ zero m
   ≤ (suc n) (suc m)
 #+end_src
 
@@ -55,7 +55,7 @@ The example from the thesis (section 3.5) is as follow (Slightly adjusted to hig
   ∀ x . x ≤ 0 → P x
 #+end_src
 
-The definition of ~≤~ is indexed by two ℕs, the latter of which is fixed to ~0~.
+The definition of ~≤~ is indexed by two $\mathbb{N}$ s, the latter of which is fixed to ~0~.
 It is possible to express this same meaning, but with both arguments to ~≤~ universally quantified, by adding a precondition that constraints the second index (Notice the new ~n ≃ 0~):
 
 #+begin_src agda2
