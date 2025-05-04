@@ -15,7 +15,10 @@ Given a set of operations {op_i} with general arity {A_i} and parameter {P_i}, T
 Unlike algebra of operations with finite arity, I could not imagine the "well-foundedness" of this definition
 Thus, I consult to proof assistant. What follows is my attempt at defining the Free Tree in Coq:
 #+begin_src coq
-  Inductive FreeTree {X : Type} {param_map : nat -> Type} {arity_map : nat -> Type} : Type :=
+  Inductive FreeTree
+    {X : Type}
+    {param_map : nat -> Type}
+    {arity_map : nat -> Type} : Type :=
   | ret (v : X)
   | op (index : nat) (p : param_map index) (k : arity_map index -> FreeTree).
 #+end_src
@@ -52,23 +55,23 @@ Now looking back at \kappa, we see it indeed represents the continuation after t
 ** Lifting Functions to Homomorphisms
 The free model, have the universal lifting property:
 
-\begin{equation}
+\begin{equation*}
   \xymatrix{
     {X}
     \ar[r]^{\eta}
     \ar[rd]_{f}
     &
-    {\carrier{\mathsf{Tree}_\Sigma(X)}}
+    {\mathsf{Tree}_\Sigma(X)}
     \ar[d]^{\overline{f}}
     \\
     &
-     \carrier{M}
+     M
   }
-\end{equation}
+\end{equation*}
 
 In particular, $\overline f$ is defined "inductively":
-- $\overline{f}$ (return v) = f(v)
-- $\overline{f}$ (op_i(p, \kappa) = op_i(p; \lambda a. $\overline{f}$(\kappa(a)) ) = op_i(p; $\overline{f}$ \circ \kappa)
+- $\overline{f} (return ~ v) = f(v)$
+- $\overline{f} (op_i(p, \kappa) = op_i(p; \lambda a. \overline{f}(\kappa(a)) ) = op_i(p; \overline{f} \circ \kappa)$
 Given elements of Tree_\Sigma(X) are "well-founded", the recursive definition of $\overline{f}$ will eventually terminates.
 Coq also accepts the definition:
 #+begin_src coq
@@ -149,7 +152,7 @@ Thus we can define the following
 And get the following equations.
 
 \begin{align*}
-\operationname{op}(p ; \lambda y . c) \texttt{ >>= } f
+\operatorname{op}(p ; \lambda y . c) \texttt{ >>= } f
 &= (\lambda r . r \texttt{ >>= } f) (\operatorname{op}(p ; \lambda y . c) \\
 &= \overline{f} (\operatorname{op}(p ; \lambda y . c) \\
 &= \operatorname{op}(p ; \overline{f} \circ (\lambda y . c)) \\
