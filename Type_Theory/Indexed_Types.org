@@ -10,30 +10,6 @@ A few events triggered writing of this note:
 
 1. In PLFA [cite:@plfa22.08], indexed datatype was first introduced in /Part 1, Equality/. However, there is only one more brief mention of indexed datatype throughout the remaining of the book, at /Part 1, Lists/. The book did not go into detail regarding what indices are.
 2. An indexed datatype inhabits at a universe level 1 higher than the maximum universe level of its indices. [[https://yanningchen.me/][Yanning]] mentioned this to me slightly, but the conversation got lost and I wanted to recover as much as I can
-3. I ran into a problem when writing the following code:
-
-#+begin_src coq
-  Inductive MyVec (A : Type) : nat -> Type :=
-  | vnil : MyVec A 0
-  | vcons : forall (n : nat) , A -> MyVec A n -> MyVec A (S n).
-
-  Fixpoint append_lam (A : Type) (n m : nat) :
-    MyVec A n -> MyVec A m -> MyVec A (n + m) :=
-    fun vn vm =>
-      match vn with
-      | vnil _ => vm (* <-- Issue here *)
-      | vcons _ n' x vn' => vcons A (n' + m) x (append_lam A n m vn' vm)
-      end.
-#+end_src
-
-Which gave the following error:
-
-#+begin_src
-The term "vm" has type "MyVec A m"
-while it is expected to have type "MyVec A (add ?n@{n1:=O} m)".
-#+end_src
-
-I wanted to know why
  
 * Promoting Index to Parameter
 

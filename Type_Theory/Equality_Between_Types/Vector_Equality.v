@@ -5,7 +5,7 @@ From Coq Require Import PeanoNat.
 Import Nat.
 From Coq Require Import EqNat.
 
- Set Printing All.
+Set Printing All.
 
 Inductive MyVec (A : Type) : nat -> Type :=
 | vnil : MyVec A 0
@@ -44,19 +44,14 @@ Proof.
   apply (append vn vm).
 Qed.
 
+(** Decreasing Argument
+
+    Because the argument we are breaking down is not part of the parameter of [append_lam]
+    It will throw a "Error: Cannot guess decreasing argument of fix." error *)
+
 (* Fixpoint append_lam (A : Type) (n m : nat) : MyVec A n -> MyVec A m -> MyVec A (n + m) := *)
 (*   fun vn vm => *)
 (*     match vn with *)
-(*     | vnil _ => vm *)
-(*     | vcons _ n' x vn' => vcons A (n' + m) x (append_lam A n m vn' vm) *)
+(*     | vnil _ => vm  *)
+(*     | vcons _ n' x vn' => vcons A (n' + m) x (append_lam A n' m vn' vm) *)
 (*     end. *)
-
-(* Error: *)
-(* In environment *)
-(* append_lam : forall (A : Type) (n m : nat), MyVec A n -> MyVec A m -> MyVec A (n + m) *)
-(* A : Type *)
-(* n : nat *)
-(* m : nat *)
-(* vn : MyVec A n *)
-(* vm : MyVec A m *)
-(* The term "vm" has type "MyVec A m" while it is expected to have type "MyVec A (?n@{n1:=0} + m)". *)
