@@ -45,7 +45,9 @@ In comparison, Consider the relation  ~≤ _ _~ (using prefix notation to match 
 
 It is clear the argument does not remain the same. Hence these two type arguments are indexed instead
 
-* Fording
+* Induction Involving Indexed Datatypes
+
+** Fording
 
 In his thesis [cite:@mcbride2000dependently], McBride pointed out the technique of turning an indexed type with some fixed argument into an indexed type with universally quantified argument.
 
@@ -65,6 +67,18 @@ It is possible to express this same meaning, but with both arguments to ~≤~ un
   -- Same as:
   ∀ x n . x ≤ n → newP x n
 #+end_src
+
+** ~dependent induction~
+
+In Logical Foundation [cite:@Pierce:SF1], ~IndProp.v~, under the section about the ~remember~ tactic, there is the following:
+
+#+begin_quote
+The problem here is that [induction] over a Prop hypothesis only works properly with hypotheses that are "completely general," i.e., ones in which all the arguments are variables ...
+#+end_quote
+
+The book then proceeds to use the ~remember~ tactic to generalize a specific term into a variable. This process is similar to fording, manually introducing the \simeq from earlier.
+
+In fact, Roqcq/Coq has a built-in tactic: [[https://rocq-prover.org/doc/master/refman/proofs/writing-proofs/reasoning-inductives.html#coq:tacn.dependent-induction][dependent induction]] that is "The tactic is based on the BasicElim tactic by Conor McBride (Elimination with a motive)"
 
 ** Relation with GADT
 
