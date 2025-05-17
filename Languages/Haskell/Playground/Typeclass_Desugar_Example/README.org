@@ -1,0 +1,8 @@
+* Haskell Desugaring
+
+As stated in the [[https://downloads.haskell.org/ghc/latest/docs/users_guide/debugging.html#ghc-flag-ddump-ds][documentation]], GHC comes with the options:
+- ~-ddump-ds~
+- ~-ddump-ds-preopt~
+Both dumps the desugared code
+
+Here we compiled ~What_is_Fmap.hs~ with the option, and example the code to verify typeclass gets elaborated to record and projects
