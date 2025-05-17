@@ -1,0 +1,61 @@
+Loaded package environment from /home/lemon/.ghc/x86_64-linux-9.4.8/environments/default
+[1 of 2] Compiling Main             ( What_is_Fmap.hs, What_is_Fmap.o ) [Source file changed]
+
+==================== Desugar (before optimization) ====================
+Result size of Desugar (before optimization)
+  = {terms: 28, types: 37, coercions: 0, joins: 0/1}
+
+Rec {
+-- RHS size: {terms: 1, types: 0, coercions: 0, joins: 0/0}
+$dMonad_aDm :: Monad IO
+[LclId]
+$dMonad_aDm = GHC.Base.$fMonadIO
+
+-- RHS size: {terms: 5, types: 0, coercions: 0, joins: 0/0}
+Main.$trModule :: ghc-prim:GHC.Types.Module
+[LclIdX]
+Main.$trModule
+  = ghc-prim:GHC.Types.Module
+      (ghc-prim:GHC.Types.TrNameS "main"#)
+      (ghc-prim:GHC.Types.TrNameS "Main"#)
+
+-- RHS size: {terms: 3, types: 2, coercions: 0, joins: 0/0}
+main :: IO ()
+[LclIdX]
+main = return @IO $dMonad_aDm @() ghc-prim:GHC.Tuple.()
+
+-- RHS size: {terms: 12, types: 15, coercions: 0, joins: 0/1}
+fmapWrapper
+  :: forall (myfun :: * -> *) a b.
+     Functor myfun =>
+     (a -> b) -> myfun a -> myfun b
+[LclId]
+fmapWrapper
+  = \ (@(myfun_aDp :: * -> *))
+      (@a_aDq)
+      (@b_aDr)
+      ($dFunctor_aDs :: Functor myfun_aDp) ->
+      let {
+        $dFunctor_aDx :: Functor myfun_aDp
+        [LclId]
+        $dFunctor_aDx = $dFunctor_aDs } in
+      \ (f_aui :: a_aDq -> b_aDr) (ca_auj :: myfun_aDp a_aDq) ->
+        fmap @myfun_aDp $dFunctor_aDx @a_aDq @b_aDr f_aui ca_auj
+
+	- fmap		: projection out of record 
+	- @myfun_aDp	: type operator
+	- $dFunctor_aDx	: dictionary of all implemented functions
+	- @a_aDq	: a
+	- @b_aDr	: b
+	- f_aui		: function to be fmapped
+	- ca_auj	: f a
+
+-- RHS size: {terms: 2, types: 1, coercions: 0, joins: 0/0}
+:Main.main :: IO ()
+[LclIdX]
+:Main.main = GHC.TopHandler.runMainIO @() main
+end Rec }
+
+
+
+[2 of 2] Linking What_is_Fmap [Objects changed]
