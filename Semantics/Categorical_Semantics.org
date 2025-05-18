@@ -1,0 +1,157 @@
+#+TITLE: Categorical Semantics (WIP)
+
+#+BIBLIOGRAPHY: "../References/PL/Type_Theory/Dependent_Type/Ref.bib"
+
+* How this Note Came to Be
+
+This is my notes reading Martin Hofmann's Syntax and Semantics of Dependent Types [cite:@pitts_syntax_1997]
+
+* Background
+
+We assume some basic syntax and typing rules of dependent type
+
+(I wish to not encounter universe related issues, because that is not my focus)
+
+* Context Morphisms
+
+Here we define and develop the concept of morphisms between contexts
+
+** Definition
+
+Let
+- $\Gamma$ be a context, such that $\vdash \Gamma ctx$
+- $\Delta = x_1 : \sigma_1, \dots , x_n : \sigma_n$, s.t. $\vdash \Delta ctx$
+- $f = (M_1, \dots , M_n)$ be a sequence of [[Pre-term][pre-terms]], then
+
+#+begin_center
+$f$ is a /Context Morphism/ from $\Gamma$ to $\Delta$, denoted $\Gamma \vdash f \Rightarrow \Delta$, iff the following $n$ judgements hold:
+#+end_center
+
+\begin{align*}
+&\Gamma \vdash M_1 : \sigma_1 \\
+&\Gamma \vdash M_2 : \sigma_2 [M_1 / x_1] \\
+&\vdots \\
+&\Gamma \vdash M_n : \sigma_n [M_1 / x_1] [M_2 / x_2] \dots [M_{n-1} / x_{n-1}] \\
+\end{align*}
+
+*** Intuition for Definition
+
+(WARNING: My own understanding)
+
+A context is a collection of "assumption" that we have some terms of types ($x_i : \sigma_i$)
+If we can indeed construct a term of $M_i$ of the type $\sigma_i$, then the previous assumption can be justified
+Context morphism $f$ justifies the "wanted assumptions" $\Delta$ with the "presumption" $\Gamma$
+
+A notable point is the substitution in the judgements after the first one. This is because $\sigma_{\geq 2}$ may reference $x_1$. Instantiating $x_1$ with $M_1$ thus instantiates all later $\sigma_i$'s. Thus later judgements needs to be adjusted accordingly.
+
+Luckily, because $x_1$ is merely a variable and cannot be evaluated, there is no further complication
+
+*** Examples
+
+"Weakening":
+\[ \Gamma, x : \sigma \vdash \mathbf{p}(\Gamma, \sigma) \equiv (x_1, \dots, x_n) \Rightarrow \Gamma\]
+
+"Extending" with an Inhabited Type:
+\begin{gather*}
+  \Gamma \vdash M : \sigma \\
+  \Downarrow \\
+  \Gamma \vdash \overline{M} \equiv (x_1, \dots , x_n, M) \Rightarrow \Gamma, x : \sigma
+\end{gather*}
+
+Identity:
+\[ \Gamma \vdash id_\Gamma \equiv (x_1 , \dots , x_n) \Rightarrow \Gamma \]
+
+
+** Generalized Substitution
+
+Let
+- $\Gamma$ be a context
+- $\Delta = x_1 : \sigma_1, \dots , x_n : \sigma_n$
+- $f = (M_1, \dots , M_n)$
+- $\Gamma \vdash f \Rightarrow \Delta$, then
+
+\[ (-)[f / \Delta] \equiv (-)[M_1 / x_1] [M_2 / x_2] \dots [M_n / x_n] \]
+
+The position of "$(-)$" can be plugged in with terms, types, contexts, judgements, with reasonable definition
+
+** Generalized Substitution & Weakening (Sort of)
+
+The following proposition can be proved by taking induction on \Theta:
+
+Let
+- \Gamma, \Delta, \Theta be contexts,
+  - \Theta depends on \Delta
+- $\Gamma \vdash f \Rightarrow \Delta$ be a context morphism, then
+
+\begin{gather*}
+\Delta, \Theta \vdash \mathcal{J} \\
+\Downarrow \\
+\Gamma, \Theta[f / \Delta] \vdash \mathcal{J}[f / \Delta]
+\end{gather*}
+
+*** Intuition
+
+A judgement $\mathcal{J}$ was dependent on some ordered assumptions "\Delta, \Theta".
+We prepend the assumption with \Gamma, from which we can derive inhabitant of the types needed in \Delta.
+Deriving the inhabitants also means instantiating all variables in \Delta. Thus \Theta and $\mathcal{J}$, both depended on \Delta, needs their variables instantiated via substitution
+
+*** $\mathbf{q}(f, \Theta)$
+
+First we introduce a context morphism
+
+Let:
+- $\Gamma \vdash f \Rightarrow \Delta$ be a context morphism
+- \Theta \equiv (z_1 : \theta_1, \dots , z_n : \theta_n), then
+
+\[ \Gamma, \Theta[f / \Delta] \vdash \mathbf{q}(f, \Theta) \equiv (f , z_1, \dots , z_n) \Rightarrow \Delta, \Theta \]
+
+This feels like the "uninstantiation" of variables in the types of \Theta
+
+*** Weakening
+
+We want to get the following:
+
+\[ \Gamma , x : \sigma \vdash \mathcal{J} \Longrightarrow \Gamma \vdash \mahcal{J}\]
+
+We can manifest this by instantiating the following:
+- \Gamma = \Delta , x : \sigma
+- \Delta = \Delta
+- \Theta = \bullet
+- $f = \mathbf{p}(\Delta, \sigma)$
+
+This instantiates the theorem to:
+
+\[ \Delta , \bullet \vdash \mathcal{J} \Longrightarrow (\Delta , x : \sigma) , \bullet \vdash \mathcal{J}[\mathbf{p}(\Delta, \sigma) / \Delta] \]
+
+Which simplifies to the following (By $\mathbf{p}(\Delta, \sigma) \vert_\Delta = id$)
+
+\[ \Delta \vdash \mathcal{J} \Longrightarrow \Delta , x : \sigma \vdash \mathcal{J} \]
+
+*** Substitution
+
+We want to get the following:
+
+\[  \Gamma \vdash M : \sigma \Longrightarrow \Gamma, x : \sigma \vdash \mathcal{J} \Longrightarrow \Gamma \vdash \mathcal{J}[M / x] \]
+
+This can be done with the following instantiations:
+- \Gamma = \Gamma \equiv x_1 : \sigma_1 , \dots , x_n : \sigma_n
+- \Delta = \Gamma, x : \sigma
+- \Theta = \bullet
+- $f = \overline{M} \equiv (x_1 , \dots , x_n, M)$ (The existence of which is justified by $\Gamma \vdash M : \sigma$)
+
+Apply to the theorem we get:
+
+\[ (\Gamma, x : \sigma) , \bullet \vdash \mathcal{J} \Longrightarrow \Gamma, \bullet \vdash \mathcal{J}[\overline{M} / (\Gamma , x : \sigma)] \]
+
+Which simplifies to the following (By $\overline{M}$ being identity everywhere except on $x$):
+
+\[ \Gamma, x : \sigma \vdash \mathcal{J} \Longrightarrow \Gamma \vdash \mathcal{J}[M / x] \]
+
+*** Derived Context Morphism
+
+We can say the following:
+
+
+* Misc
+
+** Pre-term
