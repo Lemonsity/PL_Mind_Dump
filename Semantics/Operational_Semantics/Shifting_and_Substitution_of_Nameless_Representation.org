@@ -1,0 +1,105 @@
+#+TITLE: Subtleties with Nameless Representation
+
+#+BIBLIOGRAPHY: "../../References/PL/Textbooks/Ref.bib"
+
+* Nameless Representation
+
+Using explicit variable names arguably presents a lot of difficulty:
+- Checking term equality requires renaming
+- Capture avoiding substitution needs to be treated with care
+
+An alternative way of representing \lambda-calculus without using explicit variable name is /Nameless Representation/
+
+| STLC                | Nameless Representation |
+|---------------------+-------------------------|
+| $\lambda x . x$           | $\lambda . 0$                 |
+| $\lambda x . \lambda y . x$     | $\lambda . \lambda . 1$             |
+| $\lambda x . \lambda y . (x~y)$ | $\lambda . \lambda . (1 ~ 0)$       |
+
+
+All variable references are replaced by natural numbers. Indicating "How far away was the variable introduced"
+
+* Subtleties with Substitution
+
+There are two challenges with substitution in:
+
+** Avoiding Accidental Capture
+
+Starting by considering accidental capturing in the \lambda-calculus setting:
+
+\[ (\lambda x . \lambda y . x) ~ y \stackrel{?}{\to_\beta} \lambda y . y \]
+
+This is not right, because the 2nd $y$ in $(\lambda x . \lambda y . x) y$ should be "free". But naive string substitution binds the variable. In \lambda-calculus, we can solve this through renaming.
+
+Nameless representation encounters the same issue. Consider the following
+
+| \lambda-calculus                | Nameless            |
+|---------------------------+---------------------|
+| $\lambda z . (\lambda x . \lambda y . x) ~ z$ | $\lambda . (\lambda . \lambda . 1) ~ 0$ |
+| $(\lambda x . \lambda y . x) ~ z$     | $(\lambda . \lambda . 1) ~ 0$   |
+
+Naively following \beta-reduction, the expression $(\lambda . \lambda . 1) ~ 0$ will be reduced to $(\lambda . 0)$ by substituting "1" with "0". However, that would be INCORRECT, because the supposedly free variable becomes bounded.
+
+*** Shifting
+
+By inspecting, the expression $(\lambda . \lambda . 1) ~ 0$ should be reduced to $(\lambda . 2)$, as to refer to the same variable. This will avoid the free variable from getting captured.
+
+This requires /shifting/ the indices in the argument during substitution. In our case, the argument is "0", and we need to shift it up to "2".
+
+*** Cutoff
+
+However, we won't want to shift all of the indices, as doing so might turn some closed expressions in to open ones.
+
+Consider as similar function application, but with a different argument:
+
+\[ (\lambda . \lambda . 1) ~ (\lambda . 0) \]
+
+If we shift the index "0" to one and substitute, we would have gotten the INCORRECT result of $(\lambda . \mathbf{(\lambda . 1)})$. Notice the bolded subexpression was originally a closed term, but became open after naive substitution.
+
+/Cutoff/ solved this issue by making indices that were already bounded "untouchable".
+
+** Implementation
+
+The rules for shifting up by $d$ with cutoff of $c$ can be defined as following
+
+
+\begin{center}
+  \begin{math}
+    \begin{array}{lrl}
+      \uparrow^d_c(k) & = &
+                            \begin{cases}
+                              k & \text{if $k < c$} \\
+                              k + d & \text{o.w}
+                            \end{cases} \\
+      \uparrow^d_c(\lambda . e) & = & \lambda . \uparrow^d_{c+1}(e) \\
+      \uparrow^d_c(e_1 ~ e_2) & = & \uparrow^d_{c}(e_1) ~ \uparrow^d_{c}(e_2)
+    \end{array}
+  \end{math}
+\end{center}
+
+Rule 1 and 3 is not surprising. When shifting the indices of an expression $e$, whenever we enter a "\lambda", some indices becomes closed in $e$, and thus should not be shifted. Hence, we increment the cutoff in rule 2.
+
+For simplicity, we write \(\uparrow^d\) for \(\uparrow^d_0\).
+
+We can now define substitution:
+
+\begin{center}
+  \begin{math}
+    \begin{array}{lrl}
+      k[ j \mapsto e' ] & = &
+                            \begin{cases}
+                              e' & \text{if $k = j$} \\
+                              k & \text{o.w}
+                            \end{cases} \\
+      (\lambda . e)[ j \mapsto e' ] & = & \lambda . e[ j + 1 \mapsto \uparrow^{1}(e') ] \\
+      (e_1 ~ e_2)[ j \mapsto e' ] & = & (e_1)[ j \mapsto e' ] ~ (e_2)[ j \mapsto e' ]
+    \end{array}
+  \end{math}
+\end{center}
+
+\( [ j + 1 \mapsto \uparrow^{1}(e') ] \) requires some additional explanation:
+- \( j + 1 \):
+  - To refer to the same variable from the outside, the index need to be increased by 1 when entering a \lambda-abstraction
+  - For example, the two indices in \( (\lambda . 11) ~ 10 \) refers to the same variable from the context, but the one in \lambda-abstraction was incremented
+- \( \uparrow^1(e') \):
+  - This is capture avoidance from [[Shifting][shifting]]
