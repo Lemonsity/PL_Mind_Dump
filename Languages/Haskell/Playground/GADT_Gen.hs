@@ -122,3 +122,13 @@ data Guide where
 foo = \gadt -> case gadt of
                  MkGuide y -> let h = \x -> [y, \() -> x]
                               in ()
+
+
+data Expr a where
+  ELit :: (a ~ Int) => a -> Expr a
+  EHole :: Expr a
+
+isHole x = case x of
+             ELit y -> False
+             EHole -> True
+             
