@@ -1,0 +1,55 @@
+#+TITLE: Deep Handler Implies Non-terminating Program
+
+* Background
+
+This note came to be after trying to recollect a discuss I had with my advisor, about how introducing deep algebraic effect handler introduces non-terminating program.
+
+* The Final Program and Calculation
+#+begin_src
+  c = op () (f. f ())
+
+  h = handler {
+    return x -> x
+    op _ k   -> k (\_ -> op () (f. f ()))
+  }
+
+  non-terminating = handle c with h
+#+end_src
+
+** Tracing Computation
+
+Starting from:
+#+begin_src
+  handle op () (f. f ())
+  with {
+    return x -> x
+    op _ k   -> k (\_ -> op () (f. f ()))
+  }
+#+end_src
+
+By semantics of handler, pushing deep handler into continuation, have:
+#+begin_src
+  (\f -> handle f () with h)
+  (\_ -> op () (f. f ()))
+#+end_src
+
+By function application, have:
+#+begin_src
+  handle (\_ -> op () (f. f ())) () with h
+#+end_src
+
+By function application, have:
+#+begin_src
+  handle op () (f. f ()) with h
+#+end_src
+
+Which equals to:
+#+begin_src
+  handle c with h
+#+end_src
+
+* How I Retraced the Step
+
+$\Omega = (\lambda x . x x)(\lambda x . x x)$ might be the most well known non-terminating program. So I tried to recreate the same concept.
+
+WIP
