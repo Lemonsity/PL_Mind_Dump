@@ -58,10 +58,11 @@ If we shift the index "0" to one and substitute, we would have gotten the INCORR
 
 /Cutoff/ solved this issue by making indices that were already bounded "untouchable".
 
-** Implementation
+* Implementation
+
+** Shifting and Cutoff
 
 The rules for shifting up by $d$ with cutoff of $c$ can be defined as following
-
 
 \begin{center}
   \begin{math}
@@ -80,6 +81,8 @@ The rules for shifting up by $d$ with cutoff of $c$ can be defined as following
 Rule 1 and 3 is not surprising. When shifting the indices of an expression $e$, whenever we enter a "\lambda", some indices becomes closed in $e$, and thus should not be shifted. Hence, we increment the cutoff in rule 2.
 
 For simplicity, we write \(\uparrow^d\) for \(\uparrow^d_0\).
+
+** Substitution
 
 We can now define substitution:
 
@@ -103,3 +106,14 @@ We can now define substitution:
   - For example, the two indices in \( (\lambda . 11) ~ 10 \) refers to the same variable from the context, but the one in \lambda-abstraction was incremented
 - \( \uparrow^1(e') \):
   - This is capture avoidance from [[Shifting][shifting]]
+
+** \beta-reduction
+
+We can now define \beta-reduction:
+
+\[ (\lambda . e) ~ v \to_\beta ~ \uparrow^{-1}(e[0 ~ \mapsto ~\uparrow^{1}(v)]) \]
+
+
+- $0 \mapsto$ :: Applying \(v\) to \( (\lambda . e) \) means replacing all the "0"s immediately in \( e \) with the value \( v \).
+- $\uparrow^{1}(v)$ :: $e$ was under a \lambda-abstraction, shifting $v$ up by one avoids capturing
+- $\uparrow^{-1}(\dots)$ :: Application removes one layer of \lambda-abstraction. Need to shift down by one to ensure all variables still refers to the same \lambda-abstraction
