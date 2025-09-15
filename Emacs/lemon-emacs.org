@@ -258,6 +258,8 @@ We customize some appearance to:
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (setq visible-bell t)
+  (setq-default show-trailing-whitespace t)
+
   ;; (global-hl-line-mode 1)
   ;; (setq hl-line-sticky-flag nil)
 #+end_src
@@ -320,6 +322,26 @@ Better file search and buffer search
   (setq dired-create-destination-dirs 'ask) 
   ;; press [a] to open dir without open new buffer
   (put 'dired-find-alternate-file 'disabled nil) 
+#+end_src
+
+** Lock Files
+
+Emacs makes a special symlink to indicate a file is being edited by "you". This symlink is called a "lock file"
+Because I am the only person using this computer, I am unlikely to run into simultaneous editing issue, so I am disabling this feature
+
+#+begin_src emacs-lisp
+  (setq create-lockfiles nil)
+#+end_src
+
+Further reading can be found here:
+- [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html][Protection against Simultaneous Editing]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/elisp/File-Locks.html][File Locks]]
+
+** ~which-key~
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t)
 #+end_src
 
 * Faces / Fonts                                                                              :Faces:
@@ -446,7 +468,7 @@ This is for mono-width faces.
 
 ** Universal Configurations                                                             :Universal:
 
-*** [[https://www.flycheck.org/en/latest/][/flycheck/]]
+*** ~flycheck~
 [[https://www.flycheck.org/en/latest/][/flycheck/]] is a universal syntax checker.
 It supports many languages out of the box, and seems to be better than the /flymake/ that comes by default with Emacs.
 
@@ -457,7 +479,7 @@ It supports many languages out of the box, and seems to be better than the /flym
 
 This package is the recommended syntax checker for [[#emacs-lsp-mode][/lsp-mode/]].
 
-*** [[https://emacs-lsp.github.io/lsp-mode/][/lsp-mode/]]
+*** ~lsp-mode~
 :PROPERTIES:
 :CUSTOM_ID: emacs-lsp-mode
 :END:
@@ -474,8 +496,9 @@ This package is the recommended syntax checker for [[#emacs-lsp-mode][/lsp-mode/
      (haskell-literate-mode . lsp)
      (rust-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration)) ;; if you want which-key integration
-    :commands
-    (lsp lsp-deferred))
+    ;; :commands
+    ;; (lsp lsp-deferred)
+    )
 #+end_src
 
 The documentation is heavy, I have a few suggested reads:
@@ -492,7 +515,7 @@ The documentation is heavy, I have a few suggested reads:
     :diminish
     :config
     (setq company-minimum-prefix-length 1
-          company-idle-delay 0.2))
+          company-idle-delay 0.5))
 #+end_src
 
 [[#emacs-lsp-mode][/lsp-mode/]] uses this to autocomplete.
@@ -507,7 +530,10 @@ You can find related manual here:
 
 #+begin_src emacs-lisp
   (use-package lsp-haskell
-    :ensure t)
+    :ensure t
+    :custom
+    (lsp-rename-use-prepare nil))
+  					;https://github.com/emacs-lsp/lsp-mode/issues/4473#issuecomment-2308978908
 #+end_src
 
 #+begin_src emacs-lisp
@@ -617,7 +643,7 @@ We setup that face to be only active in Agda mode
 
 ** TeX
 
-*** [[https://www.gnu.org/software/auctex/][/AUCTeX/]]: Better TeX Support
+*** AUCTeX: Better TeX Support
 
 #+begin_src emacs-lisp
   (use-package tex
@@ -628,7 +654,7 @@ We setup that face to be only active in Agda mode
 		TeX-parse-self t))
 #+end_src
 
-*** [[https://github.com/jsinglet/latex-preview-pane][/latex-preview-pane/]]
+*** /latex-preview-pane/
 This package opens a side panel when editing LaTeX files, and auto recompile on save.
 However, the resolution is poor.
 Now I use the default preview coming with /AucTeX/.
@@ -642,7 +668,7 @@ Activate the package if you wish
 
 * Productivity                                                                        :Productivity:
 
-** [[https://orgmode.org/][/Org Mode/]]                                                        :Org:
+** /Org Mode/                                                                                 :Org:
 Perhaps the best thing about Emacs.
 Agenda, calender, todolist, all in one.
 
@@ -879,3 +905,10 @@ The following package can host a website that will be constantly updated.
   (lemon/require-package 'magit)
   (require 'magit)
 #+end_src
+
+* TODO Things to figure out
+
+- [ ] which-key hook with lsp-mode
+- [ ] TeX-fold-mode on Tex startup
+
+
