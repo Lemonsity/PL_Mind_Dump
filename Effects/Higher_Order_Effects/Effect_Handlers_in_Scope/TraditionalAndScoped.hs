@@ -20,7 +20,7 @@ import Debug.Trace
 Here we type up the code from "Effect Handlers in Scope"
 by Nicolas. Wu, Tom Schrijvers, and Ralf Hinze [2014]
 
-This file covers section 1 - 9 
+This file covers section 1 - 9
 
 This code is written in GHC 9.10.1
 -}
@@ -70,7 +70,7 @@ class (Functor sub, Functor sup) => sub ⊂ sup where
   -- In essense, the success/failure state indicate whether
   -- the top-level operation is from [sub]
   prj :: sup a -> Maybe (sub a)
-  
+
 instance (Functor sig1, Functor sig2) =>
          (sig1 ⊂ (sig1 + sig2)) where
   inj = Inl
@@ -207,7 +207,7 @@ runLocal s = solutions . (runState s)
 runGlobal :: (Functor sig) =>
              s -> Prog (Nondet + (State s + sig)) a -> Prog sig (s, [a])
 runGlobal s = (runState s) . solutions
-                                                            
+
 incr :: (State Int ⊂ sig) => Prog sig ()
 incr = get >>= (put . (succ :: Int -> Int))
 
@@ -371,12 +371,12 @@ term :: (Nondet ⊂ sig, Symbol ⊂ sig) => Prog sig Int
 term = (do i <- factor ; symbol '*' ; j <- term ; return (i * j))
        `branching`
        (do i <- factor ; return i)
-  
+
 factor :: (Nondet ⊂ sig, Symbol ⊂ sig) => Prog sig Int
 factor = (do ds <- many1 digit ; return (read ds))
          `branching`
          (do symbol '(' ; i <- expr ; symbol ')' ; return i)
-  
+
 {- The Essense of Parsing
 
 In reality, [expr] represents an infinite computation tree,
@@ -544,7 +544,7 @@ call' :: (Call ⊂ sig) => Prog sig a -> Prog sig a
 call' p = do { begin
              ; x <- p
              ; end
-             ; return x } 
+             ; return x }
 
 -- I wonder if we could just use [inject]
 upcast :: (Functor f, Functor sig) =>
@@ -673,7 +673,7 @@ tooMuchStateOp = (run
 -- The handler [runExc] actually have nothing to do now
 swapDoesNothing :: (Int, Either () ())
 swapDoesNothing = (run
-                   . runState (2 :: Int) 
+                   . runState (2 :: Int)
                    . runExc)
                   (tripleDecr :: Prog (Exc () + (State Int + Void)) ())
 
@@ -744,4 +744,3 @@ TODO
 
 Section 9: Scoped Syntax Revisited
 --------------------------------------------------------}
-
