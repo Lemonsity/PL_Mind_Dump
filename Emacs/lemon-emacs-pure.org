@@ -1,0 +1,494 @@
+* ~init.el~
+
+#+begin_src
+  (require 'package)
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+
+  ;; Get Proof-General and Agda mode working before adding the following line
+  (org-babel-load-file "~/.emacs.d/lemon-emacs-pure.org")
+#+end_src
+
+* Scaffold
+
+We want to check if there is a local list of packages available, if not, get it.
+#+begin_src emacs-lisp
+  (require 'package)
+
+  (unless package-archive-contents
+      (package-refresh-contents))
+#+end_src
+
+Define a function that checks if a package is installed, if not, install it.
+#+begin_src emacs-lisp
+  (defun lemon/ensure-package (package)
+    (unless (package-installed-p package)
+      (package-install package)))
+#+end_src
+
+* Emacs Setup
+
+First customize appearance.
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (setq visible-bell t)
+
+  (setq-default show-trailing-whitespace t)
+
+  (global-hl-line-mode 1)
+  (setq hl-line-sticky-flag nil)
+#+end_src
+
+Setup window splitting behaviour.
+#+begin_src emacs-lisp
+  (setq
+   split-width-threshold 160
+   split-height-threshold nil) 		; Always split horizontally
+#+end_src
+
+Show line number and column number
+#+begin_src emacs-lisp
+  (setq column-number-mode t)
+  (setq display-line-numbers t)
+  (global-display-line-numbers-mode 1)
+#+end_src
+
+Install and prepare ~diminish~ to clean up.
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'diminish)
+  (require 'diminish)
+#+end_src
+
+Center display
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'visual-fill-column)
+  (require 'visual-fill-column)
+#+end_src
+
+* Directory Navigation & File Access
+
+Dired mode need some setup.
+#+begin_src emacs-lisp
+  ;; ask before create dir
+  (setq dired-create-destination-dirs 'ask)
+  ;; press [a] to open dir without open new buffer
+  (put 'dired-find-alternate-file 'disabled nil)
+#+end_src
+
+Active recent file functionality
+#+begin_src emacs-lisp
+  (recentf-mode t)
+#+end_src
+
+* Autocompletion
+
+We setup minibuffer auto completion.
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'ivy)
+  (require 'ivy)
+  (keymap-global-set "C-s" 'swiper)
+  (ivy-mode 1)
+  (diminish 'ivy-mode)
+
+  (lemon/ensure-package 'counsel)
+  (require 'counsel)
+  (keymap-global-set "M-x" 'counsel-M-x)
+  (counsel-mode 1)
+  (diminish 'counsel-mode)
+#+end_src
+
+We setup minibuffer which-key
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'which-key)
+  (require 'which-key)
+  (diminish 'which-key)
+  (which-key-mode)
+#+end_src
+
+* Faces / Fonts
+
+Some faces to use:
+#+begin_src emacs-lisp
+  (defvar lemon/faces
+    '(("VictorMono" . expanded)
+      ("IosevkaCustom" . extended)
+      ("JetBrainsMono" . nil)))
+#+end_src
+
+Default Font.
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil
+                    :family "VictorMono"
+                    :width 'expanded
+                    :overline nil)
+#+end_src
+
+Fix-pitch face.
+#+begin_src emacs-lisp
+  (set-face-attribute 'fixed-pitch nil
+                      :family "VictorMono"
+                      :width 'expanded)
+#+end_src
+
+Variable-pitch face.
+#+begin_src emacs-lisp
+  (set-face-attribute 'variable-pitch nil
+                      :family "IosevkaEtoile")
+#+end_src
+
+Line highlight colour.
+#+begin_src emacs-lisp
+  (set-face-attribute 'hl-line nil
+                      :background "azure2")
+#+end_src
+
+Add ligature.
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'ligature)
+  (require 'ligature)
+  ;; Enable the www ligature in every possible major mode
+  (ligature-set-ligatures 't '("www"))
+  ;; Enable ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("www" "**" "***"  "\\\\" "\\\\\\"
+
+                                       "{-" "-}" "/*" "/**" "**/" "*/" "//" "///"
+                                       "<#--" "<!--"
+                                       "</" "</>" "/>"
+
+                                       "##" "###" "####"
+                                       "---" "----"
+
+                                       "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+
+                                       "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
+
+                                       ".-" ".=" ".." "..." "..<"  ".="
+
+                                       "??" "!!" "%%"
+                                       "???" "?:" ":?" "?." ".?"
+
+                                       ":=" "::=" "||=" "&=" "|=" "^=" "?="
+
+                                       "&&" "||"
+                                       "->" "<-" "-->" "<--" "->>" "<<-"
+                                       "=>" "<=" "==>" "<==" "=>>" "<<="
+                                       "~>"  "<~" "~~>" "<~~"
+                                       "~-" "-~"
+                                       "<->" "<=>" "<==>" "~~" "<~>"
+
+                                       ">>=" "=<<" ">=>" "<=<" ">>" "<<"
+
+                                       "***" "&&&" ">>>" "<<<"
+
+                                       ">-" "-<" ">>-" "-<<" ">->" "<-<"
+
+                                       ">=" "<="
+
+                                       "|->" "<-|" "|=>" "<=|"
+
+                                       "-|" "_|_" "|-" "||-"
+
+                                       "<*" "<*>" "*>" "<$" "<$>" "$>" "<+" "<+>" "+>" "<|" "<|>" "|>"
+                                       "<>" "<|>"
+
+                                       "++" "+++"
+                                       "=:=" "==" "===" "=/=" "/=" "/==" "//=" "!=" "!==" "=!="
+
+                                       "::" ":::"
+                                       "<:" ":<" ":>" ">:" "<:<" ":?>"
+
+                                       "|>" "<|" "||>" "<||" "|||>" "<|||"
+
+                                       ";;;"  ";;"
+
+                                       "~@" "@_" "__" ))
+  (global-ligature-mode 't)
+#+end_src
+
+* General Language Setup
+
+Flycheck for syntax checking.
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'flycheck)
+#+end_src
+
+lsp-mode for general language support.
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'lsp-mode)
+  (setq lsp-keymap-prefix "C-c l")
+
+  (require 'lsp-mode)
+  (add-hook 'haskell-mode-hook #'lsp-mode)
+  (add-hook 'haskell-literate-mode-hook #'lsp-mode)
+  (add-hook 'rust-mode-hook #'lsp-mode)
+
+  (with-eval-after-load 'lsp-mode
+    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
+#+end_src
+
+company autocompletion.
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'company)
+  (require 'company)
+  (setq company-minimum-prefix-length 5
+        company-idle-delay 0.5)
+#+end_src
+
+* Specific Language Setup
+
+** Haskell
+
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'lsp-haskell)
+  (require 'lsp-haskell)
+  (setq lsp-rename-use-prepare nil) ; https://github.com/emacs-lsp/lsp-mode/issues/4473#issuecomment-2308978908
+
+  (lemon/ensure-package 'haskell-mode)
+  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+#+end_src
+
+** Proof General
+
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'proof-general)
+
+  (setq proof-splash-enable nil
+        proof-three-window-mode-policy 'hybrid)
+#+end_src
+
+** Rocq / Coq
+
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'company-coq)
+  (diminish 'company-coq)
+  (add-hook 'coq-mode-hook #'company-coq-mode)
+#+end_src
+
+** Racket
+
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'racket-mode)
+  (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
+  (add-hook 'racket-mode-hook #'racket-unicode-input-method-enable)
+  (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable)
+#+end_src
+
+** Agda
+
+#+begin_src emacs-lisp
+  (load-file (let ((coding-system-for-read 'utf-8))
+               (shell-command-to-string "agda-mode locate")))
+
+  ;; auto-load agda-mode for .agda and .lagda.md
+  (setq auto-mode-alist
+        (append
+         '(("\\.agda\\'" . agda2-mode)
+           ("\\.lagda.md\\'" . agda2-mode))
+         auto-mode-alist))
+
+  (defun agda-buffer-face-mode ()
+    "Set font to a variable width (proportional) fonts in current buffer"
+    (interactive)
+    (setq buffer-face-mode-face '(:family "mononoki"
+                                          :height 120
+                                          :width normal
+                                          :weight normal))
+    (buffer-face-mode))
+  (add-hook 'agda2-mode-hook 'agda-buffer-face-mode)
+#+end_src
+
+* TeX
+
+AUCTeX.
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'auctex)
+  (require 'auctex)
+  (add-hook 'LaTeX-mode-hook #'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook (lambda ()
+  			     (setq fill-column 80)
+  			     (display-fill-column-indicator-mode 80)))
+  (add-hook 'TeX-after-insert-macro (lambda ()
+  				    (save-excursion
+  				      (backward-char 2)
+  				      (TeX-fold-item 'macro))))
+  (add-hook 'LaTeX-after-insert-env (lambda (environment start end)
+  				    (let ((cur (point))
+  					  start2
+  					  end2)
+  				      (save-excursion
+  					(LaTeX-find-matching-end)
+  					(setq end2 (point))
+  					(goto-char cur)
+  					(LaTeX-find-matching-begin)
+  					(setq start2 (point))
+  					(TeX-fold-region start2 end2)))))
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        ;; TeX-fold-auto t
+        TeX-fold-type-list '(macro math))
+#+end_src
+
+* Org mode
+
+Make Org accessible.
+#+begin_src emacs-lisp
+  ;; (global-set-key (kbd "C-c l") #'org-store-link)
+  ;; (global-set-key (kbd "C-c c") #'org-capture)
+
+  (global-set-key (kbd "C-c a") #'org-agenda)
+#+end_src
+
+Org windows appearance.
+#+begin_src emacs-lisp
+  (defun lemon/org-mode-setup ()
+    (visual-line-mode 1)
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (setq visual-fill-column-width 120
+  	visual-fill-column-center-text t)
+    (visual-line-fill-column-mode 1))
+#+end_src
+
+Org face.
+#+begin_src emacs-lisp
+  (require 'org-indent) ; This is essential, or the face 'org-indent cannot be found
+
+  ;; Code block and inline code
+  (set-face-attribute 'org-code nil
+                      :inherit 'fixed-pitch
+                      :foreground "black"
+                      :background "LightGray")
+  ;; Normal block
+  (set-face-attribute 'org-block nil
+                      :inherit 'fixed-pitch
+                      :foreground "black"
+                      :background "LightGray")
+  ;; #+ started lines
+  (set-face-attribute 'org-meta-line nil
+                      :inherit 'fixed-pitch
+                      ;; :background "#EAEAFF"
+                      :foreground "#008ED1")
+  ;; Default Org indents should be hidden
+  (set-face-attribute 'org-indent nil
+                      :inherit '(org-hide fixed-pitch))
+  ;; Check box are now fixed pitch
+  (set-face-attribute 'org-checkbox nil
+                      :inherit 'fixed-pitch)
+  ;; Special keywords are now fixed pitch
+  (set-face-attribute 'org-special-keyword nil
+                      :inherit '(font-lock-comment-face fixed-pitch))
+  ;; Tables needs to be fixed pitch for lines to align
+  (set-face-attribute 'org-table nil
+                      :inherit 'fixed-pitch
+                      :background "#d6e4fc")
+  ;; Quotes now have a yellow background, like old paper
+  (set-face-attribute 'org-quote nil
+                      :foreground "black"
+                      :background "AntiqueWhite1")
+  ;; Block begin and ending are closer to white, less distracting
+  (set-face-attribute 'org-block-begin-line nil ;; <-- end line inherit this
+                      :inherit 'fixed-pitch
+                      :inherit 'default
+                      :foreground "Gray")
+  ;; Drawer are also less distracting now
+  (set-face-attribute 'org-drawer nil
+                      :inherit 'fixed-pitch
+                      :foreground "Gray")
+
+  ;; In variable pitch mode, line numbers are also variable pitch
+  ;; Reset to fixed pitch
+  (set-face-attribute 'line-number nil
+                      :inherit 'fixed-pitch)
+
+  ;; A weird setting
+  (setq org-fontify-quote-and-verse-blocks t)
+#+end_src
+
+Org text appearance.
+#+begin_src emacs-lisp
+  ;; One show one star for headline
+  ;; Indentation from org-indent-mode will handle depth
+  (setq org-hide-leading-stars t)
+
+  ;; Render superscript, subscript, special symbols
+  (setq org-pretty-entities t)
+
+  ;; Bold, italic, etc. are rendered as such, WYSIWYG
+  (setq org-fontify-emphasized-text t)
+
+  ;; Hiding the *...*, /.../ end markers
+  ;; But will be harder to edit
+  (setq org-hide-emphasis-markers t)
+
+  ;; Highlight LaTeX
+  (setq org-highlight-latex-and-related '(latex))
+
+  ;; Use with visual-fill-column, attempt to right align tags
+  (setq org-tags-column -100)
+
+  ;; Show empty line between headers during folded view
+  ;; As long as in actual text, there is 1 empty line between headers
+  (setq org-cycle-separator-lines 1)
+#+end_src
+
+Org TODO.
+#+begin_src emacs-lisp
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "IDEA(i)" "PROG(p)" "VERIFY(v)" "|" "DONE(d)")
+          (sequence "SKIM(s)" "READ(r)" "|")
+          (sequence "BLOCKED(l)" "ON HOLD(h)" "BACKLOG(b)" "|" "CANCELED(x)")))
+
+  (setq org-todo-keyword-faces
+        '(("IDEA" :inherit 'org-todo :foreground "gold2")
+          ("PROG" :inherit 'org-todo :foreground "gold2")
+          ("VERIFY" :inherit 'org-todo :foreground "gold2")
+          ("SKIM" :inherit 'org-todo :foreground "gold2")
+          ("READ" :inherit 'org-todo :foreground "gold2")
+          ("BLOCKED" :inherit 'org-todo :foreground "SteelBlue")
+          ("BACKLOG" :inherit 'org-todo :foreground "SteelBlue")
+          ("ON HOLD" :inherit 'org-todo :foreground "SteelBlue")
+          ("CANCELED" :inherit 'org-todo :foreground "CadetBlue")))
+
+  ;; Log time on DONE
+  ;; (setq org-log-done 'time)
+
+  ;; Add more priorities
+  (setq org-priority-lowest 70)
+  (setq org-default-priority 70)
+#+end_src
+
+Org agenda.
+#+begin_src emacs-lisp
+  (setq org-agenda-span 14)
+#+end_src
+
+Additional LaTeX symbol.
+#+begin_src emacs-lisp
+  (setq org-entities-user
+        '(("vdash" "\\vdash" t "&RightTee;" "|-" "|-" "⊢")
+          ("vDash" "\\vDash" t "&DoubleRightTee;" "|=" "|=" "⊨")
+          ("dashv" "\\dashv" t "&dashv;" "-|" "-|" "⊣")
+          ("nvdash" "\\nvdash" t "&nvdash;" "|-/-" "|-/-" "⊬")
+          ("mapsto" "\\mapsto" t "&map;" "|->" "|->" "↦")
+          ("top" "\\top" t "&DownTee;" "[down tee]" "[down tee]" "⊤")
+          ("bot" "\\bot" t "&bot;" "[up tee]" "[up tee]" "⊥")
+          ("subseteq" "\\subseteq" t "&sube;" "[subset of or equal to]" "[subset of or equal to]" "⊆")
+  	))
+#+end_src
+
+Hook.
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook #'lemon/org-mode-setup)
+  (add-hook 'org-mode-hook #'flyspell-mode)
+#+end_src
+
+* Magit
+
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'magit)
+  (require 'magit)
+#+end_src
