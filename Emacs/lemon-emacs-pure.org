@@ -36,8 +36,6 @@ First customize appearance.
   (menu-bar-mode -1)
   (setq visible-bell t)
 
-  (setq-default show-trailing-whitespace t)
-
   (global-hl-line-mode 1)
   (setq hl-line-sticky-flag nil)
 #+end_src
@@ -104,8 +102,8 @@ We setup minibuffer which-key
 #+begin_src emacs-lisp
   (lemon/ensure-package 'which-key)
   (require 'which-key)
-  (diminish 'which-key)
   (which-key-mode)
+  (diminish 'which-key-mode)
 #+end_src
 
 * Faces / Fonts
@@ -210,6 +208,13 @@ Add ligature.
 
 * General Language Setup
 
+General programming appearance.
+
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook (lambda ()
+  			    (setq show-trailing-whitespace t)))
+#+end_src
+
 Flycheck for syntax checking.
 #+begin_src emacs-lisp
   (lemon/ensure-package 'flycheck)
@@ -308,6 +313,8 @@ AUCTeX.
   (require 'auctex)
   (add-hook 'LaTeX-mode-hook #'visual-line-mode)
   (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook (lambda ()
+  			     (setq show-trailing-whitespace t)))
   (add-hook 'LaTeX-mode-hook (lambda ()
   			     (setq fill-column 80)
   			     (display-fill-column-indicator-mode 80)))
