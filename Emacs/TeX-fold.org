@@ -1,0 +1,17 @@
+* tex-fold.el
+
+- ~TeX-fold-item~ :: Folds the either macro, math, or env
+- ~TeX-after-insert-macro-hook~ :: If ~TeX-auto-fold~ is non-nil, will try to fold in the order of
+  1. macro
+  2. math
+  3. env
+
+* tex.el
+
+- ~TeX-insert-macro~ :: Runs ~TeX-after-insert-macro-hook~ at the end
+- ~TeX-parse-macro~ :: parse (because macro might take arguments), and then insert, called by ^^
+
+* latex.el
+
+- ~LaTeX--env-item~ ::
+- ~LaTeX-insert-item~ :: Calls ~TeX-insert-macro "item"~ to insert a macro of item
