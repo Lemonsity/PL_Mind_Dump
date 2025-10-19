@@ -213,6 +213,9 @@ General programming appearance.
 #+begin_src emacs-lisp
   (add-hook 'prog-mode-hook (lambda ()
   			    (setq show-trailing-whitespace t)))
+  (add-hook 'before-save-hook (lambda ()
+  			      (when (derived-mode-p 'prog-mode)
+  				(delete-trailing-whitespace))))
 #+end_src
 
 Flycheck for syntax checking.
@@ -476,14 +479,24 @@ Org agenda.
 Additional LaTeX symbol.
 #+begin_src emacs-lisp
   (setq org-entities-user
-        '(("vdash" "\\vdash" t "&RightTee;" "|-" "|-" "⊢")
-          ("vDash" "\\vDash" t "&DoubleRightTee;" "|=" "|=" "⊨")
+        '(("vdash" "\\vdash" t "&vdash;" "|-" "|-" "⊢")
+  	("nvdash" "\\nvdash" t "&nvdash;" "|-/-" "|-/-" "⊬")
+          ("vDash" "\\vDash" t "&vDash;" "|=" "|=" "⊨")
+  	("nvDash" "\\nvDash" t "&nvDash;" "|=/=" "|=/=" "⊭")
+  	("Vdash" "\\Vdash" t "&Vdash;" "||-" "||-" "⊩")
+  	("nVdash" "\\nVdash" t "&nVdash;" "||-/-" "||-/-" "⊮")
           ("dashv" "\\dashv" t "&dashv;" "-|" "-|" "⊣")
-          ("nvdash" "\\nvdash" t "&nvdash;" "|-/-" "|-/-" "⊬")
+  	("Dashv" "\\Dashv" t "&Dashv;" "=|" "=|" "⫤")
           ("mapsto" "\\mapsto" t "&map;" "|->" "|->" "↦")
-          ("top" "\\top" t "&DownTee;" "[down tee]" "[down tee]" "⊤")
-          ("bot" "\\bot" t "&bot;" "[up tee]" "[up tee]" "⊥")
+          ("top" "\\top" t "&top;" "[top]" "[top]" "⊤")
+          ("bot" "\\bot" t "&bot;" "[bot]" "[bot]" "⊥")
           ("subseteq" "\\subseteq" t "&sube;" "[subset of or equal to]" "[subset of or equal to]" "⊆")
+  	("supseteq" "\\supseteq" t "&supe;" "[supset of or equal to]" "[supset of or equal to]" "⊇")
+  	("sqsubset" "\\sqsubset" t "&sqsub;" "[sq less than]" "[sq less than]" "⊏")
+  	("sqsupset" "\\sqsupset" t "&sqsup;" "[sq more than]" "[sq more than]" "⊐")
+  	("sqsubseteq" "\\sqsubseteq" t "&sqsube;" "[sq less than or equal to]" "[sq less than or equal to]" "⊑")
+  	("sqsupseteq" "\\sqsupseteq" t "&sqsupe;" "[sq more than or equal to]" "[sq more than or equal to]" "⊒")
+  	("sqcup" "\\sqcup" t "&sqcup;" "|_|" "|_|" "⊔")
   	))
 #+end_src
 
