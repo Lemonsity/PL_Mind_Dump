@@ -1,0 +1,34 @@
+#+TITLE: Notes on Chapter 22 of TAPL: Type Reconstruction
+
+* Solutions
+
+** Declarative System:
+
+Given
+- A Context $\Gamma$
+- A Term $t$
+- A Substitution $\sigma$
+- A Type $T$
+
+A solution for $(\Gamma, t)$ is a pair $(\sigma, T)$ such that
+\[ \sigma(\Gamma) \vdash \sigma(t) : T \]
+
+** Algorithmic System:
+
+Given
+- Context $\Gamma$
+- Term $t$
+- Type $S$ (with unification variable)
+- Constraint set $C$
+- Constraint typing relation $\Gamma \vdash t : S ~|~ C$
+
+A solution for $(\Gamma, t, S, C)$ is a pair $(\sigma, T)$ such that
+1. $\sigma$ satisfies $C$, and
+2. $\sigma(S) = T$
+
+** Additional Notes
+
+- This formulation of the 
+- Because of the definition of solution. In practice, we only need to find some substitution $\sigma$ that satisfies $C$. With $\sigma$, we can instantiate $T = \sigma(S)$ to satisfy the second condition
+
+
