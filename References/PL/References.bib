@@ -1,0 +1,19 @@
+@article{10.1145/3747511,
+author = {Jang, Junyoung and Gaulin, Antoine and Hu, Jason Z. S. and Pientka, Brigitte},
+title = {McTT: A Verified Kernel for a Proof Assistant},
+year = {2025},
+issue_date = {August 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {9},
+number = {ICFP},
+url = {https://doi.org/10.1145/3747511},
+doi = {10.1145/3747511},
+abstract = {Proof assistants based on type theories have been widely successful   from verifying safety-critical software to establishing a new standard   of rigour by formalizing mathematics. But these proof assistants and   even their type-checking kernels are also complex pieces of software,   and software invariably has bugs, so why should we trust such proof   assistants?    In this paper, we describe the McTT (Mechanized Type Theory)   infrastructure to build a verified implementation of a kernel for a   core Martin-L\"{o}f type theory (MLTT). McTT is implemented in Rocq and   consists of two main components: In the theoretical component, we   specify the type theory and prove theorems such as normalization,   consistency and injectivity of type constructors of MLTT using an   untyped domain model. In the algorithmic component, we relate the   declarative specification of typing and the model of normalization in   the theoretical component with a functional implementation within   Rocq. From this algorithmic component, we extract an OCaml   implementation and couple it with a front-end parser for   execution. This extracted OCaml code is comparable to what a skilled   human programmer would have written and we have successfully used it   to type-check a series of small-scale examples.    McTT provides a fully verified kernel for a core MLTT with a full   cumulative universe hierarchy. Every step in the compilation pipeline   is verified except for the lexer and pretty-printer. As a result, McTT   serves both as a framework to explore the meta-theory of advanced type   theories and to investigate optimizations of and extensions to the   type-checking kernel.},
+journal = {Proc. ACM Program. Lang.},
+month = aug,
+articleno = {242},
+numpages = {32},
+keywords = {Martin-L\"{o}f Type Theory, Normalization-by-Evaluation, Rocq, Type Theory, Verified Implementation}
+}
+
