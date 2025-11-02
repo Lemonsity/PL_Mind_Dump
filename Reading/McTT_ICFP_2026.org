@@ -1,0 +1,52 @@
+#+TITLE: McTT: A Verified Kernel for a Proof Assistant (Reading Node)
+#+STARTUP: latexpreview
+
+* First Pass
+
+The goal is a trustworthy proof assistant.
+
+First step is mechanizing the type theory used by the proof assistant
+The main theorem is /Normalization/. This is usually done either by /Tait's reducibility candidates/ or /NbE/
+
+Second step is mechanizing the algorithms used by proof assistant.
+To this end the main goal should be to develop theory and algorithm together, and establish correspondence between the two.
+
+* Second Pass
+
+** Syntax
+
+Syntax should be familiar. Types and terms are all one "thing"
+
+There is the following pipeline
+
+\[
+  \text{User input}
+  \longrightarrow \text{Domain model}
+  \longrightarrow \text{Normal terms}
+\]
+- Domain model looks similar to  untyped expression of MLTT. \lambda/\Pi-terms can be open, thus have associated environment to provide meaning to free variables. If starting from closed term, then environment only need to be provided at the binder
+  - The relationship between domain model and MLTT is similar to term and value with big-step semantics with environment. Yes, some part of it looks similar, but they are not the same, and should be treated as different mathematical objects
+- Normal terms are either /Neutral terms/ or /Normal forms/, which is almost a subset of all valid MLTT term. Neutral terms are variables or elimination blocked by neutral terms. *NORMAL FORMS ARE TODO*
+
+- User input \to Domain model is done by /elimination/, and will capture some type information
+- Domain model \to Normal terms is done by /readback/, use type information from the first step to get back \eta-normal form
+
+** Theorems
+
+*** Completeness
+
+Use /Partial Equivalence Relation (PER)/ to define equivalence between domain model objects
+
+TODO: investigate U_i, R, relationship
+
+In the end, we get Fundamental Theorem where if MLTT terms are equivalent, then the elimination process maps the terms to equivalent domain model objects
+
+*** Soundness
+
+TODO: Kripke Gluing model and others
+
+We get Fundamental theorem the elimination and readback of a term gives an equivalent term in MLTT
+
+*** Consistency
+
+GUESSING derivation:

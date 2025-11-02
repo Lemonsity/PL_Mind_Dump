@@ -1,0 +1,47 @@
+#+TITLE: Andromeda Prover Publication (Reading Notes)
+
+* Andromeda Proof Assistant (2016)
+
+** Overview
+
+Start with a small core (nucleus) that implements a simple type theory with only the most basic equality checking (syntactic equality)
+
+User interact with meta-language AML, which queries nucleus to make progress.
+Some query may fail, likely because an equality cannot be derived by the simple equality checker of the nucleus. At which point an exchange using the interface of algebraic effect happens between AML and nucleus, where user can supply the handling of operation.
+
+** Future works
+
+- Better UX: Syntax extension, error reporting, etc.
+- Metatheory development
+- Formal verification
+- Recording derivation (Is this the same as proof object?)
+- Type : Type in AML
+
+** Questions
+
+- What kind of equality is there besides syntactic equality
+- In what situation would one need different kind of equality checking
+
+* An Extensible Equality Checking Algorithm (2022)
+
+** Overview
+
+By developing /finitary type theory/, it is possible to classify a family of type theories, which can be syntactically recognized. The paper develops an sound equality checking algorithm for this class of language.
+
+User can now write equality judgments, which are automatically classified (extensionality, computation), and applied in appropriate phases of equality checking algorithm.
+
+** Future Works
+
+Integrate many other techniques from other proof assistants
+- Existential variable
+- Unification
+- Implicit argument
+
+* Finitary Type Theory With and Without Context (2023)
+
+** Overview
+
+** Future works
+
+- Relation between FTT (Finitary TT?) and General Dependent Type Theory
+- Relation between FTT and LF
