@@ -26,3 +26,10 @@ auto/
 
 # Org Related Files
 **/ltximg/
+**/*.pdf
+**/*.tex
+**/*.html
+
+# Haskell
+**/*.hi
+**/*.o
