@@ -38,6 +38,8 @@ First customize appearance.
 
   (global-hl-line-mode 1)
   (setq hl-line-sticky-flag nil)
+
+  (setq inhibit-startup-screen t)
 #+end_src
 
 Setup window splitting behaviour.
@@ -215,6 +217,8 @@ General programming appearance.
   			    (setq show-trailing-whitespace t)))
   (add-hook 'before-save-hook (lambda ()
   			      (when (derived-mode-p 'prog-mode)
+  				(delete-trailing-whitespace))
+  			      (when (derived-mode-p 'LaTeX-mode)
   				(delete-trailing-whitespace))))
 #+end_src
 
@@ -267,6 +271,11 @@ company autocompletion.
         proof-three-window-mode-policy 'hybrid)
 #+end_src
 
+** OCaml
+#+begin_src emacs-lisp
+  (lemon/ensure-package 'tuareg)
+#+end_src
+
 ** Rocq / Coq
 
 #+begin_src emacs-lisp
@@ -316,6 +325,8 @@ AUCTeX.
   (require 'auctex)
   (add-hook 'LaTeX-mode-hook #'visual-line-mode)
   (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook #'flyspell-buffer)
+  (add-hook 'LaTeX-mode-hook #'reftex-mode)
   (add-hook 'LaTeX-mode-hook (lambda ()
   			     (setq show-trailing-whitespace t)))
   (add-hook 'LaTeX-mode-hook (lambda ()
@@ -360,7 +371,8 @@ Org windows appearance.
     (variable-pitch-mode 1)
     (setq visual-fill-column-width 120
   	visual-fill-column-center-text t)
-    (visual-line-fill-column-mode 1))
+    (visual-line-fill-column-mode 1)
+    (diminish 'org-indent-mode))
 #+end_src
 
 Org face.
@@ -504,6 +516,7 @@ Hook.
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook #'lemon/org-mode-setup)
   (add-hook 'org-mode-hook #'flyspell-mode)
+  (add-hook 'org-mode-hook #'flyspell-buffer)
 #+end_src
 
 * Magit
