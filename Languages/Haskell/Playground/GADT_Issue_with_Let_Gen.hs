@@ -14,7 +14,7 @@ f = \w ->         -- Give w :: alpha
 
 {-
 g = \w ->               -- Give w :: gamma
-      \e ->             -- 
+      \e ->             --
         case e of       -- Give e :: T alpha, the return type of branchs beta
           C1 b -> not w -- not ok, w cannot be unified with Bool
           C2 -> False
@@ -38,9 +38,20 @@ bar t = let f = \x -> case t of
 {---------------------------------------------------
 Let binds a lower level skolem
 ---------------------------------------------------}
-data S a where
-  MkS :: forall b . b -> S Bool
+-- data S a where
+--   MkS :: forall b . b -> S Bool
 
-baz = \s -> case s of
-              MkS b -> let temp = \x -> b x
-                       in ()
+-- baz = \s -> case s of
+--               MkS b -> let temp = \x -> b x
+--                        in ()
+
+data K a where
+  MkK1 :: (a ~ Int) => a -> K a
+  MkK2 :: K a
+
+myfun x y =
+  case x of
+    MkK1 _ -> case y of
+                MkK1 _ -> True
+                MkK2 -> True
+    MkK2 -> True

@@ -45,3 +45,16 @@ Integrate many other techniques from other proof assistants
 
 - Relation between FTT (Finitary TT?) and General Dependent Type Theory
 - Relation between FTT and LF
+
+* Derivation as Computation (ICFP 2019)
+
+** Goal
+
+User-definable type theory with custom judgemental equality that user can actually use
+
+** Limits of Current Tools
+
+- Coq, Agda, LEAN: Not user definable (You are limited to CIC, or whatever type theory the language is based on
+- Isabelle: Commit to ambient HOL
+- Dedukti: Commit to ambient \Pi\lambda-theory
+- Twelf, Abella, Beluga: Only reason about the potential metatheory of the user-defined type theory. It does not give an implementation of the user-defined type theory

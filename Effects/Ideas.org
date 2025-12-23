@@ -3,4 +3,34 @@
   - Scala has some dependent values functions and implicit values, that makes the capability approach quite suitable
   - Modal Effect System were born more from the OCaml background, and it certainly works for for the problem with that background
   - There is not yet a "right approach" to the problem
-    
+
+* Lexical Effects
+
+1. Does lexical effect hurts "theorems for free"?
+   Because now a function of the type \(\forall a . a \to a\) may not be the identity function, if it produce and handles some effects
+   Although it is possible the function is observationally the same as the identity function
+2. Lexical effects feels like tying syntax and semantics back together again
+3. How does lexical effect cope with handlers that can emit effects?
+   My surface knowledge tells me that a function \( a \to \langle IO \rangle b \) will look like the following:
+   #+begin_src
+     def (h : handler <IO>) (x : a) : b {
+       ... h.print ...
+     }
+   #+end_src
+   Namely, the use of an effect is justified by the handler of the said effect passed in (explicitly, or implicitly if inferable)
+   So how would lexical effect represent a handler of the form:
+   #+begin_src
+     handler {
+       return x  -> put x
+       print x k -> put x ; k ()
+     } -- handles IO, but also emit State 
+   #+end_src
+   Would the type for ~h~ also need to be supplied with handlers?
+
+* Efficient Compilation
+
+If one of the main challenge is copying big continuation, then maybe we can reduce the size of the continuation.
+
+We can elaborate the continuation in ~op(a ; v . k)~ to a named function. This way the ~k~ is just a small piece of the stack mainly dominated by a function call
+
+It depends whether the overhead of function call is better or worse than copying stack to capture continuation.
