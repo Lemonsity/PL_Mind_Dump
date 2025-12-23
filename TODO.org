@@ -5,3 +5,6 @@ Reading List
 - [ ] Notion, Moggi
 - [ ] Notion, Plotkin
 - [ ] Synthetic Tait
+
+- Why are there introduction and elimination rules
+- Why does each introduction correspond to a canonical form (value)
