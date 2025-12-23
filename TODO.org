@@ -1,0 +1,7 @@
+Reading List
+
+- [ ] Context
+- [ ] CBPV
+- [ ] Notion, Moggi
+- [ ] Notion, Plotkin
+- [ ] Synthetic Tait
