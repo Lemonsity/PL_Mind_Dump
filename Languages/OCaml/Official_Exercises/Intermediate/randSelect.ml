@@ -1,16 +1,35 @@
 open List;;
 
+let rand_select (l : 'a list) (n : int) : 'a list =
+  Random.init 0;
+  let rec extract (l : 'a list) (i : int) (acc : 'a list) : ('a * 'a list) =
+    match l with
+    | [] -> raise (Failure "Index out of range")
+    | h :: t when i = 0 -> (h, rev_append acc t)
+    | h :: t -> extract t (i - 1) (h :: acc)
+  in
+  let rec choose (l : 'a list) (len : int) (n : int) (acc : 'a list) : 'a list =
+    if n = 0
+    then acc
+    else
+      let i = Random.int len in
+      let elem, rest = extract l i [] in
+      choose rest (len - 1) (n - 1) (elem :: acc)
+  in choose l (length l) n []
+;;
+
+
 (* This is an attempt to write an efficient random select algorithm *)
+(* It is unfortunate the algorithm does not implement uniform distribution *)
+(* Consider the case where l = [1;2;3;4], n = 2 *)
+(* If the first index is chosen to be 2, the second index will force to be 4 *)
+(* Thus there is a 1/3 probability for the program to choose the subset [3;4] *)
 
-(* Picking n elements out of a list is equivalent to picking n distinct,
-   valid indices. *)
-(* This algorithm randomly generates the difference between the indices *)
-(* In theory, this algorithm will run in O(n + m), where (m = len l) *)
-(* Furthermore, the output is a subseq of the list that represents the pool *)
+(* Still, I think there are interesting lessons to be taken *)
+(* The algorithm runs in linear time, always *)
+(* The algorithm produces a subseq of the original pool *)
 
-(* I need some help proving this algorithm indeed follow the uniform distribution *)
-
-let rand_select (l : 'a list) (n : int) =
+let rand_select_alt (l : 'a list) (n : int) =
   Random.init 0;
   let rec choose (remain_len : int) (to_select : int) (acc : int list) : int list =
     match remain_len < to_select, to_select = 0 with
