@@ -1,0 +1,63 @@
+cabal-version:      3.0
+name:               codewars-practices
+-- The package version.
+-- See the Haskell package versioning policy (PVP) for standards
+-- guiding when and how versions should be incremented.
+-- https://pvp.haskell.org
+-- PVP summary:     +-+------- breaking API changes
+--                  | | +----- non-breaking API additions
+--                  | | | +--- code changes with no API change
+version:            0.1.0.0
+
+synopsis: Codewars Practices
+description: Codewars Practices
+
+author:             Lemon
+
+maintainer:         38927629+Lemonsity@users.noreply.github.com
+
+build-type:         Simple
+
+
+common shared-properties
+    default-language:
+      GHC2021
+    ghc-options:
+      -Wall
+    build-depends:
+      base ^>=4.16.4.0,
+      haskell-src-exts ^>=1.23.1,
+      lens ^>=5.1.1,
+      mtl ^>=2.2.2,
+      parsec ^>=3.1.15.0,
+      random ^>=1.2.1.1,
+      regex-posix ^>=0.96.0.1,
+      regex-tdfa ^>=1.3.2,
+      split ^>=0.2.3.5,
+      text ^>=1.2.5.0,
+      transformers ^>=0.5.6.2,
+      vector ^>=0.12.3.1,
+      
+library
+    import:           shared-properties
+    exposed-modules:  CamelCase,
+                      MultiplesOf3And5,
+    other-modules:    
+    other-extensions:
+    build-depends: 
+    hs-source-dirs:   src
+
+Test-Suite sample-tests
+    import:           shared-properties
+    type:             exitcode-stdio-1.0
+    main-is:          Main.hs
+    hs-source-dirs:   test
+    build-depends:    codewars-practices,
+                      hspec	                ^>=2.9.7,
+                      hspec-attoparsec	        ^>=0.1.0.2,
+                      hspec-contrib	        ^>=0.5.2,
+                      hspec-megaparsec	        ^>=2.2.0,
+                      HUnit-approx	        ^>=1.1.1.1,
+                      
+                                           
+    
